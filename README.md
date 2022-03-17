@@ -1,1 +1,3 @@
-ProjetJava
+# ProjetJava
+
+Utiliser enum

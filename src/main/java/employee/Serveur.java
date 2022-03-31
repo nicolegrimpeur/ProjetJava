@@ -34,6 +34,8 @@ public class Serveur extends Employee {
             System.out.println("11- Pizza Saucisse");
             Scanner scanner1 = new Scanner(System.in);
 
+
+            //ADD A MODIFIER SELON LA CLASS MENU PLATS
             switch (scanner1) {
                 case 1:
                     listRepas.add();
@@ -104,7 +106,7 @@ public class Serveur extends Employee {
                 }
             }
 
-            //CHECK INGREDIENTS AVANT PROPOSER MENU
+            //CHECK INGREDIENTS AVANT PROPOSER MENU (ENONCE)
 
         }
     }

@@ -6,7 +6,9 @@ import java.util.Scanner;
 
 public class ScreenOne {
     //Prise de commande
-    public ScreenOne(){
+    public static void ScreenOne(){
+        //seveur.preparerCommande();
+
     }
 
     //Prepare commande Serveur

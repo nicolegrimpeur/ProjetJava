@@ -1,7 +1,7 @@
 package ingredients;
 
 public class PainBurger extends Ingredient {
-    private PainBurger instance = null;
+    private static PainBurger instance = null;
 
     public PainBurger(int nbInitial_) {
         super("PainBurgers", nbInitial_);

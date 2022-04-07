@@ -1,7 +1,7 @@
 package ingredients;
 
 public class Mozzarella extends Ingredient {
-    private Mozzarella instance = null;
+    private static Mozzarella instance = null;
 
     public Mozzarella(int nbInitial_) {
         super("Mozzarella", nbInitial_);

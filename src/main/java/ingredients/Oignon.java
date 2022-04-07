@@ -1,7 +1,7 @@
 package ingredients;
 
 public class Oignon extends Ingredient {
-    private Oignon instance = null;
+    private static Oignon instance = null;
 
     public Oignon(int nbInitial_) {
         super("Oignons", nbInitial_);

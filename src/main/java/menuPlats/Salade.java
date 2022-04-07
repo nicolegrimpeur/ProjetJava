@@ -1,13 +1,13 @@
 package menuPlats;
 
-import ingredients.Ingredient;
-
-import java.util.ArrayList;
-
-public class Salade extends Plat {
+public class Salade extends Salades {
     public Salade() {
         super("Salade");
-        listIngredients = new ArrayList<>();
+        listIngredients.add(ingredients.Salade.getInstance());
+    }
+
+    @Override
+    public void initIngredients() {
         listIngredients.add(ingredients.Salade.getInstance());
     }
 }

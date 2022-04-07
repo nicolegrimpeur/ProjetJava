@@ -1,6 +1,7 @@
 package menuPlats;
 
-import ingredients.Ingredient;
+import ingredients.EnumIngredients;
+import ingredients.IngredientsManager;
 
 public abstract class Potages extends Plat {
     public Potages(String name_) {
@@ -9,8 +10,8 @@ public abstract class Potages extends Plat {
 
     @Override
     public boolean hasEnoughIngredients() {
-        for (Ingredient ingredient: listIngredients) {
-            if (ingredient.getInstance().nbUnite <= 2) return false;
+        for (EnumIngredients ingredient: listIngredients) {
+            if (IngredientsManager.getInstance().stocks.get(ingredient) <= 0) return false;
         }
         return true;
     }

@@ -1,6 +1,6 @@
 package menuPlats;
 
-import ingredients.Ingredient;
+import ingredients.EnumIngredients;
 
 public class PizzaTomateEmmental extends Pizzas {
     public PizzaTomateEmmental() {
@@ -9,8 +9,8 @@ public class PizzaTomateEmmental extends Pizzas {
 
     @Override
     public void initIngredients() {
-        listIngredients.add(ingredients.Tomate.getInstance());
-        listIngredients.add(Ingredient.getInstance());
-        listIngredients.add(ingredients.Mozzarella.getInstance());
+        listIngredients.add(EnumIngredients.MOZZARELLA);
+        listIngredients.add(EnumIngredients.TOMATE);
+        listIngredients.add(EnumIngredients.EMMENTAL);
     }
 }

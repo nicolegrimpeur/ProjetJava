@@ -1,7 +1,7 @@
 package menuBoissons;
 
 public class Limonade extends Boisson {
-    public Limonade(int prix_) {
-        super("Limonade", prix_);
+    public Limonade() {
+        super("Limonade", 4);
     }
 }

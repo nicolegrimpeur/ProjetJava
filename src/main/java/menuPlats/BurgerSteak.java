@@ -1,5 +1,7 @@
 package menuPlats;
 
+import ingredients.EnumIngredients;
+
 public class BurgerSteak extends Burgers {
     public BurgerSteak() {
         super("Burger Steak");
@@ -7,7 +9,7 @@ public class BurgerSteak extends Burgers {
 
     @Override
     public void initIngredients() {
-        listIngredients.add(ingredients.PainBurger.getInstance());
-        listIngredients.add(ingredients.Steak.getInstance());
+        listIngredients.add(EnumIngredients.PAINBURGER);
+        listIngredients.add(EnumIngredients.STEAK);
     }
 }

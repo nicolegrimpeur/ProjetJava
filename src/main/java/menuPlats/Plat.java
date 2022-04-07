@@ -1,13 +1,14 @@
 package menuPlats;
 
-import ingredients.Ingredient;
+import ingredients.EnumIngredients;
+import ingredients.IngredientsManager;
 
 import java.util.ArrayList;
 
 public abstract class Plat {
     public String name;
     public int prix;
-    public static final ArrayList<Ingredient> listIngredients = new ArrayList<>();
+    public static final ArrayList<EnumIngredients> listIngredients = new ArrayList<>();
 
     public Plat(String name_, int prix_) {
         name = name_;
@@ -18,14 +19,14 @@ public abstract class Plat {
     public void initIngredients() {}
 
     public void preparation() {
-        for (Ingredient ingredient: listIngredients) {
-            ingredient.getInstance().addIngredient();
+        for (EnumIngredients ingredient: listIngredients) {
+            IngredientsManager.getInstance().addIngredient(ingredient);
         }
     }
 
     public boolean hasEnoughIngredients() {
-        for (Ingredient ingredient: listIngredients) {
-            if (ingredient.getInstance().nbUnite <= 0) return false;
+        for (EnumIngredients ingredient: listIngredients) {
+            if (IngredientsManager.getInstance().stocks.get(ingredient) <= 0) return false;
         }
         return true;
     }

@@ -1,5 +1,7 @@
 package menuPlats;
 
+import ingredients.EnumIngredients;
+
 public class SoupeOignon extends Potages {
     public SoupeOignon() {
         super("Soupe Oignon");
@@ -8,7 +10,7 @@ public class SoupeOignon extends Potages {
     @Override
     public void initIngredients() {
         for (int i = 0; i < 3; i++) {
-            listIngredients.add(ingredients.Oignon.getInstance());
+            listIngredients.add(EnumIngredients.OIGNON);
         }
     }
 }

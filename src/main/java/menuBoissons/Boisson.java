@@ -5,6 +5,7 @@ public abstract class Boisson {
     public int prix;
 
     public Boisson(String name_, int prix_) {
-
+        name = name_;
+        prix = prix_;
     }
 }

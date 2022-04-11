@@ -18,7 +18,6 @@ public enum EnumPlats {
     SOUPETOMATE("Soupe à la tomate", 8, new EnumIngredients[]{EnumIngredients.TOMATE, EnumIngredients.TOMATE, EnumIngredients.TOMATE});
 
     private final String name;
-
     private final int prix;
     private final EnumMap<EnumIngredients, Integer> listeIngredients = new EnumMap<>(EnumIngredients.class);
 

@@ -1,19 +1,17 @@
 package ingredients;
 
 import java.util.EnumMap;
+import java.util.Scanner;
 
 public class IngredientsManager {
     private static IngredientsManager instance = null;
 
-    public final EnumMap<EnumIngredients, Integer> stocks;
-    private final EnumMap<EnumIngredients, Integer> stocksInitial = new EnumMap<>(EnumIngredients.class);
+    public final EnumMap<EnumIngredients, Integer> stocks = new EnumMap<>(EnumIngredients.class);
 
     public IngredientsManager() {
-        for (EnumIngredients ingredients: EnumIngredients.values()) {
-            stocksInitial.put(ingredients, 0);
+        for (EnumIngredients ingredient: EnumIngredients.values()) {
+            stocks.put(ingredient, ingredient.getStockInitial());
         }
-
-        stocks = stocksInitial;
     }
 
     public static IngredientsManager getInstance() {
@@ -23,11 +21,20 @@ public class IngredientsManager {
         return instance;
     }
 
+    public static void initStocksInitial() {
+        Scanner scanner;
+        for (EnumIngredients ingredient: EnumIngredients.values()) {
+            System.out.println(ingredient.getName() + " : ");
+            scanner = new Scanner(System.in);
+            ingredient.setStockInitial(scanner.nextInt());
+        }
+    }
+
     /**
      * @return nombre d'ingrédients manquants
      */
     public int ingredientsManquants(EnumIngredients ingredient) {
-        return Math.max(stocks.get(ingredient) - stocksInitial.get(ingredient), 0);
+        return Math.max(stocks.get(ingredient) - ingredient.getStockInitial(), 0);
     }
 
     /**

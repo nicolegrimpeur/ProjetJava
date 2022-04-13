@@ -1,12 +1,22 @@
 package employee;
 
+import menuBoissons.EnumBoissons;
+import menuPlats.EnumPlats;
+import menuPlats.PlatsManager;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Serveur extends Employee {
-    public int tableAttribue;
-    public static ArrayList<Menu> listRepas = new ArrayList<Menu>();
-    public static ArrayList<Boisson> listBoisson = new ArrayList<Boisson>();
+    public int prixTotal; // prix total de la commande
+    // liste des plats commandés
+    public ArrayList<EnumPlats> listPlatsCommandes = new ArrayList<>();
+    // liste des boissons commandées
+    public ArrayList<EnumBoissons> listBoissonsCommandes = new ArrayList<>();
+    // liste des plats commandés dans le cadre d'un menu Cent ans
+    public ArrayList<ArrayList<EnumPlats>> listPlatsCommandes100Ans = new ArrayList<>();
+    // liste des boissons commandées dans le cadre d'un menu Cent ans
+    public ArrayList<ArrayList<EnumBoissons>> listBoissonsCommandes100Ans = new ArrayList<>();
 
     public Serveur(String nom_, String prenom_, int salaire_) {
         super(nom_, prenom_, salaire_);
@@ -14,100 +24,138 @@ public class Serveur extends Employee {
 
     @Override
     public void preparerCommande() {
-        System.out.println("Combien de clients y a-t-il ?");
+        boolean onContinue;
+
         Scanner scanner = new Scanner(System.in);
-        int nbrCustomers = scanner.nextInt();
-        int facture = 0;
+        int res;
 
-        for (int i = 0; i < nbrCustomers; i++) {
-            System.out.println("Plat du client n°" + (i + 1));
-            System.out.println("1- Salade Tomates");
-            System.out.println("2- Salade");
-            System.out.println("3- Potage Oignon");
-            System.out.println("4- Potage Tomate");
-            System.out.println("5- Potage Champignons");
-            System.out.println("6- Burger Salade Tomate Steak");
-            System.out.println("7- Burger Salade Steak");
-            System.out.println("8- Burger Steak");
-            System.out.println("9- Pizza Nature");
-            System.out.println("10- Pizza Champignon");
-            System.out.println("11- Pizza Saucisse");
-            Scanner scanner1 = new Scanner(System.in);
+        System.out.println("Voulez-vous faire un menu Cent ans ? (o ou n)");
 
+        onContinue = estCeQuOnContinue(scanner.next());
 
-            //ADD A MODIFIER SELON LA CLASS MENU PLATS
-            switch (scanner1) {
-                case 1:
-                    listRepas.add();
-                    break;
-                case 2:
-                    listRepas.add();
-                    break;
-                case 3:
-                    listRepas.add();
-                    break;
-                case 4:
-                    listRepas.add();
-                    break;
-                case 5:
-                    listRepas.add();
-                    break;
-                case 6:
-                    listRepas.add();
-                    break;
-                case 7:
-                    listRepas.add();
-                    break;
-                case 8:
-                    listRepas.add();
-                    break;
-                case 9:
-                    listRepas.add();
-                    break;
-                case 10:
-                    listRepas.add();
-                    break;
-                case 11:
-                    listRepas.add();
-                    break;
+        // on prend les commandes de menu Cent ans
+        while (onContinue) {
+            prixTotal += 100;
 
-                default:
-                    System.out.println("Commande inconnue");
+            listPlatsCommandes100Ans.add(new ArrayList<>());
+            for (int index = 0; index < 7; index++) {
+                res = takeCommandPlats();
+                listPlatsCommandes100Ans.get(listPlatsCommandes100Ans.size() - 1).add(EnumPlats.values()[res]);
+
+                res = takeCommandBoissons();
+                listBoissonsCommandes100Ans.get(listBoissonsCommandes100Ans.size() - 1).add(EnumBoissons.values()[res]);
             }
 
-            for (int i = 0; i < nbrCustomers; i++) {
-                System.out.println("Boisson du client n°" + (i + 1));
-                System.out.println("1- Limonade");
-                System.out.println("2- Cidre doux");
-                System.out.println("3- Biere sans alcool");
-                System.out.println("4- Jus de fruit");
-                System.out.println("5- Verre d'eau");
-                Scanner scanner2 = new Scanner(System.in);
+            System.out.println("Voulez-vous prendre un autre menu Cent ans ?");
+            System.out.println("(o ou n, a si vous souhaitez annuler toutes les commandes de la table)");
 
-                switch (scanner2) {
-                    case 1:
-                        listBoisson.add();
-                        break;
-                    case 2:
-                        listBoisson.add();
-                        break;
-                    case 3:
-                        listBoisson.add();
-                        break;
-                    case 4:
-                        listBoisson.add();
-                        break;
-                    case 5:
-                        listBoisson.add();
-                        break;
-
-                    default:
-                        System.out.println("Commande inconnue");
-                }
-            }
-
-            //CHECK INGREDIENTS AVANT PROPOSER MENU (ENONCE)
-
+            onContinue = estCeQuOnContinue(scanner.next());
         }
+
+        System.out.println("Voulez-vous prendre une autre commande ?");
+        System.out.println("(o ou n, a si vous souhaitez annuler toutes les commandes de la table)");
+
+        onContinue = estCeQuOnContinue(scanner.next());
+
+        // commandes classiques
+        while (onContinue) {
+            // commande plat
+            res = takeCommandPlats();
+            prixTotal += EnumPlats.values()[res].getPrix();
+            listPlatsCommandes.add(EnumPlats.values()[res]);
+            PlatsManager.getInstance().preparation(EnumPlats.values()[res]);
+
+            // commande boisson
+            res = takeCommandBoissons();
+            prixTotal += EnumBoissons.values()[res].getPrix();
+            listBoissonsCommandes.add(EnumBoissons.values()[res]);
+
+            System.out.println("Voulez-vous faire une autre commande ?");
+            System.out.println("(o ou n, a si vous souhaitez annuler toutes les commandes de la table)");
+
+            onContinue = estCeQuOnContinue(scanner.next());
+        }
+    }
+
+    /**
+     * Permet de savoir si l'on doit continuer la commande ou pas
+     * @param res sortie du scanner
+     * @return si l'on continue ou non
+     */
+    public boolean estCeQuOnContinue(String res) {
+        boolean sortie;
+        switch (res.toUpperCase()) {
+            case "O", "OUI" -> sortie = true;
+            case "A", "ANNULER", "CANCEL" -> {
+                prixTotal = 0;
+                listPlatsCommandes.clear();
+                sortie = false;
+            }
+            default -> sortie = false;
+        }
+        return sortie;
+    }
+
+    /**
+     * Prend une commande de plat
+     * @return l'indice correspondant au plat dans l'énumération des plats
+     */
+    public int takeCommandPlats() {
+        Scanner scanner;
+        int index;
+
+        System.out.println("Plat du client : ");
+
+        for (index = 0; index < EnumPlats.values().length; index++) {
+            // on affiche le plat que si l'on a assez d'ingrédients
+            if (PlatsManager.getInstance().hasEnoughIngredients(EnumPlats.values()[index])) {
+                System.out.println(index + " - " + EnumPlats.values()[index].getName());
+            }
+        }
+
+        scanner = new Scanner(System.in);
+
+        return scanner.nextInt();
+    }
+
+    /**
+     * Prend une commande de boisson
+     * @return l'indice correspondant à la boisson dans l'énumération des boissons
+     */
+    public int takeCommandBoissons() {
+        Scanner scanner;
+        int index;
+
+        System.out.println("Boisson du client : ");
+
+        for (index = 0; index < EnumBoissons.values().length; index++) {
+            System.out.println(index + " - " + EnumBoissons.values()[index]);
+        }
+
+        scanner = new Scanner(System.in);
+
+        return scanner.nextInt();
+    }
+
+    /**
+     * Affiche l'addition
+     */
+    public void showAddition() {
+        int index, index100Ans;
+        for (index = 0; index < listPlatsCommandes100Ans.size(); index++) {
+            System.out.println("Menu Cent ans : 100€");
+            for (index100Ans = 0; index100Ans < 7; index100Ans++) {
+                System.out.println("    " + listPlatsCommandes100Ans.get(index100Ans));
+                System.out.println("    " + listBoissonsCommandes100Ans.get(index100Ans));
+            }
+        }
+
+        for (index = 0; index < listPlatsCommandes.size(); index++) {
+            System.out.println("Menu classique");
+            System.out.println("    " + listPlatsCommandes.get(index).getName() + " " + listPlatsCommandes.get(index).getPrix() + "€");
+            System.out.println("    " + listBoissonsCommandes.get(index).getName() + " " + listBoissonsCommandes.get(index).getPrix() + "€");
+        }
+
+        System.out.println("Total à régler : " + prixTotal);
     }
 }

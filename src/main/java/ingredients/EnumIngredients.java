@@ -9,5 +9,8 @@ public enum EnumIngredients {
     SALADE,
     SAUCISSE,
     STEAK,
-    TOMATE;
+    TOMATE,
+    GALETTE,
+    RIZ,
+    POULET;
 }

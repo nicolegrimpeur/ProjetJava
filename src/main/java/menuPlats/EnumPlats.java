@@ -15,7 +15,9 @@ public enum EnumPlats {
     SALADETOMATE("Salade avec tomates", 9, new EnumIngredients[]{EnumIngredients.SALADE, EnumIngredients.TOMATE}),
     SOUPECHAMPIGNON("Soupe aux champignons", 8, new EnumIngredients[]{EnumIngredients.CHAMPIGNON, EnumIngredients.CHAMPIGNON, EnumIngredients.CHAMPIGNON}),
     SOUPEOIGNON("Soupe aux oignons", 8, new EnumIngredients[]{EnumIngredients.OIGNON, EnumIngredients.OIGNON, EnumIngredients.OIGNON}),
-    SOUPETOMATE("Soupe à la tomate", 8, new EnumIngredients[]{EnumIngredients.TOMATE, EnumIngredients.TOMATE, EnumIngredients.TOMATE});
+    SOUPETOMATE("Soupe à la tomate", 8, new EnumIngredients[]{EnumIngredients.TOMATE, EnumIngredients.TOMATE, EnumIngredients.TOMATE}),
+    FAJITASPOULET("Fajitas au poulet", 11, new EnumIngredients[]{EnumIngredients.GALETTE, EnumIngredients.RIZ, EnumIngredients.POULET}),
+    FAJITASSTEAK("Fajitas au steak", 11, new EnumIngredients[]{EnumIngredients.GALETTE, EnumIngredients.RIZ, EnumIngredients.STEAK});
 
     private final String name;
     private final int prix;

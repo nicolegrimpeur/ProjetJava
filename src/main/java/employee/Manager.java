@@ -5,4 +5,9 @@ public class Manager extends Employee {
         super(nom_, prenom_, salaire_);
     }
 
+    @Override
+    public void preparerCommande() {
+
+    }
+
 }

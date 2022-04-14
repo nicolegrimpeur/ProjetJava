@@ -1,8 +1,3 @@
-import screens.ManagCourses;
-import screens.ManagEffectif;
-import screens.ManagEmployees;
-import screens.ManagStocks;
-
 import java.util.Scanner;
 
 public class App {

@@ -1,9 +1,14 @@
 package employee;
 
+import ingredients.EnumIngredients;
+import ingredients.IngredientsManager;
 import menuBoissons.EnumBoissons;
 import menuPlats.EnumPlats;
 import menuPlats.PlatsManager;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -157,5 +162,16 @@ public class Serveur extends Employee {
         }
 
         System.out.println("Total à régler : " + prixTotal);
+    }
+
+    public void sauvegardeFacture() throws IOException {
+        PrintWriter writer = new PrintWriter("./Factures/" + "" + ".txt", StandardCharsets.UTF_8);
+
+        writer.println("A acheter : ");
+        for (EnumIngredients ingredient: EnumIngredients.values()) {
+            writer.println(ingredient.getName() + " : " + IngredientsManager.getInstance().ingredientsManquants(ingredient));
+        }
+
+        writer.close();
     }
 }

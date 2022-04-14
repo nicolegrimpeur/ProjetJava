@@ -9,6 +9,7 @@ import menuPlats.PlatsManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -164,13 +165,29 @@ public class Serveur extends Employee {
         System.out.println("Total à régler : " + prixTotal);
     }
 
+    /**
+     * Enregistre la facture
+     */
     public void sauvegardeFacture() throws IOException {
-        PrintWriter writer = new PrintWriter("./Factures/" + "" + ".txt", StandardCharsets.UTF_8);
+        int index, index100Ans;
 
-        writer.println("A acheter : ");
-        for (EnumIngredients ingredient: EnumIngredients.values()) {
-            writer.println(ingredient.getName() + " : " + IngredientsManager.getInstance().ingredientsManquants(ingredient));
+        PrintWriter writer = new PrintWriter("./Factures/" + LocalDateTime.now() + ".txt", StandardCharsets.UTF_8);
+
+        for (index = 0; index < listPlatsCommandes100Ans.size(); index++) {
+            writer.println("Menu Cent ans : 100€");
+            for (index100Ans = 0; index100Ans < 7; index100Ans++) {
+                writer.println("    " + listPlatsCommandes100Ans.get(index100Ans));
+                writer.println("    " + listBoissonsCommandes100Ans.get(index100Ans));
+            }
         }
+
+        for (index = 0; index < listPlatsCommandes.size(); index++) {
+            writer.println("Menu classique");
+            writer.println("    " + listPlatsCommandes.get(index).getName() + " " + listPlatsCommandes.get(index).getPrix() + "€");
+            writer.println("    " + listBoissonsCommandes.get(index).getName() + " " + listBoissonsCommandes.get(index).getPrix() + "€");
+        }
+
+        writer.println("Total à régler : " + prixTotal);
 
         writer.close();
     }

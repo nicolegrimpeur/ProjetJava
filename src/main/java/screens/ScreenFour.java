@@ -18,7 +18,7 @@ public class ScreenFour {
 
         switch (choixEcran) {
             case 1:
-                ManagCourses.gestionCourses();
+//                ManagCourses.gestionCourses();
                 break;
             case 2:
                 ManagStocks.gestionStocks();

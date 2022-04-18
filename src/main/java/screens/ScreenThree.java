@@ -8,9 +8,9 @@ public class ScreenThree {
     //Bar afficher cocktails, indiquer quand finis
     public void affichageCommande(){
         System.out.println("Liste des cocktails à préparer");
-        for (int boisson : listBoisson){
-            System.out.println(boisson);
-        }
+//        for (int boisson : listBoisson){
+//            System.out.println(boisson);
+//        }
     }
 
 }

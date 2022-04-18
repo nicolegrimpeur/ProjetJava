@@ -11,9 +11,9 @@ public class ScreenTwo {
 
     public void afficherCommande(){
         System.out.println("Liste des plats à préparer");
-        for (int repas : listRepas){
-            System.out.println(repas);
-        }
+//        for (int repas : listRepas){
+//            System.out.println(repas);
+//        }
     }
 
 

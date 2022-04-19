@@ -1,29 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screensControllers.Main">
-   <children>
-      <MenuBar layoutY="2.0" prefHeight="24.0" prefWidth="600.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" onAction="#closeFenetre" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" onAction="#about" text="A propos" fx:id="aboutBtn"/>
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-      <Button layoutX="157.0" layoutY="79.0" mnemonicParsing="false" text="Prendre une commande">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Button>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screensControllers.Main">
+    <children>
+        <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="800.0">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#closeFenetre" text="Close" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem fx:id="aboutBtn" mnemonicParsing="false" onAction="#about" text="A propos" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <Button layoutX="14.0" layoutY="35.0" mnemonicParsing="false" onAction="#launchPriseDeCommande" prefHeight="30.0" prefWidth="180.0" text="Prendre une commande">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button layoutX="201.0" layoutY="35.0" mnemonicParsing="false" text="Barman">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button layoutX="273.0" layoutY="35.0" mnemonicParsing="false" text="Cuisiniers">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button layoutX="358.0" layoutY="35.0" mnemonicParsing="false" text="Manager">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button fx:id="clearAnchorBtn" layoutX="726.0" layoutY="35.0" mnemonicParsing="false" onAction="#retour" text="Retour" visible="false">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Separator layoutX="-1.0" layoutY="86.0" prefHeight="16.0" prefWidth="800.0" />
+        <AnchorPane fx:id="rootPane" layoutY="100.0" prefHeight="600.0" prefWidth="800.0" />
+    </children>
 </AnchorPane>

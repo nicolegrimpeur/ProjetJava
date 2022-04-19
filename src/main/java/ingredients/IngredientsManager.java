@@ -52,4 +52,11 @@ public class IngredientsManager {
     public void addIngredient(EnumIngredients ingredient) {
         stocks.put(ingredient, stocks.get(ingredient) - 1);
     }
+
+    /**
+     * Permet de rajouter un ingrédient
+     */
+    public void rajouterIngredient(EnumIngredients ingredient) {
+        stocks.put(ingredient, stocks.get(ingredient) + 1);
+    }
 }

@@ -1,7 +1,5 @@
 package employee;
 
-import ingredients.EnumIngredients;
-import ingredients.IngredientsManager;
 import menuBoissons.EnumBoissons;
 import menuPlats.EnumPlats;
 import menuPlats.PlatsManager;
@@ -93,8 +91,7 @@ public class Serveur extends Employee {
         switch (res.toUpperCase()) {
             case "O", "OUI" -> sortie = true;
             case "A", "ANNULER", "CANCEL" -> {
-                prixTotal = 0;
-                listPlatsCommandes.clear();
+                annulerCommande();
                 sortie = false;
             }
             default -> sortie = false;
@@ -141,6 +138,23 @@ public class Serveur extends Employee {
         scanner = new Scanner(System.in);
 
         return scanner.nextInt();
+    }
+
+    public void annulerCommande() {
+        for (ArrayList<EnumPlats> listPlats: listPlatsCommandes100Ans) {
+            for (EnumPlats plat: listPlats) {
+                PlatsManager.getInstance().suppressionPlat(plat);
+            }
+        }
+
+        for (EnumPlats plat: listPlatsCommandes) {
+            PlatsManager.getInstance().suppressionPlat(plat);
+        }
+
+        listBoissonsCommandes100Ans.clear();
+        listBoissonsCommandes.clear();
+
+        prixTotal = 0;
     }
 
     /**

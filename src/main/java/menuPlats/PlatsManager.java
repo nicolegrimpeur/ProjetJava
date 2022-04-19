@@ -3,10 +3,17 @@ package menuPlats;
 import ingredients.EnumIngredients;
 import ingredients.IngredientsManager;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PlatsManager {
     private static PlatsManager instance = null;
+    public final Map<String, EnumPlats> listNoms = new HashMap<>();
 
     public PlatsManager() {
+        for (EnumPlats plat: EnumPlats.values()) {
+            listNoms.put(plat.getName(), plat);
+        }
     }
 
     public static PlatsManager getInstance() {
@@ -19,6 +26,12 @@ public class PlatsManager {
     public void preparation(EnumPlats plat) {
         for (EnumIngredients ingredient : plat.getListeIngredients().keySet()) {
             IngredientsManager.getInstance().addIngredient(ingredient);
+        }
+    }
+
+    public void suppressionPlat(EnumPlats plat) {
+        for (EnumIngredients ingredient : plat.getListeIngredients().keySet()) {
+            IngredientsManager.getInstance().rajouterIngredient(ingredient);
         }
     }
 

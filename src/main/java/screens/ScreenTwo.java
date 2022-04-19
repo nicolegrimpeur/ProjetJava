@@ -1,7 +1,4 @@
 package screens;
-import employee.Cuisinier;
-import java.util.Scanner;
-import java.util.ArrayList;
 
 public class ScreenTwo {
     //Cuisine afficher plats à préparer et commande pour indiquer avancement

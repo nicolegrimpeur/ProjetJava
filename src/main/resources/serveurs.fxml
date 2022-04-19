@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screensControllers.Serveurs">
+   <children>
+      <Label layoutX="322.0" layoutY="14.0" text="Prise de commande">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Button layoutX="258.0" layoutY="63.0" mnemonicParsing="false" text="Commande classique" />
+      <Button layoutX="418.0" layoutY="63.0" mnemonicParsing="false" text="Commande 100 ans" />
+      <Button layoutX="377.0" layoutY="561.0" mnemonicParsing="false" onAction="#submit" text="Submit" />
+      <TreeTableView layoutX="500.0" layoutY="100.0" prefHeight="450.0" prefWidth="300.0">
+        <columns>
+          <TreeTableColumn prefWidth="100.0" resizable="false" text="Plats" />
+          <TreeTableColumn prefWidth="100.0" resizable="false" text="Boissons" />
+            <TreeTableColumn prefWidth="100.0" resizable="false" text="Prix" />
+        </columns>
+      </TreeTableView>
+      <ListView fx:id="listPlats" layoutY="100.0" prefHeight="450.0" prefWidth="300.0" />
+      <ListView fx:id="listBoissons" layoutX="300.0" layoutY="100.0" prefHeight="450.0" prefWidth="200.0" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screensControllers.CommandeClassique">
+   <children>
+      <Label layoutX="185.0" layoutY="123.0" text="Plat : ">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <ChoiceBox layoutX="300.0" layoutY="120.0" prefWidth="150.0" fx:id="choixPlats"/>
+      <Label layoutX="185.0" layoutY="201.0" text="Boisson :">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <ChoiceBox layoutX="300.0" layoutY="197.0" prefWidth="150.0" fx:id="choixBoissons"/>
+      <Button layoutX="273.0" layoutY="323.0" mnemonicParsing="false" text="Ajouter" />
+   </children>
+</AnchorPane>

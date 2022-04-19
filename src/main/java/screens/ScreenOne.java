@@ -1,9 +1,5 @@
 package screens;
 
-import employee.Serveur;
-
-import java.util.Scanner;
-
 public class ScreenOne {
     //Prise de commande
     public static void ScreenOne(){

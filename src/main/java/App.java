@@ -36,7 +36,7 @@ public class App extends Application {
         try {
             Parent root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main.fxml")));
             stage.setTitle("Page principale");;
-            stage.setScene(new Scene(root,600,400));
+            stage.setScene(new Scene(root,800,700));
             stage.show();
         } catch(Exception e) {
             e.printStackTrace();

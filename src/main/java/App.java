@@ -4,7 +4,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -12,6 +11,7 @@ public class App extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
     public static void accueil() {
         System.out.println("Quel écran souhaitez vous afficher?");
         System.out.println("1- Ecran prise de commande");
@@ -32,7 +32,6 @@ public class App extends Application {
         }
     }
 
-    @Override
     public void start(Stage stage) {
         try {
             Parent root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main.fxml")));

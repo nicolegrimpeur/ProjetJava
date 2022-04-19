@@ -1,5 +1,6 @@
 package screensControllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
@@ -12,13 +13,11 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class Main {
+    @FXML private MenuItem aboutBtn;
 
     public void closeFenetre() {
-        System.exit(0);
+        Platform.exit();;
     }
-
-    @FXML
-    private MenuItem aboutBtn;
 
     public void about() throws IOException {
         // on récupère le fichier de propriétés du projet (src/main/resources)

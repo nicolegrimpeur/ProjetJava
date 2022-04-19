@@ -23,10 +23,43 @@ public class Main {
     @FXML private AnchorPane rootPane;
     @FXML private Button clearAnchorBtn;
 
-    public void launchPriseDeCommande(ActionEvent event) {
+    public void launchPriseDeCommande() {
         Parent pane = null;
         try {
             pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("serveurs.fxml")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        rootPane.getChildren().setAll(pane);
+        clearAnchorBtn.setVisible(true);
+    }
+
+    public void launchEcranBarmans() {
+        Parent pane = null;
+        try {
+            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("barmans.fxml")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        rootPane.getChildren().setAll(pane);
+        clearAnchorBtn.setVisible(true);
+    }
+
+    public void launchEcranCuisiniers() {
+        Parent pane = null;
+        try {
+            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("cuisiniers.fxml")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        rootPane.getChildren().setAll(pane);
+        clearAnchorBtn.setVisible(true);
+    }
+
+    public void launchMonitoring() {
+        Parent pane = null;
+        try {
+            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("monitoring.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }

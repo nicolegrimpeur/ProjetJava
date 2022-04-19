@@ -5,6 +5,14 @@ import java.util.Scanner;
 
 public class ManagEmployees {
     public static ArrayList<Employee> listEmployes = new ArrayList<Employee>();
+    public static final ArrayList<String> listEmploi = new ArrayList<String>() {
+        {
+            add("Barman");
+            add("Cuisinier");
+            add("Manager");
+            add("Serveur");
+        }
+    };
 
     public static void gestionEmploye() {
         int i = 1;
@@ -74,5 +82,7 @@ public class ManagEmployees {
         listEmployes.remove(index);
     }
 
-
+    public static void addEmploye(Employee newEmploye) {
+        listEmployes.add(newEmploye);
+    }
 }

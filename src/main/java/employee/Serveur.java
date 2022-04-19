@@ -23,7 +23,7 @@ public class Serveur extends Employee {
     public ArrayList<ArrayList<EnumBoissons>> listBoissonsCommandes100Ans = new ArrayList<>();
 
     public Serveur(String nom_, String prenom_, int salaire_) {
-        super(nom_, prenom_, salaire_);
+        super(nom_, prenom_, salaire_, "Serveur");
     }
 
     @Override

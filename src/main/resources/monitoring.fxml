@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screensControllers.Monitoring">
+   <children>
+      <Button layoutX="152.0" layoutY="14.0" mnemonicParsing="false" text="Performances" onAction="#launchPerformances">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button layoutX="271.0" layoutY="14.0" mnemonicParsing="false" text="Gestion employés" onAction="#launchGestionEmployes">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button layoutX="416.0" layoutY="14.0" mnemonicParsing="false" text="Réserves" onAction="#launchReserves">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button layoutX="506.0" layoutY="14.0" mnemonicParsing="false" text="Programmer employés" onAction="#launchProgrammation">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <AnchorPane fx:id="monitoringPane" layoutY="50.0" prefHeight="550.0" prefWidth="800.0" />
+   </children>
+</AnchorPane>

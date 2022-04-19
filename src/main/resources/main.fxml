@@ -24,17 +24,17 @@
                 <Font size="14.0" />
             </font>
         </Button>
-        <Button layoutX="201.0" layoutY="35.0" mnemonicParsing="false" text="Barman">
+        <Button layoutX="201.0" layoutY="35.0" mnemonicParsing="false" text="Barman" onAction="#launchEcranBarmans">
             <font>
                 <Font size="14.0" />
             </font>
         </Button>
-        <Button layoutX="273.0" layoutY="35.0" mnemonicParsing="false" text="Cuisiniers">
+        <Button layoutX="273.0" layoutY="35.0" mnemonicParsing="false" text="Cuisiniers" onAction="#launchEcranCuisiniers">
             <font>
                 <Font size="14.0" />
             </font>
         </Button>
-        <Button layoutX="358.0" layoutY="35.0" mnemonicParsing="false" text="Manager">
+        <Button layoutX="358.0" layoutY="35.0" mnemonicParsing="false" text="Monitoring" onAction="#launchMonitoring">
             <font>
                 <Font size="14.0" />
             </font>

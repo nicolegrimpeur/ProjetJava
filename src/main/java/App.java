@@ -1,3 +1,5 @@
+import employee.ManagEmployees;
+import employee.Serveur;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,6 +35,9 @@ public class App extends Application {
     }
 
     public void start(Stage stage) {
+        ManagEmployees.getInstance().addEmploye(new Serveur("Barrat", "Nicolas", 2000));
+        ManagEmployees.getInstance().addEmploye(new Serveur("Lecocq", "Judith", 2000));
+
         try {
             Parent root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main.fxml")));
             stage.setTitle("Page principale");;

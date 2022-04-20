@@ -25,7 +25,7 @@ public class GestionEmployes {
 
     @FXML
     public void initialize() {
-        choiceEmploi.setItems(FXCollections.observableArrayList(ManagEmployees.listEmploi));
+        choiceEmploi.setItems(FXCollections.observableArrayList(ManagEmployees.getInstance().getListEmploi()));
         afficheListEmploye();
     }
 
@@ -42,10 +42,10 @@ public class GestionEmployes {
 
             if (!Objects.equals(nom, "") && !Objects.equals(prenom, "") && salaire != 0 && choiceEmploi.getValue() != null) {
                 switch (choiceEmploi.getValue()) {
-                    case "Barman" -> ManagEmployees.addEmploye(new Barman(nom, prenom, salaire));
-                    case "Cuisinier" -> ManagEmployees.addEmploye(new Cuisinier(nom, prenom, salaire));
-                    case "Manager" -> ManagEmployees.addEmploye(new Manager(nom, prenom, salaire));
-                    case "Serveur" -> ManagEmployees.addEmploye(new Serveur(nom, prenom, salaire));
+                    case "Barman" -> ManagEmployees.getInstance().addEmploye(new Barman(nom, prenom, salaire));
+                    case "Cuisinier" -> ManagEmployees.getInstance().addEmploye(new Cuisinier(nom, prenom, salaire));
+                    case "Manager" -> ManagEmployees.getInstance().addEmploye(new Manager(nom, prenom, salaire));
+                    case "Serveur" -> ManagEmployees.getInstance().addEmploye(new Serveur(nom, prenom, salaire));
                     default -> afficheErreur("Merci d'implémenter ce type d'employé");
                 }
 
@@ -104,8 +104,8 @@ public class GestionEmployes {
         TreeItem<Employee> rootElement = new TreeItem<>();
         TreeItem<Employee> element;
         // on ajoute tous les employés
-        for (int i = 0; i < ManagEmployees.listEmployes.size(); i++) {
-            element = new TreeItem<Employee>(ManagEmployees.listEmployes.get(i));
+        for (int i = 0; i < ManagEmployees.getInstance().getListEmployes().size(); i++) {
+            element = new TreeItem<Employee>(ManagEmployees.getInstance().getListEmployes().get(i));
             rootElement.getChildren().add(element);
         }
 
@@ -114,6 +114,7 @@ public class GestionEmployes {
 
         // on ajoute les éléments à la table
         listEmploye.setRoot(rootElement);
+        listEmploye.setShowRoot(false);
     }
 
     /**
@@ -124,7 +125,7 @@ public class GestionEmployes {
 
         // l'indice 0 correspond au root
         if (employeeIndex != 0)
-            ManagEmployees.listEmployes.remove(employeeIndex - 1);
+            ManagEmployees.getInstance().supprimerEmploye(ManagEmployees.getInstance().getListEmployes().get(employeeIndex - 1));
 
         afficheListEmploye();
     }

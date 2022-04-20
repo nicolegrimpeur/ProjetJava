@@ -1,5 +1,6 @@
 package employee;
 
+import menu.Menu;
 import menuBoissons.EnumBoissons;
 import menuPlats.EnumPlats;
 import menuPlats.PlatsManager;
@@ -21,6 +22,10 @@ public class Serveur extends Employee {
     public ArrayList<ArrayList<EnumPlats>> listPlatsCommandes100Ans = new ArrayList<>();
     // liste des boissons commandées dans le cadre d'un menu Cent ans
     public ArrayList<ArrayList<EnumBoissons>> listBoissonsCommandes100Ans = new ArrayList<>();
+
+    public ArrayList<Menu> listCommandes = new ArrayList<>();
+    public ArrayList<ArrayList<Menu>> listCommandes100Ans = new ArrayList<>();
+
 
     public Serveur(String nom_, String prenom_, int salaire_) {
         super(nom_, prenom_, salaire_, "Serveur");

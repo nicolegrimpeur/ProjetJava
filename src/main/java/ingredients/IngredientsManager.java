@@ -49,14 +49,14 @@ public class IngredientsManager {
     /**
      * Utilise un ingrédient
      */
-    public void addIngredient(EnumIngredients ingredient) {
-        stocks.put(ingredient, stocks.get(ingredient) - 1);
+    public void addIngredient(EnumIngredients ingredient, int nbIngredientAEnlever) {
+        stocks.put(ingredient, stocks.get(ingredient) - nbIngredientAEnlever);
     }
 
     /**
      * Permet de rajouter un ingrédient
      */
-    public void rajouterIngredient(EnumIngredients ingredient) {
-        stocks.put(ingredient, stocks.get(ingredient) + 1);
+    public void rajouterIngredient(EnumIngredients ingredient, int nbIngredientARajouter) {
+        stocks.put(ingredient, stocks.get(ingredient) + nbIngredientARajouter);
     }
 }

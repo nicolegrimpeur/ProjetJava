@@ -3,6 +3,7 @@ package menuPlats;
 import ingredients.EnumIngredients;
 
 import java.util.EnumMap;
+import java.util.Objects;
 
 public enum EnumPlats {
     BURGERSTEAK("Burger avec steak", 15, new EnumIngredients[]{EnumIngredients.PAINBURGER, EnumIngredients.STEAK}),
@@ -42,5 +43,12 @@ public enum EnumPlats {
 
     public EnumMap<EnumIngredients, Integer> getListeIngredients() {
         return listeIngredients;
+    }
+
+    public static EnumPlats rechercheParNom(String nom) {
+        for (EnumPlats plat: values())
+            if (Objects.equals(plat.getName(), nom))
+                return plat;
+        return null;
     }
 }

@@ -1,5 +1,7 @@
 package menuBoissons;
 
+import java.util.Objects;
+
 public enum EnumBoissons {
     BIERRESANSALCOOL("Bière sans alcool", 5),
     CIDREDOUX("Cidre doux", 5),
@@ -21,5 +23,12 @@ public enum EnumBoissons {
 
     public String getName() {
         return name;
+    }
+
+    public static EnumBoissons rechercheParNom(String nom) {
+        for (EnumBoissons boisson: values())
+            if (Objects.equals(boisson.getName(), nom))
+                return boisson;
+        return null;
     }
 }

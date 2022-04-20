@@ -5,22 +5,22 @@
 <?import javafx.scene.text.Font?>
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screensControllers.Monitoring">
    <children>
-      <Button layoutX="152.0" layoutY="14.0" mnemonicParsing="false" text="Performances" onAction="#launchPerformances">
+      <Button layoutX="148.0" layoutY="15.0" mnemonicParsing="false" onAction="#launchPerformances" text="Performances">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="271.0" layoutY="14.0" mnemonicParsing="false" text="Gestion employés" onAction="#launchGestionEmployes">
+      <Button layoutX="269.0" layoutY="15.0" mnemonicParsing="false" onAction="#launchGestionEmployes" text="Gestion employés">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="416.0" layoutY="14.0" mnemonicParsing="false" text="Réserves" onAction="#launchReserves">
+      <Button layoutX="414.0" layoutY="15.0" mnemonicParsing="false" onAction="#launchReserves" text="Réserves">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="506.0" layoutY="14.0" mnemonicParsing="false" text="Programmer employés" onAction="#launchProgrammation">
+      <Button layoutX="504.0" layoutY="15.0" mnemonicParsing="false" onAction="#launchProgrammation" text="Programmer employés">
          <font>
             <Font size="14.0" />
          </font>

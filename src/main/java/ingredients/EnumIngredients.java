@@ -19,7 +19,7 @@ public enum EnumIngredients {
 
     EnumIngredients(String name_) {
         name = name_;
-        stockInitial = 0;
+        stockInitial = 10;
     }
 
     public String getName() {

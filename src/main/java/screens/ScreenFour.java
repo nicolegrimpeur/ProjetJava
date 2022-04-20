@@ -24,7 +24,7 @@ public class ScreenFour {
                 ManagStocks.gestionStocks();
                 break;
             case 3:
-                ManagEmployees.gestionEmploye();
+                ManagEmployees.getInstance().gestionEmploye();
                 break;
 
             case 4:

@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ManagEmployees {
-    public static ArrayList<Employee> listEmployes = new ArrayList<Employee>();
-    public static final ArrayList<String> listEmploi = new ArrayList<String>() {
+    private static ManagEmployees instance = null;
+    private static final ArrayList<Employee> listEmployes = new ArrayList<Employee>();
+    private final static ArrayList<String> listEmploi = new ArrayList<String>() {
         {
             add("Barman");
             add("Cuisinier");
@@ -14,7 +15,16 @@ public class ManagEmployees {
         }
     };
 
-    public static void gestionEmploye() {
+    private ManagEmployees() {}
+
+    public static ManagEmployees getInstance() {
+        if (instance == null) {
+            instance = new ManagEmployees();
+        }
+        return instance;
+    }
+
+    public void gestionEmploye() {
         int i = 1;
         for (Employee employe : listEmployes) {
             System.out.println(i + " - " + employe);
@@ -33,7 +43,7 @@ public class ManagEmployees {
         }
     }
 
-    public static void ajoutEmploye() {
+    public void ajoutEmploye() {
         System.out.println("Nom de l'employe : ");
         Scanner scanner1 = new Scanner(System.in);
         String nomEmploye = scanner1.nextLine();
@@ -75,14 +85,26 @@ public class ManagEmployees {
         }
     }
 
-    public static void suppressionEmploye() {
+    public void suppressionEmploye() {
         System.out.println("Quel employé souhaitez vous supprimer ? (Entrez son numéro)");
         Scanner scanner = new Scanner(System.in);
         int index = scanner.nextInt();
         listEmployes.remove(index);
     }
 
-    public static void addEmploye(Employee newEmploye) {
+    public void addEmploye(Employee newEmploye) {
         listEmployes.add(newEmploye);
+    }
+
+    public ArrayList<Employee> getListEmployes() {
+        return listEmployes;
+    }
+
+    public ArrayList<String> getListEmploi() {
+        return listEmploi;
+    }
+
+    public void supprimerEmploye(Employee employee) {
+        listEmployes.remove(employee);
     }
 }

@@ -1,12 +1,21 @@
 package employee;
 
+import jdk.jshell.Snippet;
+import menuBoissons.EnumBoissons;
+import menuPlats.EnumPlats;
+import menuPlats.PlatsManager;
+import status.EnumStatus;
+import status.StatusCommande;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class ManagEmployees {
     private static ManagEmployees instance = null;
-    private static final ArrayList<Employee> listEmployes = new ArrayList<Employee>();
-    private final static ArrayList<String> listEmploi = new ArrayList<String>() {
+    private static final ArrayList<Employee> listEmployes = new ArrayList<>();
+    private final static ArrayList<String> listEmploi = new ArrayList<>() {
         {
             add("Barman");
             add("Cuisinier");
@@ -14,14 +23,66 @@ public class ManagEmployees {
             add("Serveur");
         }
     };
+    private final Map<String, ArrayList<StatusCommande>> listPlatsService = new HashMap<>();
+    private final Map<String, ArrayList<StatusCommande>> listBoissonsService = new HashMap<>();
 
-    private ManagEmployees() {}
+    private final Map<String, ArrayList<EnumPlats>> platsVendus = new HashMap<>();
+    private final Map<String, ArrayList<EnumBoissons>> boissonsVendus = new HashMap<>();
+
+    private ManagEmployees() {
+    }
 
     public static ManagEmployees getInstance() {
         if (instance == null) {
             instance = new ManagEmployees();
         }
         return instance;
+    }
+
+    public Map<String, ArrayList<StatusCommande>> getListPlatsService() {
+        return listPlatsService;
+    }
+
+    public Map<String, ArrayList<StatusCommande>> getListBoissonsService() {
+        return listBoissonsService;
+    }
+
+    public void addPlatService(String employe, String plat) {
+        listPlatsService.computeIfAbsent(employe, k -> new ArrayList<>());
+        listPlatsService.get(employe).add(new StatusCommande(plat));
+    }
+
+    public void nextStatusPlatService(String employe, int index) {
+        listPlatsService.get(employe).get(index).nextStatus();
+    }
+
+    public void addBoissonService(String employe, String boisson) {
+        listBoissonsService.computeIfAbsent(employe, k -> new ArrayList<>());
+        listBoissonsService.get(employe).add(new StatusCommande(boisson));
+    }
+
+    public void nextStatusBoissonService(String employe, int index) {
+        listBoissonsService.get(employe).get(index).nextStatus();
+    }
+
+    public void platTermine(String employe) {
+        platsVendus.computeIfAbsent(employe, k -> new ArrayList<>());
+
+        for (StatusCommande plat : listPlatsService.get(employe))
+            platsVendus.get(employe).add(EnumPlats.rechercheParNom(plat.getPlatOuBoisson()));
+
+        listPlatsService.get(employe).clear();
+    }
+
+    public void boissonTermine(String employe) {
+        boissonsVendus.computeIfAbsent(employe, k -> new ArrayList<>());
+
+        for (StatusCommande boisson : listBoissonsService.get(employe))
+            boissonsVendus.get(employe).add(EnumBoissons.rechercheParNom(boisson.getPlatOuBoisson()));
+
+        listBoissonsService.get(employe).clear();
+
+        System.out.println(boissonsVendus.get(employe));
     }
 
     public void gestionEmploye() {

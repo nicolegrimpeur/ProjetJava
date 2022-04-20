@@ -56,7 +56,7 @@ public class Serveurs {
         prixCol.setCellValueFactory(new TreeItemPropertyValueFactory<>("prix"));
 
         // on set la taille de chaque colonne
-        platsCol.setPrefWidth(160);
+        platsCol.setPrefWidth(210);
         boissonsCol.setPrefWidth(100);
         prixCol.setPrefWidth(40);
 
@@ -100,6 +100,7 @@ public class Serveurs {
             }
 
             ajouterMenu();
+            affichePanier();
         }
     }
 
@@ -123,7 +124,6 @@ public class Serveurs {
             if (currentServeur.listCommandes100Ans.size() == 0 ||
                     currentServeur.listCommandes100Ans.get(currentServeur.listCommandes100Ans.size() - 1).size() == 7)
                 currentServeur.listCommandes100Ans.add(new ArrayList<>()); // on ajoute un nouveau tableau
-
     }
 
     /**
@@ -170,7 +170,12 @@ public class Serveurs {
                     // si c'est un menu 100 ans → on supprime le menu du plat et on ajoute le menu à listCommandes100Ans
                     menu.setPrix("");
                     clickMenuCentAns(); // permet de rajouter un tableau si besoin
-                    currentServeur.listCommandes100Ans.get(currentServeur.listCommandes100Ans.size() - 1).add(menu);
+                    // on rajoute le menu au dernier menu 100 ans non complet
+                    for (ArrayList<Menu> tabCommandes: currentServeur.listCommandes100Ans)
+                        if (tabCommandes.size() < 7) {
+                            tabCommandes.add(menu);
+                            break;
+                        }
                 }
 
                 // on refresh le menu et le panier
@@ -266,9 +271,26 @@ public class Serveurs {
         }
     }
 
-    // TODO : lors du click sur submit, on envoie la commande sur les écrans barmans et cuisines
     public void submit() {
-        Stage stage = (Stage) listBoissons.getScene().getWindow();
-        stage.close();
+        if (currentServeur != null) {
+            String serveur = currentServeur.nom + " " + currentServeur.prenom;
+            for (Menu menu: currentServeur.listCommandes) {
+                ManagEmployees.getInstance().addPlatService(serveur, menu.getPlat());
+                ManagEmployees.getInstance().addBoissonService(serveur, menu.getBoisson());
+            }
+
+            for (ArrayList<Menu> tabMenu100Ans: currentServeur.listCommandes100Ans) {
+                for (Menu menu : tabMenu100Ans) {
+                    ManagEmployees.getInstance().addPlatService(serveur, menu.getPlat());
+                    ManagEmployees.getInstance().addBoissonService(serveur, menu.getBoisson());
+                }
+            }
+
+            currentServeur.listCommandes.clear();
+            currentServeur.listCommandes100Ans.clear();
+
+            ajouterMenu();
+            affichePanier();
+        }
     }
 }

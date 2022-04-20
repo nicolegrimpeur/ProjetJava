@@ -1,3 +1,5 @@
+import employee.Barman;
+import employee.Cuisinier;
 import employee.ManagEmployees;
 import employee.Serveur;
 import javafx.application.Application;
@@ -37,6 +39,8 @@ public class App extends Application {
     public void start(Stage stage) {
         ManagEmployees.getInstance().addEmploye(new Serveur("Barrat", "Nicolas", 2000));
         ManagEmployees.getInstance().addEmploye(new Serveur("Lecocq", "Judith", 2000));
+        ManagEmployees.getInstance().addEmploye(new Barman("The", "Barman", 2000));
+        ManagEmployees.getInstance().addEmploye(new Cuisinier("The", "Cuisinier", 2000));
 
         try {
             Parent root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main.fxml")));

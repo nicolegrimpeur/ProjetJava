@@ -36,13 +36,6 @@ public class PlatsManager {
     }
 
     public boolean hasEnoughIngredients(EnumPlats plat) {
-        if (plat == EnumPlats.SOUPEOIGNON)
-            for (EnumIngredients ingredient : plat.getListeIngredients().keySet()) {
-                System.out.println(IngredientsManager.getInstance().stocks.get(ingredient));
-                System.out.println(plat.getListeIngredients().get(ingredient));
-            }
-
-
         for (EnumIngredients ingredient : plat.getListeIngredients().keySet())
             if (IngredientsManager.getInstance().stocks.get(ingredient) - plat.getListeIngredients().get(ingredient) < 0)
                 return false;

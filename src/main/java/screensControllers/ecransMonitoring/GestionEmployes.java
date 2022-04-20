@@ -70,6 +70,7 @@ public class GestionEmployes {
 
     /**
      * Permet d'afficher une erreur lors de l'ajout d'employés
+     *
      * @param erreur l'erreur à afficher
      */
     public void afficheErreur(String erreur) {
@@ -123,9 +124,7 @@ public class GestionEmployes {
     public void supprimerEmploye() {
         int employeeIndex = listEmploye.getSelectionModel().getFocusedIndex();
 
-        // l'indice 0 correspond au root
-        if (employeeIndex != 0)
-            ManagEmployees.getInstance().supprimerEmploye(ManagEmployees.getInstance().getListEmployes().get(employeeIndex - 1));
+        ManagEmployees.getInstance().supprimerEmploye(ManagEmployees.getInstance().getListEmployes().get(employeeIndex));
 
         afficheListEmploye();
     }

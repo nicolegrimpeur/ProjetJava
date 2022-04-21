@@ -275,14 +275,12 @@ public class Serveurs {
         if (currentServeur != null) {
             String serveur = currentServeur.nom + " " + currentServeur.prenom;
             for (Menu menu: currentServeur.listCommandes) {
-                ManagEmployees.getInstance().addPlatService(serveur, menu.getPlat());
-                ManagEmployees.getInstance().addBoissonService(serveur, menu.getBoisson());
+                ManagEmployees.getInstance().addMenuService(serveur, menu);
             }
 
             for (ArrayList<Menu> tabMenu100Ans: currentServeur.listCommandes100Ans) {
                 for (Menu menu : tabMenu100Ans) {
-                    ManagEmployees.getInstance().addPlatService(serveur, menu.getPlat());
-                    ManagEmployees.getInstance().addBoissonService(serveur, menu.getBoisson());
+                    ManagEmployees.getInstance().addMenuService(serveur, menu);
                 }
             }
 

@@ -5,7 +5,8 @@ public enum EnumStatus {
     APREPARER("A préparer"),
     ENCOURS("En cours"),
     ASERVIR("A servir"),
-    TERMINE("Terminé");
+    TERMINE("Terminé"),
+    ENATTENTE("En attente");
 
     private final String affichage;
 

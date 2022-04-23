@@ -24,5 +24,10 @@
             </font>
         </Label>
         <ChoiceBox fx:id="serveurChoiceBox" layoutX="75.0" layoutY="17.0" onAction="#changeServeurChoiceBox" prefWidth="150.0" />
+      <Label fx:id="textErreur" layoutX="540.0" layoutY="20.0" maxWidth="200.0" text="Label" visible="false" wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

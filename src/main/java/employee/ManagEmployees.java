@@ -51,40 +51,34 @@ public class ManagEmployees {
         listService.get(employe).get(index).nextStatusBoisson();
     }
 
-    public void menuTermine(String employe) {
-        menusVendus.computeIfAbsent(employe, k -> new ArrayList<>());
+    public void platTermine(String serveur, Cuisinier cuisinier) {
+        platsVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
 
-        for (Menu menu : listService.get(employe)) {
+        for (Menu menu : listService.get(serveur)) {
             menu.nextStatusPlat();
-            menu.nextStatusBoisson();
-            menusVendus.get(employe).add(menu);
+            platsVendus.get(serveur).add(EnumPlats.rechercheParNom(menu.getPlat()));
+            if (cuisinier != null)
+                cuisinier.addPlatRealise(EnumPlats.rechercheParNom(menu.getPlat()));
         }
+
+        if (Objects.equals(listService.get(serveur).get(0).getStatusBoisson(), EnumStatus.ASERVIR.getAffichage()))
+            listService.remove(serveur);
     }
 
-    public void platTermine(String employe) {
-        platsVendus.computeIfAbsent(employe, k -> new ArrayList<>());
+    public void boissonTermine(String serveur, Barman barman) {
+        boissonsVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
 
-        for (Menu menu : listService.get(employe)) {
-            menu.nextStatusPlat();
-            platsVendus.get(employe).add(EnumPlats.rechercheParNom(menu.getPlat()));
-        }
-
-        if (Objects.equals(listService.get(employe).get(0).getStatusPlat(), EnumStatus.TERMINE.getAffichage()))
-            listService.get(employe).clear();
-    }
-
-    public void boissonTermine(String employe) {
-        boissonsVendus.computeIfAbsent(employe, k -> new ArrayList<>());
-
-        for (Menu menu : listService.get(employe)) {
+        for (Menu menu : listService.get(serveur)) {
             menu.nextStatusBoisson();
-            boissonsVendus.get(employe).add(EnumBoissons.rechercheParNom(menu.getBoisson()));
+            boissonsVendus.get(serveur).add(EnumBoissons.rechercheParNom(menu.getBoisson()));
+            if (barman != null)
+                barman.addCocktailRealise(EnumBoissons.rechercheParNom(menu.getBoisson()));
         }
 
-        if (Objects.equals(listService.get(employe).get(0).getStatusPlat(), EnumStatus.TERMINE.getAffichage()))
-            listService.get(employe).clear();
+        if (Objects.equals(listService.get(serveur).get(0).getStatusPlat(), EnumStatus.ASERVIR.getAffichage()))
+            listService.remove(serveur);
 
-        System.out.println(boissonsVendus.get(employe));
+        System.out.println(boissonsVendus.get(serveur));
     }
 
     public void gestionEmploye() {

@@ -10,7 +10,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import menu.Menu;
 import menuBoissons.EnumBoissons;
 import menuPlats.EnumPlats;
@@ -32,6 +31,8 @@ public class Serveurs {
     public Button btnMenuCentAns;
     @FXML
     public TreeTableView<Menu> treeTableAffichageMenu;
+    @FXML
+    public Label textErreur;
 
     private Serveur currentServeur = null;
 
@@ -59,6 +60,11 @@ public class Serveurs {
         platsCol.setPrefWidth(210);
         boissonsCol.setPrefWidth(100);
         prixCol.setPrefWidth(40);
+
+        // on empêche l'utilisateur de trier
+        platsCol.setSortable(false);
+        boissonsCol.setSortable(false);
+        prixCol.setSortable(false);
 
         // permet un retour à la ligne pour les plats
         platsCol.setCellFactory(tc -> {
@@ -95,12 +101,22 @@ public class Serveurs {
     public void changeServeurChoiceBox() {
         if (serveurChoiceBox.getValue() != null) {
             for (Employee employee : ManagEmployees.getInstance().getListEmployes()) {
-                if ((employee.getNom() + " " + employee.getPrenom()).equals(serveurChoiceBox.getValue()))
+                if ((employee.getNom() + " " + employee.getPrenom()).equals(serveurChoiceBox.getValue())) {
                     currentServeur = (Serveur) employee;
-            }
 
-            ajouterMenu();
-            affichePanier();
+                    // si le serveur n'a pas encore réalisé de commande
+                    if (ManagEmployees.getInstance().getListService().get(employee.getNom() + " " + employee.getPrenom()) == null) {
+                        ajouterMenu();
+                        affichePanier();
+                        textErreur.setVisible(false);
+                    } else {
+                        supprimerMenuEtPannier();
+
+                        textErreur.setText("Le serveur actuel a déjà une commande en cours");
+                        textErreur.setVisible(true);
+                    }
+                }
+            }
         }
     }
 
@@ -145,6 +161,21 @@ public class Serveurs {
             listStrBoissons.add(boisson.getName());
 
         listBoissons.setItems(FXCollections.observableArrayList(listStrBoissons));
+    }
+
+    /**
+     * Permet de supprimer le contenu du menu et du panier
+     */
+    private void supprimerMenuEtPannier() {
+        // supprime les menus
+        listPlats.setItems(FXCollections.observableArrayList(FXCollections.observableArrayList()));
+        listBoissons.setItems(FXCollections.observableArrayList(FXCollections.observableArrayList()));
+
+        // supprime le panier
+        TreeItem<Menu> rootItem = new TreeItem<>(new Menu());
+        rootItem.setExpanded(true);
+        treeTableAffichageMenu.setRoot(rootItem);
+        treeTableAffichageMenu.setShowRoot(false); // permet de ne pas afficher le premier parent vide
     }
 
     /**
@@ -240,9 +271,10 @@ public class Serveurs {
         if (mouseEvent.getClickCount() == 2) {
             // on récupère l'élément sélectionné ainsi que son parent
             TreeItem<Menu> itemSelect = treeTableAffichageMenu.getSelectionModel().getSelectedItem();
-            TreeItem<Menu> parent = itemSelect.getParent();
 
             try {
+                TreeItem<Menu> parent = itemSelect.getParent();
+
                 // supprime le plat pour remettre les ingrédients à disposition
                 PlatsManager.getInstance().suppressionPlat(Objects.requireNonNull(EnumPlats.rechercheParNom(itemSelect.getValue().getPlat())));
 
@@ -287,8 +319,9 @@ public class Serveurs {
             currentServeur.listCommandes.clear();
             currentServeur.listCommandes100Ans.clear();
 
-            ajouterMenu();
-            affichePanier();
+            supprimerMenuEtPannier();
+            textErreur.setVisible(true);
+            textErreur.setText("Commande enregistré");
         }
     }
 }

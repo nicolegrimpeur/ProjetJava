@@ -56,6 +56,10 @@ public class Barmans {
         boissonsCol.setPrefWidth(450);
         statusCol.setPrefWidth(150);
 
+        // on empêche le tri
+        boissonsCol.setSortable(false);
+        statusCol.setSortable(false);
+
         // on ajoute les colonnes
         boissonsTreeTable.getColumns().addAll(boissonsCol, statusCol);
     }
@@ -135,10 +139,6 @@ public class Barmans {
         btnEtatSuivant.setDisable(true);
     }
 
-    private void afficheBtnServi() {
-        btnServi.setVisible(true);
-    }
-
     public void clickTable() {
         // disable si tous les plats liés à un serveur peuvent être servi
         btnEtatSuivant.setDisable(
@@ -167,11 +167,11 @@ public class Barmans {
     }
 
     public void clickBtnServi() {
-        // on récupère l'élément sélectionné ainsi que son parent
+        // on récupère l'élément sélectionné
         TreeItem<Menu> itemSelect = boissonsTreeTable.getSelectionModel().getSelectedItem();
 
         if (itemSelect != null)
-            ManagEmployees.getInstance().boissonTermine(itemSelect.getValue().getBoisson());
+            ManagEmployees.getInstance().boissonTermine(itemSelect.getValue().getBoisson(), currentBarman);
 
         afficheBoissons();
     }

@@ -75,14 +75,14 @@ public class Cuisiniers {
         boolean auMoinsUnEnPreparation, everyStatusAServir, commandeTermine, enAttente;
 
         // parcours tous les employés
-        for (String serveur : ManagEmployees.getInstance().getListService().keySet()) {
+        for (String serveur : JourneeManager.getInstance().getListService().keySet()) {
             affichageServeur = new Menu(serveur, serveur);
 
             auMoinsUnEnPreparation = false;
             everyStatusAServir = true;
             commandeTermine = false;
             enAttente = false;
-            for (Menu commande : ManagEmployees.getInstance().getListService().get(serveur)) {
+            for (Menu commande : JourneeManager.getInstance().getListService().get(serveur)) {
                 if (Objects.equals(commande.getStatusPlat(), EnumStatus.ENCOURS.getAffichage()))
                     auMoinsUnEnPreparation = true;
                 if (!Objects.equals(commande.getStatusPlat(), EnumStatus.ASERVIR.getAffichage()))
@@ -92,7 +92,7 @@ public class Cuisiniers {
             }
 
             if (everyStatusAServir)
-                for (Menu menu : ManagEmployees.getInstance().getListService().get(serveur)) {
+                for (Menu menu : JourneeManager.getInstance().getListService().get(serveur)) {
                     if (!Objects.equals(menu.getStatusPlat(), EnumStatus.ASERVIR.getAffichage())) {
                         everyStatusAServir = false;
                         enAttente = true;
@@ -109,7 +109,7 @@ public class Cuisiniers {
             itemAffichageServeur.setExpanded(true);
 
             // on ajoute une ligne pour chaque menu
-            for (Menu commande : ManagEmployees.getInstance().getListService().get(serveur)) {
+            for (Menu commande : JourneeManager.getInstance().getListService().get(serveur)) {
                 item = new TreeItem<>(commande);
                 itemAffichageServeur.getChildren().add(item);
             }
@@ -164,7 +164,7 @@ public class Cuisiniers {
 
         int index = platsTreeTable.getSelectionModel().getSelectedIndex() - (parent.getParent().getChildren().indexOf(parent) + 1);
 
-        ManagEmployees.getInstance().nextStatusPlat(parent.getValue().getPlat(), index);
+        JourneeManager.getInstance().nextStatusPlat(parent.getValue().getPlat(), index, currentCuisinier);
 
         affichePlats();
         btnEtatSuivant.setDisable(true);
@@ -175,7 +175,7 @@ public class Cuisiniers {
         TreeItem<Menu> itemSelect = platsTreeTable.getSelectionModel().getSelectedItem();
 
         if (itemSelect != null)
-            ManagEmployees.getInstance().platTermine(itemSelect.getValue().getPlat(), currentCuisinier);
+            JourneeManager.getInstance().platTermine(itemSelect.getValue().getPlat());
 
         affichePlats();
     }

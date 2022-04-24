@@ -16,11 +16,11 @@ public class Cuisinier extends Employee {
 
     }
 
-    public ArrayList<EnumPlats> getCocktailsRealises() {
+    public ArrayList<EnumPlats> getPlatsRealises() {
         return platsRealises;
     }
 
-    public int nombreCocktailsRealises() {
+    public int nombrePlatsRealises() {
         return platsRealises.size();
     }
 

@@ -95,7 +95,8 @@ public class Programmation {
         rootItem.setExpanded(true);
 
         for (Employee employee : ManagEmployees.getInstance().getListEmployes())
-            if (!JourneeManager.getInstance().listEmployes.contains(employee))
+            if (!JourneeManager.getInstance().listEmployes.contains(employee) &&
+                    (employee.nbJoursConsecutifs < 2 || employee instanceof Manager))
                 rootItem.getChildren().add(new TreeItem<>(employee));
 
         // on affiche les lignes

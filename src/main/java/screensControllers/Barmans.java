@@ -74,14 +74,14 @@ public class Barmans {
         boolean auMoinsUnEnPreparation, everyStatusAServir, commandeTermine, enAttente;
 
         // parcours tous les employés
-        for (String serveur : ManagEmployees.getInstance().getListService().keySet()) {
+        for (String serveur : JourneeManager.getInstance().getListService().keySet()) {
             affichageServeur = new Menu(serveur, serveur);
 
             auMoinsUnEnPreparation = false;
             everyStatusAServir = true;
             commandeTermine = false;
             enAttente = false;
-            for (Menu commande : ManagEmployees.getInstance().getListService().get(serveur)) {
+            for (Menu commande : JourneeManager.getInstance().getListService().get(serveur)) {
                 if (Objects.equals(commande.getStatusBoisson(), EnumStatus.ENCOURS.getAffichage()))
                     auMoinsUnEnPreparation = true;
                 if (!Objects.equals(commande.getStatusBoisson(), EnumStatus.ASERVIR.getAffichage()))
@@ -91,7 +91,7 @@ public class Barmans {
             }
 
             if (everyStatusAServir)
-                for (Menu menu : ManagEmployees.getInstance().getListService().get(serveur)) {
+                for (Menu menu : JourneeManager.getInstance().getListService().get(serveur)) {
                     if (!Objects.equals(menu.getStatusPlat(), EnumStatus.ASERVIR.getAffichage())) {
                         everyStatusAServir = false;
                         enAttente = true;
@@ -108,7 +108,7 @@ public class Barmans {
             itemAffichageServeur.setExpanded(true);
 
             // on ajoute une ligne pour chaque menu
-            for (Menu commande : ManagEmployees.getInstance().getListService().get(serveur)) {
+            for (Menu commande : JourneeManager.getInstance().getListService().get(serveur)) {
                 item = new TreeItem<>(commande);
                 itemAffichageServeur.getChildren().add(item);
             }
@@ -163,7 +163,7 @@ public class Barmans {
 
         int index = boissonsTreeTable.getSelectionModel().getSelectedIndex() - (parent.getParent().getChildren().indexOf(parent) + 1);
 
-        ManagEmployees.getInstance().nextStatusBoisson(parent.getValue().getBoisson(), index);
+        JourneeManager.getInstance().nextStatusBoisson(parent.getValue().getBoisson(), index, currentBarman);
 
         afficheBoissons();
         btnEtatSuivant.setDisable(true);
@@ -174,7 +174,7 @@ public class Barmans {
         TreeItem<Menu> itemSelect = boissonsTreeTable.getSelectionModel().getSelectedItem();
 
         if (itemSelect != null)
-            ManagEmployees.getInstance().boissonTermine(itemSelect.getValue().getBoisson(), currentBarman);
+            JourneeManager.getInstance().boissonTermine(itemSelect.getValue().getBoisson());
 
         afficheBoissons();
     }

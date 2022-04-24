@@ -1,11 +1,7 @@
 package employee;
 
-import menu.Menu;
-import menuBoissons.EnumBoissons;
-import menuPlats.EnumPlats;
-import status.EnumStatus;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ManagEmployees {
     private static ManagEmployees instance = null;
@@ -18,10 +14,6 @@ public class ManagEmployees {
             add("Serveur");
         }
     };
-    private final Map<String, ArrayList<Menu>> listService = new HashMap<>();
-
-    private final Map<String, ArrayList<EnumPlats>> platsVendus = new HashMap<>();
-    private final Map<String, ArrayList<EnumBoissons>> boissonsVendus = new HashMap<>();
 
     private ManagEmployees() {
     }
@@ -33,69 +25,17 @@ public class ManagEmployees {
         return instance;
     }
 
-    public Map<String, ArrayList<Menu>> getListService() {
-        return listService;
-    }
-
-    public void addMenuService(String employe, Menu menu) {
-        listService.computeIfAbsent(employe, k -> new ArrayList<>());
-        listService.get(employe).add(menu);
-    }
-
-    public void nextStatusPlat(String employe, int index) {
-        listService.get(employe).get(index).nextStatusPlat();
-    }
-
-    public void nextStatusBoisson(String employe, int index) {
-        listService.get(employe).get(index).nextStatusBoisson();
-    }
-
-    public void platTermine(String serveur, Cuisinier cuisinier) {
-        platsVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
-
-        for (Menu menu : listService.get(serveur)) {
-            menu.nextStatusPlat();
-            platsVendus.get(serveur).add(EnumPlats.rechercheParNom(menu.getPlat()));
-            if (cuisinier != null)
-                cuisinier.addPlatRealise(EnumPlats.rechercheParNom(menu.getPlat()));
-        }
-
-        if (Objects.equals(listService.get(serveur).get(0).getStatusBoisson(), EnumStatus.ASERVIR.getAffichage()))
-            listService.remove(serveur);
-    }
-
-    public void boissonTermine(String serveur, Barman barman) {
-        boissonsVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
-
-        for (Menu menu : listService.get(serveur)) {
-            menu.nextStatusBoisson();
-            boissonsVendus.get(serveur).add(EnumBoissons.rechercheParNom(menu.getBoisson()));
-            if (barman != null)
-                barman.addCocktailRealise(EnumBoissons.rechercheParNom(menu.getBoisson()));
-        }
-
-        if (Objects.equals(listService.get(serveur).get(0).getStatusPlat(), EnumStatus.ASERVIR.getAffichage()))
-            listService.remove(serveur);
-
-        System.out.println(boissonsVendus.get(serveur));
-    }
-
     public void addJourConsecutif(ArrayList<Employee> listEmployeJournee) {
         int nbJoursConsecutifs;
-        for (Employee employee: listEmployes) {
+        for (Employee employee : listEmployes) {
             nbJoursConsecutifs = employee.nbJoursConsecutifs;
-            for (Employee employeeJournee: listEmployeJournee)
+            for (Employee employeeJournee : listEmployeJournee)
                 if (employee.getAffichage().equals(employeeJournee.getAffichage()))
                     employee.nbJoursConsecutifs++;
 
             if (employee.nbJoursConsecutifs == nbJoursConsecutifs)
                 employee.nbJoursConsecutifs = 0;
         }
-    }
-
-    public void resetVentes() {
-        platsVendus.clear();
-        boissonsVendus.clear();
     }
 
     public void gestionEmploye() {

@@ -113,7 +113,7 @@ public class Serveurs {
                     currentServeur = (Serveur) employee;
 
                     // si le serveur n'a pas encore réalisé de commande
-                    if (ManagEmployees.getInstance().getListService().get(employee.getAffichage()) == null) {
+                    if (JourneeManager.getInstance().getListService().get(employee.getAffichage()) == null) {
                         ajouterMenu();
                         affichePanier();
                         textErreur.setVisible(false);
@@ -315,12 +315,12 @@ public class Serveurs {
         if (currentServeur != null) {
             String serveur = currentServeur.getAffichage();
             for (Menu menu: currentServeur.listCommandes) {
-                ManagEmployees.getInstance().addMenuService(serveur, menu);
+                JourneeManager.getInstance().addMenuService(serveur, menu);
             }
 
             for (ArrayList<Menu> tabMenu100Ans: currentServeur.listCommandes100Ans) {
                 for (Menu menu : tabMenu100Ans) {
-                    ManagEmployees.getInstance().addMenuService(serveur, menu);
+                    JourneeManager.getInstance().addMenuService(serveur, menu);
                 }
             }
 

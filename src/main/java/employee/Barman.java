@@ -20,7 +20,7 @@ public class Barman extends Employee {
         return cocktailsRealises;
     }
 
-    public int nombreCocktailsRealises() {
+    public int nombreBoissonsRealises() {
         return cocktailsRealises.size();
     }
 

@@ -11,7 +11,7 @@ public class Cuisinier extends Employee {
         super(nom_, prenom_, salaire_, "Cuisinier");
     }
 // truc simultané poue cuisiner barman? je sais plus
-    @Override
+//    @Override
     public void preparerCommande() {
 
     }

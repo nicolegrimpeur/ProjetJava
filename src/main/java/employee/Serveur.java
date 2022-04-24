@@ -31,7 +31,7 @@ public class Serveur extends Employee {
         super(nom_, prenom_, salaire_, "Serveur");
     }
 
-    @Override
+//    @Override
     public void preparerCommande() {
         boolean onContinue;
 

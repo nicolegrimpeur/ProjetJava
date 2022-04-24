@@ -39,7 +39,7 @@ public class Cuisiniers {
         for (Employee employee : ManagEmployees.getInstance().getListEmployes())
             // si l'employé est un serveur, on l'ajoute
             if (employee instanceof Cuisinier)
-                listCuisiniers.add(employee.getNom() + " " + employee.getPrenom());
+                listCuisiniers.add(employee.getAffichage());
 
         cuisinierChoiceBox.setItems(listCuisiniers);
     }
@@ -127,7 +127,7 @@ public class Cuisiniers {
     public void changeCuisinierChoiceBox() {
         if (cuisinierChoiceBox.getValue() != null) {
             for (Employee employee : ManagEmployees.getInstance().getListEmployes()) {
-                if ((employee.getNom() + " " + employee.getPrenom()).equals(cuisinierChoiceBox.getValue()))
+                if (employee.getAffichage().equals(cuisinierChoiceBox.getValue()))
                     currentCuisinier = (Cuisinier) employee;
             }
         }

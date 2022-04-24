@@ -19,7 +19,6 @@ public class ManagEmployees {
         }
     };
     private final Map<String, ArrayList<Menu>> listService = new HashMap<>();
-    private final Map<String, ArrayList<Menu>> menusVendus = new HashMap<>();
 
     private final Map<String, ArrayList<EnumPlats>> platsVendus = new HashMap<>();
     private final Map<String, ArrayList<EnumBoissons>> boissonsVendus = new HashMap<>();
@@ -79,6 +78,24 @@ public class ManagEmployees {
             listService.remove(serveur);
 
         System.out.println(boissonsVendus.get(serveur));
+    }
+
+    public void addJourConsecutif(ArrayList<Employee> listEmployeJournee) {
+        int nbJoursConsecutifs;
+        for (Employee employee: listEmployes) {
+            nbJoursConsecutifs = employee.nbJoursConsecutifs;
+            for (Employee employeeJournee: listEmployeJournee)
+                if (employee.getAffichage().equals(employeeJournee.getAffichage()))
+                    employee.nbJoursConsecutifs++;
+
+            if (employee.nbJoursConsecutifs == nbJoursConsecutifs)
+                employee.nbJoursConsecutifs = 0;
+        }
+    }
+
+    public void resetVentes() {
+        platsVendus.clear();
+        boissonsVendus.clear();
     }
 
     public void gestionEmploye() {

@@ -98,15 +98,15 @@ public class GestionEmployes {
         jobCol.setCellValueFactory(new TreeItemPropertyValueFactory<>("job"));
 
         // on ajoute les colonnes
-        listEmploye.getColumns().clear();
-        listEmploye.getColumns().addAll(nomCol, prenomCol, jobCol);
+        listEmploye.getColumns().setAll(nomCol, prenomCol, jobCol);
 
         // root element --> correspond à l'élément en haut du tableau
         TreeItem<Employee> rootElement = new TreeItem<>();
         TreeItem<Employee> element;
         // on ajoute tous les employés
         for (int i = 0; i < ManagEmployees.getInstance().getListEmployes().size(); i++) {
-            element = new TreeItem<Employee>(ManagEmployees.getInstance().getListEmployes().get(i));
+            element = new TreeItem<>(ManagEmployees.getInstance().getListEmployes().get(i));
+            System.out.println(ManagEmployees.getInstance().getListEmployes().get(i));
             rootElement.getChildren().add(element);
         }
 

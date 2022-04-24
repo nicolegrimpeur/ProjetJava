@@ -38,7 +38,7 @@ public class Barmans {
         for (Employee employee : ManagEmployees.getInstance().getListEmployes())
             // si l'employé est un serveur, on l'ajoute
             if (employee instanceof Barman)
-                listBarmans.add(employee.getNom() + " " + employee.getPrenom());
+                listBarmans.add(employee.getAffichage());
 
         barmanChoiceBox.setItems(listBarmans);
     }
@@ -126,7 +126,7 @@ public class Barmans {
     public void changeBarmanChoiceBox() {
         if (barmanChoiceBox.getValue() != null) {
             for (Employee employee : ManagEmployees.getInstance().getListEmployes()) {
-                if ((employee.getNom() + " " + employee.getPrenom()).equals(barmanChoiceBox.getValue()))
+                if (employee.getAffichage().equals(barmanChoiceBox.getValue()))
                     currentBarman = (Barman) employee;
             }
         }

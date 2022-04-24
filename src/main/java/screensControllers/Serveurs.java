@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import journee.JourneeManager;
 import menu.Menu;
 import menuBoissons.EnumBoissons;
 import menuPlats.EnumPlats;
@@ -84,15 +85,22 @@ public class Serveurs {
      * Ajoute les serveurs à la choice box
      */
     private void ajouterServeurs() {
-        ObservableList<String> listServeurs = FXCollections.observableArrayList();
+        if (JourneeManager.getInstance().isJourneeEnCours) {
+            textErreur.setVisible(false);
 
-        // parcours tous les employés
-        for (Employee employee : ManagEmployees.getInstance().getListEmployes())
-            // si l'employé est un serveur, on l'ajoute
-            if (employee instanceof Serveur)
-                listServeurs.add(employee.getNom() + " " + employee.getPrenom());
+            ObservableList<String> listServeurs = FXCollections.observableArrayList();
 
-        serveurChoiceBox.setItems(listServeurs);
+            // parcours tous les employés
+            for (Employee employee : ManagEmployees.getInstance().getListEmployes())
+                // si l'employé est un serveur, on l'ajoute
+                if (employee instanceof Serveur)
+                    listServeurs.add(employee.getAffichage());
+
+            serveurChoiceBox.setItems(listServeurs);
+        } else {
+            textErreur.setVisible(true);
+            textErreur.setText("Veillez tout d'abord lancer la journée");
+        }
     }
 
     /**
@@ -101,11 +109,11 @@ public class Serveurs {
     public void changeServeurChoiceBox() {
         if (serveurChoiceBox.getValue() != null) {
             for (Employee employee : ManagEmployees.getInstance().getListEmployes()) {
-                if ((employee.getNom() + " " + employee.getPrenom()).equals(serveurChoiceBox.getValue())) {
+                if (employee.getAffichage().equals(serveurChoiceBox.getValue())) {
                     currentServeur = (Serveur) employee;
 
                     // si le serveur n'a pas encore réalisé de commande
-                    if (ManagEmployees.getInstance().getListService().get(employee.getNom() + " " + employee.getPrenom()) == null) {
+                    if (ManagEmployees.getInstance().getListService().get(employee.getAffichage()) == null) {
                         ajouterMenu();
                         affichePanier();
                         textErreur.setVisible(false);
@@ -305,7 +313,7 @@ public class Serveurs {
 
     public void submit() {
         if (currentServeur != null) {
-            String serveur = currentServeur.nom + " " + currentServeur.prenom;
+            String serveur = currentServeur.getAffichage();
             for (Menu menu: currentServeur.listCommandes) {
                 ManagEmployees.getInstance().addMenuService(serveur, menu);
             }

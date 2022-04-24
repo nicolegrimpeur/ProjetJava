@@ -91,7 +91,7 @@ public class Serveurs {
             ObservableList<String> listServeurs = FXCollections.observableArrayList();
 
             // parcours tous les employés
-            for (Employee employee : ManagEmployees.getInstance().getListEmployes())
+            for (Employee employee : JourneeManager.getInstance().listEmployes)
                 // si l'employé est un serveur, on l'ajoute
                 if (employee instanceof Serveur)
                     listServeurs.add(employee.getAffichage());

@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
+import journee.JourneeManager;
 import menu.Menu;
 import status.EnumStatus;
 
@@ -36,7 +37,7 @@ public class Cuisiniers {
         ObservableList<String> listCuisiniers = FXCollections.observableArrayList();
 
         // parcours tous les employés
-        for (Employee employee : ManagEmployees.getInstance().getListEmployes())
+        for (Employee employee : JourneeManager.getInstance().listEmployes)
             // si l'employé est un serveur, on l'ajoute
             if (employee instanceof Cuisinier)
                 listCuisiniers.add(employee.getAffichage());
@@ -141,17 +142,19 @@ public class Cuisiniers {
     }
 
     public void clickTable() {
-        // disable si tous les plats liés à un serveur peuvent être servi
-        btnEtatSuivant.setDisable(
-                (Objects.equals(platsTreeTable.getSelectionModel().getSelectedItem().getValue().getStatusPlat(), EnumStatus.ENATTENTE.getAffichage()) &&
-                        platsTreeTable.getSelectionModel().getSelectedItem().getParent() == platsTreeTable.getRoot()) ||
-                        Objects.equals(platsTreeTable.getSelectionModel().getSelectedItem().getParent().getValue().getStatusPlat(), EnumStatus.ENATTENTE.getAffichage()) ||
-                        platsTreeTable.getSelectionModel().getSelectedItem().getParent() == platsTreeTable.getRoot());
+        if (platsTreeTable.getSelectionModel().getSelectedItem() != null) {
+            // disable si tous les plats liés à un serveur peuvent être servi
+            btnEtatSuivant.setDisable(
+                    (Objects.equals(platsTreeTable.getSelectionModel().getSelectedItem().getValue().getStatusPlat(), EnumStatus.ENATTENTE.getAffichage()) &&
+                            platsTreeTable.getSelectionModel().getSelectedItem().getParent() == platsTreeTable.getRoot()) ||
+                            Objects.equals(platsTreeTable.getSelectionModel().getSelectedItem().getParent().getValue().getStatusPlat(), EnumStatus.ENATTENTE.getAffichage()) ||
+                            platsTreeTable.getSelectionModel().getSelectedItem().getParent() == platsTreeTable.getRoot());
 
-        // visible si l'on clique sur un serveur et que tous les plats peuvent être servis
-        btnServi.setVisible(
-                Objects.equals(platsTreeTable.getSelectionModel().getSelectedItem().getValue().getStatusPlat(), EnumStatus.ASERVIR.getAffichage()) &&
-                        platsTreeTable.getSelectionModel().getSelectedItem().getParent() == platsTreeTable.getRoot());
+            // visible si l'on clique sur un serveur et que tous les plats peuvent être servis
+            btnServi.setVisible(
+                    Objects.equals(platsTreeTable.getSelectionModel().getSelectedItem().getValue().getStatusPlat(), EnumStatus.ASERVIR.getAffichage()) &&
+                            platsTreeTable.getSelectionModel().getSelectedItem().getParent() == platsTreeTable.getRoot());
+        }
     }
 
     public void clickBtnEtatSuivant() {

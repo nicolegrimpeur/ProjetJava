@@ -1,14 +1,13 @@
 package screensControllers.ecransMonitoring;
 
-import com.sun.source.tree.Tree;
-import employee.Employee;
-import employee.ManagEmployees;
-import employee.Manager;
+import employee.*;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import journee.JourneeManager;
 
 public class Programmation {
@@ -16,11 +15,39 @@ public class Programmation {
     TreeTableView<Employee> listEmployee;
     @FXML
     TreeTableView<Employee> listJournee;
+    @FXML
+    Button lancerJournee;
+    @FXML
+    Button finJournee;
+    @FXML
+    Button btnAjouter;
+    @FXML
+    Button btnSupprimer;
 
     @FXML
     void initialize() {
         initColonnes();
         afficheEmployees();
+
+        manageButtons();
+    }
+
+    public void manageButtons() {
+        if (!JourneeManager.getInstance().isJourneeEnCours) {
+            listEmployee.setDisable(false);
+            listJournee.setDisable(false);
+            btnAjouter.setDisable(false);
+            btnSupprimer.setDisable(false);
+            lancerJournee.setDisable(false);
+            finJournee.setDisable(true);
+        } else {
+            listEmployee.setDisable(true);
+            listJournee.setDisable(true);
+            btnAjouter.setDisable(true);
+            btnSupprimer.setDisable(true);
+            lancerJournee.setDisable(true);
+            finJournee.setDisable(false);
+        }
     }
 
     private void initColonnes() {
@@ -92,10 +119,71 @@ public class Programmation {
         JourneeManager.getInstance().addEmployee(listEmployee.getSelectionModel().getSelectedItem().getValue());
 
         afficheEmployees();
+        gestionBoutonLancerJournee();
     }
 
     public void clickSupprimer() {
         JourneeManager.getInstance().removeEmployee(listJournee.getSelectionModel().getSelectedItem().getValue());
+
         afficheEmployees();
+        gestionBoutonLancerJournee();
+    }
+
+    public void clickTableEmployees(MouseEvent mouseEvent) {
+        System.out.println(mouseEvent.getClickCount());
+        if (mouseEvent.getClickCount() >= 2) {
+            TreeItem<Employee> itemSelect = listEmployee.getSelectionModel().getSelectedItem();
+
+            if (itemSelect != null)
+                JourneeManager.getInstance().addEmployee(itemSelect.getValue());
+
+            afficheEmployees();
+            gestionBoutonLancerJournee();
+        }
+    }
+
+    public void clickTableJournee(MouseEvent mouseEvent) {
+        System.out.println(mouseEvent.getClickCount());
+        if (mouseEvent.getClickCount() >= 2) {
+            TreeItem<Employee> itemSelect = listJournee.getSelectionModel().getSelectedItem();
+
+            if (itemSelect != null)
+                JourneeManager.getInstance().removeEmployee(itemSelect.getValue());
+
+            afficheEmployees();
+            gestionBoutonLancerJournee();
+        }
+    }
+
+    private void gestionBoutonLancerJournee() {
+        int nbManagers = 0;
+        int nbServeurs = 0;
+        int nbBarmans = 0;
+        int nbCuisiniers = 0;
+
+        for (Employee employee : JourneeManager.getInstance().listEmployes) {
+            if (employee instanceof Manager) nbManagers++;
+            if (employee instanceof Serveur) nbServeurs++;
+            if (employee instanceof Barman) nbBarmans++;
+            if (employee instanceof Cuisinier) nbCuisiniers++;
+        }
+
+        lancerJournee.setDisable(nbCuisiniers < 4 || nbServeurs < 2 || nbBarmans < 1 || nbManagers < 1);
+    }
+
+    public void clickLancerJournee() {
+        JourneeManager.getInstance().debutJournee();
+
+        initColonnes();
+        afficheEmployees();
+        manageButtons();
+    }
+
+    public void clickFinJournee() {
+        JourneeManager.getInstance().finJournee();
+
+        initColonnes();
+        afficheEmployees();
+        manageButtons();
     }
 }

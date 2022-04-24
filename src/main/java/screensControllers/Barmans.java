@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
+import journee.JourneeManager;
 import menu.Menu;
 import status.EnumStatus;
 
@@ -35,7 +36,7 @@ public class Barmans {
         ObservableList<String> listBarmans = FXCollections.observableArrayList();
 
         // parcours tous les employés
-        for (Employee employee : ManagEmployees.getInstance().getListEmployes())
+        for (Employee employee : JourneeManager.getInstance().listEmployes)
             // si l'employé est un serveur, on l'ajoute
             if (employee instanceof Barman)
                 listBarmans.add(employee.getAffichage());
@@ -140,17 +141,19 @@ public class Barmans {
     }
 
     public void clickTable() {
-        // disable si tous les plats liés à un serveur peuvent être servi
-        btnEtatSuivant.setDisable(
-                (Objects.equals(boissonsTreeTable.getSelectionModel().getSelectedItem().getValue().getStatusBoisson(), EnumStatus.ENATTENTE.getAffichage()) &&
-                        boissonsTreeTable.getSelectionModel().getSelectedItem().getParent() == boissonsTreeTable.getRoot()) ||
-                        Objects.equals(boissonsTreeTable.getSelectionModel().getSelectedItem().getParent().getValue().getStatusBoisson(), EnumStatus.ENATTENTE.getAffichage()) ||
-                        boissonsTreeTable.getSelectionModel().getSelectedItem().getParent() == boissonsTreeTable.getRoot());
+        if (boissonsTreeTable.getSelectionModel().getSelectedItem() != null) {
+            // disable si tous les plats liés à un serveur peuvent être servi
+            btnEtatSuivant.setDisable(
+                    (Objects.equals(boissonsTreeTable.getSelectionModel().getSelectedItem().getValue().getStatusBoisson(), EnumStatus.ENATTENTE.getAffichage()) &&
+                            boissonsTreeTable.getSelectionModel().getSelectedItem().getParent() == boissonsTreeTable.getRoot()) ||
+                            Objects.equals(boissonsTreeTable.getSelectionModel().getSelectedItem().getParent().getValue().getStatusBoisson(), EnumStatus.ENATTENTE.getAffichage()) ||
+                            boissonsTreeTable.getSelectionModel().getSelectedItem().getParent() == boissonsTreeTable.getRoot());
 
-        // visible si l'on clique sur un serveur et que tous les plats peuvent être servis
-        btnServi.setVisible(
-                Objects.equals(boissonsTreeTable.getSelectionModel().getSelectedItem().getValue().getStatusBoisson(), EnumStatus.ASERVIR.getAffichage()) &&
-                        boissonsTreeTable.getSelectionModel().getSelectedItem().getParent() == boissonsTreeTable.getRoot());
+            // visible si l'on clique sur un serveur et que tous les plats peuvent être servis
+            btnServi.setVisible(
+                    Objects.equals(boissonsTreeTable.getSelectionModel().getSelectedItem().getValue().getStatusBoisson(), EnumStatus.ASERVIR.getAffichage()) &&
+                            boissonsTreeTable.getSelectionModel().getSelectedItem().getParent() == boissonsTreeTable.getRoot());
+        }
     }
 
     public void clickBtnEtatSuivant() {

@@ -3,41 +3,51 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.*?>
-<AnchorPane prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screensControllers.ecransMonitoring.Programmation">
-   <children>
-      <Button disable="true" layoutX="301.0" layoutY="446.0" mnemonicParsing="false" text="Lancer le début de la journée">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <Separator layoutY="490.0" prefWidth="800.0" />
-      <Button disable="true" layoutX="331.0" layoutY="505.0" mnemonicParsing="false" text="Terminer la journée">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <Button layoutX="351.0" layoutY="133.0" mnemonicParsing="false" text="-- Ajouter -&gt;" onAction="#clickAjouter">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <Label layoutX="100.0" layoutY="26.0" text="Liste d'employés">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <TreeTableView fx:id="listEmployee" layoutX="1.0" layoutY="46.0" prefHeight="400.0" prefWidth="300.0" />
-      <TreeTableView fx:id="listJournee" layoutX="499.0" layoutY="46.0" prefHeight="400.0" prefWidth="300.0" />
-      <Label layoutX="570.0" layoutY="26.0" text="Employés pour la journée">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Button layoutX="343.0" layoutY="194.0" mnemonicParsing="false" text="&lt;- Supprimer --" onAction="#clickSupprimer">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <Label layoutX="301.0" layoutY="304.0" prefWidth="198.0" text="Il faut au moins 4 cuisiniers, 2 serveurs, 1 manager et 11 barman pour commencer la journée" textAlignment="CENTER" wrapText="true" />
-   </children>
+<AnchorPane prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="screensControllers.ecransMonitoring.Programmation">
+    <children>
+
+        <Button layoutX="351.0" layoutY="133.0" mnemonicParsing="false" text="-- Ajouter -&gt;" onAction="#clickAjouter"
+                fx:id="btnAjouter">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Button>
+        <Button layoutX="343.0" layoutY="194.0" mnemonicParsing="false" text="&lt;- Supprimer --"
+                onAction="#clickSupprimer" fx:id="btnSupprimer">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Button>
+        <Label layoutX="100.0" layoutY="26.0" text="Liste d'employés">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+        <TreeTableView fx:id="listEmployee" layoutX="1.0" layoutY="46.0" prefHeight="400.0" prefWidth="300.0"
+                       onMouseClicked="#clickTableEmployees"/>
+        <TreeTableView fx:id="listJournee" layoutX="499.0" layoutY="46.0" prefHeight="400.0" prefWidth="300.0"
+                       onMouseClicked="#clickTableJournee"/>
+        <Label layoutX="570.0" layoutY="26.0" text="Employés pour la journée">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+        <Label layoutX="301.0" layoutY="304.0" prefWidth="198.0"
+               text="Il faut au moins 4 cuisiniers, 2 serveurs, 1 manager et 1 barman pour commencer la journée"
+               textAlignment="CENTER" wrapText="true"/>
+        <Button disable="true" layoutX="301.0" layoutY="446.0" mnemonicParsing="false"
+                text="Lancer le début de la journée" onAction="#clickLancerJournee" fx:id="lancerJournee">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Button>
+        <Separator layoutY="490.0" prefWidth="800.0"/>
+        <Button disable="true" layoutX="331.0" layoutY="505.0" mnemonicParsing="false" text="Terminer la journée"
+                onMouseClicked="#clickFinJournee" fx:id="finJournee">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Button>
+    </children>
 </AnchorPane>

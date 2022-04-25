@@ -20,9 +20,11 @@ public class JourneeManager {
     public boolean isJourneeEnCours = false;
 
     private final Map<String, ArrayList<Menu>> listService = new HashMap<>();
+    private final Map<String, ArrayList<Menu>> menusVendus = new HashMap<>();
 
     private final Map<String, ArrayList<EnumPlats>> platsVendus = new HashMap<>();
     private final Map<String, ArrayList<EnumBoissons>> boissonsVendus = new HashMap<>();
+
 
 
     private JourneeManager() {
@@ -84,9 +86,11 @@ public class JourneeManager {
 
     public void platTermine(String serveur) {
         platsVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
+        menusVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
 
         for (Menu menu : listService.get(serveur)) {
             menu.nextStatusPlat();
+            menusVendus.get(serveur).add(menu);
             platsVendus.get(serveur).add(EnumPlats.rechercheParNom(menu.getPlat()));
         }
 
@@ -96,14 +100,17 @@ public class JourneeManager {
 
     public void boissonTermine(String serveur) {
         boissonsVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
+        menusVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
 
         for (Menu menu : listService.get(serveur)) {
             menu.nextStatusBoisson();
+            menusVendus.get(serveur).add(menu);
             boissonsVendus.get(serveur).add(EnumBoissons.rechercheParNom(menu.getBoisson()));
         }
 
-        if (Objects.equals(listService.get(serveur).get(0).getStatusPlat(), EnumStatus.ASERVIR.getAffichage()))
+        if (Objects.equals(listService.get(serveur).get(0).getStatusPlat(), EnumStatus.ASERVIR.getAffichage())) {
             listService.remove(serveur);
+        }
 
         System.out.println(boissonsVendus.get(serveur));
     }
@@ -111,5 +118,9 @@ public class JourneeManager {
     public void resetVentes() {
         platsVendus.clear();
         boissonsVendus.clear();
+    }
+
+    public Map<String, ArrayList<Menu>> getMenusVendus() {
+        return menusVendus;
     }
 }

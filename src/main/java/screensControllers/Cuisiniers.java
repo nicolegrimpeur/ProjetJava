@@ -145,9 +145,8 @@ public class Cuisiniers {
         if (platsTreeTable.getSelectionModel().getSelectedItem() != null) {
             // disable si tous les plats liés à un serveur peuvent être servi
             btnEtatSuivant.setDisable(
-                    (Objects.equals(platsTreeTable.getSelectionModel().getSelectedItem().getValue().getStatusPlat(), EnumStatus.ENATTENTE.getAffichage()) &&
-                            platsTreeTable.getSelectionModel().getSelectedItem().getParent() == platsTreeTable.getRoot()) ||
-                            Objects.equals(platsTreeTable.getSelectionModel().getSelectedItem().getParent().getValue().getStatusPlat(), EnumStatus.ENATTENTE.getAffichage()) ||
+                    Objects.equals(platsTreeTable.getSelectionModel().getSelectedItem().getParent().getValue().getStatusPlat(), EnumStatus.ENATTENTE.getAffichage()) ||
+                            Objects.equals(platsTreeTable.getSelectionModel().getSelectedItem().getValue().getStatusPlat(), EnumStatus.ASERVIR.getAffichage()) ||
                             platsTreeTable.getSelectionModel().getSelectedItem().getParent() == platsTreeTable.getRoot());
 
             // visible si l'on clique sur un serveur et que tous les plats peuvent être servis
@@ -178,5 +177,6 @@ public class Cuisiniers {
             JourneeManager.getInstance().platTermine(itemSelect.getValue().getPlat());
 
         affichePlats();
+        btnServi.setVisible(false);
     }
 }

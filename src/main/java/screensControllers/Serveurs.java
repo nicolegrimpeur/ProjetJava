@@ -276,7 +276,7 @@ public class Serveurs {
      */
     public void clickPanier(MouseEvent mouseEvent) {
         // suppression au double click
-        if (mouseEvent.getClickCount() == 2) {
+        if (mouseEvent.getClickCount() >= 2) {
             // on récupère l'élément sélectionné ainsi que son parent
             TreeItem<Menu> itemSelect = treeTableAffichageMenu.getSelectionModel().getSelectedItem();
 
@@ -314,15 +314,12 @@ public class Serveurs {
     public void submit() {
         if (currentServeur != null) {
             String serveur = currentServeur.getAffichage();
-            for (Menu menu: currentServeur.listCommandes) {
+            for (Menu menu: currentServeur.listCommandes)
                 JourneeManager.getInstance().addMenuService(serveur, menu);
-            }
 
-            for (ArrayList<Menu> tabMenu100Ans: currentServeur.listCommandes100Ans) {
-                for (Menu menu : tabMenu100Ans) {
+            for (ArrayList<Menu> tabMenu100Ans: currentServeur.listCommandes100Ans)
+                for (Menu menu : tabMenu100Ans)
                     JourneeManager.getInstance().addMenuService(serveur, menu);
-                }
-            }
 
             currentServeur.listCommandes.clear();
             currentServeur.listCommandes100Ans.clear();

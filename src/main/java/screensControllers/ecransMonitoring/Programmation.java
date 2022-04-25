@@ -131,7 +131,6 @@ public class Programmation {
     }
 
     public void clickTableEmployees(MouseEvent mouseEvent) {
-        System.out.println(mouseEvent.getClickCount());
         if (mouseEvent.getClickCount() >= 2) {
             TreeItem<Employee> itemSelect = listEmployee.getSelectionModel().getSelectedItem();
 

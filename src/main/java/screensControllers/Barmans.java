@@ -144,9 +144,8 @@ public class Barmans {
         if (boissonsTreeTable.getSelectionModel().getSelectedItem() != null) {
             // disable si tous les plats liés à un serveur peuvent être servi
             btnEtatSuivant.setDisable(
-                    (Objects.equals(boissonsTreeTable.getSelectionModel().getSelectedItem().getValue().getStatusBoisson(), EnumStatus.ENATTENTE.getAffichage()) &&
-                            boissonsTreeTable.getSelectionModel().getSelectedItem().getParent() == boissonsTreeTable.getRoot()) ||
-                            Objects.equals(boissonsTreeTable.getSelectionModel().getSelectedItem().getParent().getValue().getStatusBoisson(), EnumStatus.ENATTENTE.getAffichage()) ||
+                    Objects.equals(boissonsTreeTable.getSelectionModel().getSelectedItem().getParent().getValue().getStatusBoisson(), EnumStatus.ENATTENTE.getAffichage()) ||
+                            Objects.equals(boissonsTreeTable.getSelectionModel().getSelectedItem().getValue().getStatusBoisson(), EnumStatus.ASERVIR.getAffichage()) ||
                             boissonsTreeTable.getSelectionModel().getSelectedItem().getParent() == boissonsTreeTable.getRoot());
 
             // visible si l'on clique sur un serveur et que tous les plats peuvent être servis
@@ -177,5 +176,6 @@ public class Barmans {
             JourneeManager.getInstance().boissonTermine(itemSelect.getValue().getBoisson());
 
         afficheBoissons();
+        btnServi.setVisible(false);
     }
 }

@@ -40,7 +40,8 @@ public class Main {
         try {
             loader = new FXMLLoader(getClass().getResource("/barmans.fxml"));
             pane = loader.load();
-//            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("barmans.fxml")));
+            loader.<BarmansEtCuisiniers>getController().setTypeItem("boisson");
+            loader.<BarmansEtCuisiniers>getController().initScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -49,9 +50,13 @@ public class Main {
     }
 
     public void launchEcranCuisiniers() {
+        FXMLLoader loader;
         Parent pane = null;
         try {
-            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("cuisiniers.fxml")));
+            loader = new FXMLLoader(getClass().getResource("/cuisiniers.fxml"));
+            pane = loader.load();
+            loader.<BarmansEtCuisiniers>getController().setTypeItem("plat");
+            loader.<BarmansEtCuisiniers>getController().initScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }

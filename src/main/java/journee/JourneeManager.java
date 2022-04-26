@@ -66,27 +66,21 @@ public class JourneeManager {
         listService.get(employe).add(menu);
     }
 
-    public void nextStatusPlat(String employe, Menu menu, Cuisinier cuisinier) {
+    public void nextStatusPlat(String employe, Menu menu, Employee employee) {
         int index = listService.get(employe).indexOf(menu);
         listService.get(employe).get(index).nextStatusPlat();
 
+        Cuisinier cuisinier = (Cuisinier) employee;
         if (listService.get(employe).get(index).getStatusPlat().equals(EnumStatus.ASERVIR.getAffichage()))
             if (cuisinier != null)
                 cuisinier.addPlatRealise(EnumPlats.rechercheParNom(menu.getPlat()));
-//
-//
-//        Menu menu = listService.get(employe).get(index);
-//        menu.nextStatusPlat();
-//
-//        if (listService.get(employe).get(index).getStatusPlat().equals(EnumStatus.ASERVIR.getAffichage()))
-//                if (cuisinier != null)
-//                    cuisinier.addPlatRealise(EnumPlats.rechercheParNom(menu.getPlat()));
     }
 
-    public void nextStatusBoisson(String employe, Menu menu, Barman barman) {
+    public void nextStatusBoisson(String employe, Menu menu, Employee employee) {
         int index = listService.get(employe).indexOf(menu);
         listService.get(employe).get(index).nextStatusBoisson();
 
+        Barman barman = (Barman) employee;
         if (listService.get(employe).get(index).getStatusBoisson().equals(EnumStatus.ASERVIR.getAffichage()))
                 if (barman != null)
                     barman.addCocktailRealise(EnumBoissons.rechercheParNom(menu.getBoisson()));

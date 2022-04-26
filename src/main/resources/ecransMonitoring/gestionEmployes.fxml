@@ -26,8 +26,8 @@
         <Label layoutX="43.0" layoutY="238.0" text="Salaire :"/>
         <TextField fx:id="textSalaire" layoutX="137.0" layoutY="234.0"/>
         <Button layoutX="160.0" layoutY="286.0" mnemonicParsing="false" onAction="#ajoutEmploye"
-                text="Ajouter employé"/>
-        <Button layoutX="544.0" layoutY="480.0" mnemonicParsing="false" text="Supprimer employé" onAction="#supprimerEmploye"/>
+                text="Ajouter employé" fx:id="btnAjouterEmploye"/>
+        <Button layoutX="544.0" layoutY="480.0" mnemonicParsing="false" text="Supprimer employé" onAction="#supprimerEmploye" fx:id="btnSupprimerEmploye"/>
         <Label fx:id="textErreur" layoutX="20.0" layoutY="351.0" maxWidth="255.0" text="Une erreur a eu lieu : "
                visible="false" wrapText="true">
             <font>

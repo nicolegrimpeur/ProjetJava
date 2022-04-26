@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
+import journee.JourneeManager;
 
 import java.util.Objects;
 
@@ -22,11 +23,28 @@ public class GestionEmployes {
     public Label textErreur;
     @FXML
     public TreeTableView<Employee> listEmploye;
+    @FXML
+    public Button btnAjouterEmploye;
+    @FXML
+    public Button btnSupprimerEmploye;
 
     @FXML
     public void initialize() {
         choiceEmploi.setItems(FXCollections.observableArrayList(ManagEmployees.getInstance().getListEmploi()));
         afficheListEmploye();
+        isDayLaunch();
+    }
+
+    /**
+     * Si la journée est lancée, on empêche l'ajout et la suppression d'employé
+     */
+    private void isDayLaunch() {
+        if (JourneeManager.getInstance().isJourneeEnCours) {
+            textErreur.setText("Vous ne pouvez pas modifier les employés durant le service");
+            textErreur.setVisible(true);
+            btnAjouterEmploye.setDisable(true);
+            btnSupprimerEmploye.setDisable(true);
+        }
     }
 
     /**
@@ -106,7 +124,6 @@ public class GestionEmployes {
         // on ajoute tous les employés
         for (int i = 0; i < ManagEmployees.getInstance().getListEmployes().size(); i++) {
             element = new TreeItem<>(ManagEmployees.getInstance().getListEmployes().get(i));
-            System.out.println(ManagEmployees.getInstance().getListEmployes().get(i));
             rootElement.getChildren().add(element);
         }
 
@@ -122,10 +139,13 @@ public class GestionEmployes {
      * Permet de supprimer l'employé sélectionné
      */
     public void supprimerEmploye() {
-        int employeeIndex = listEmploye.getSelectionModel().getFocusedIndex();
+        if (listEmploye.getSelectionModel().getSelectedItem() != null) {
+            Employee employee = listEmploye.getSelectionModel().getSelectedItem().getValue();
 
-        ManagEmployees.getInstance().supprimerEmploye(ManagEmployees.getInstance().getListEmployes().get(employeeIndex));
+            ManagEmployees.getInstance().supprimerEmploye(employee);
+            JourneeManager.getInstance().listEmployes.remove(listEmploye.getSelectionModel().getSelectedItem().getValue());
 
-        afficheListEmploye();
+            afficheListEmploye();
+        }
     }
 }

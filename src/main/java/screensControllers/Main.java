@@ -35,9 +35,12 @@ public class Main {
     }
 
     public void launchEcranBarmans() {
+        FXMLLoader loader;
         Parent pane = null;
         try {
-            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("barmans.fxml")));
+            loader = new FXMLLoader(getClass().getResource("/barmans.fxml"));
+            pane = loader.load();
+//            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("barmans.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }

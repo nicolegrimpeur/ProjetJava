@@ -66,18 +66,26 @@ public class JourneeManager {
         listService.get(employe).add(menu);
     }
 
-    public void nextStatusPlat(String employe, int index, Cuisinier cuisinier) {
-        Menu menu = listService.get(employe).get(index);
-        menu.nextStatusPlat();
+    public void nextStatusPlat(String employe, Menu menu, Cuisinier cuisinier) {
+        int index = listService.get(employe).indexOf(menu);
+        listService.get(employe).get(index).nextStatusPlat();
 
         if (listService.get(employe).get(index).getStatusPlat().equals(EnumStatus.ASERVIR.getAffichage()))
-                if (cuisinier != null)
-                    cuisinier.addPlatRealise(EnumPlats.rechercheParNom(menu.getPlat()));
+            if (cuisinier != null)
+                cuisinier.addPlatRealise(EnumPlats.rechercheParNom(menu.getPlat()));
+//
+//
+//        Menu menu = listService.get(employe).get(index);
+//        menu.nextStatusPlat();
+//
+//        if (listService.get(employe).get(index).getStatusPlat().equals(EnumStatus.ASERVIR.getAffichage()))
+//                if (cuisinier != null)
+//                    cuisinier.addPlatRealise(EnumPlats.rechercheParNom(menu.getPlat()));
     }
 
-    public void nextStatusBoisson(String employe, int index, Barman barman) {
-        Menu menu = listService.get(employe).get(index);
-        menu.nextStatusBoisson();
+    public void nextStatusBoisson(String employe, Menu menu, Barman barman) {
+        int index = listService.get(employe).indexOf(menu);
+        listService.get(employe).get(index).nextStatusBoisson();
 
         if (listService.get(employe).get(index).getStatusBoisson().equals(EnumStatus.ASERVIR.getAffichage()))
                 if (barman != null)
@@ -85,13 +93,13 @@ public class JourneeManager {
     }
 
     public void platTermine(String serveur) {
-        platsVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
+//        platsVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
         menusVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
 
         for (Menu menu : listService.get(serveur)) {
             menu.nextStatusPlat();
             menusVendus.get(serveur).add(menu);
-            platsVendus.get(serveur).add(EnumPlats.rechercheParNom(menu.getPlat()));
+//            platsVendus.get(serveur).add(EnumPlats.rechercheParNom(menu.getPlat()));
         }
 
         if (Objects.equals(listService.get(serveur).get(0).getStatusBoisson(), EnumStatus.ASERVIR.getAffichage()))
@@ -99,25 +107,24 @@ public class JourneeManager {
     }
 
     public void boissonTermine(String serveur) {
-        boissonsVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
+//        boissonsVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
         menusVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
 
         for (Menu menu : listService.get(serveur)) {
             menu.nextStatusBoisson();
             menusVendus.get(serveur).add(menu);
-            boissonsVendus.get(serveur).add(EnumBoissons.rechercheParNom(menu.getBoisson()));
+//            boissonsVendus.get(serveur).add(EnumBoissons.rechercheParNom(menu.getBoisson()));
         }
 
         if (Objects.equals(listService.get(serveur).get(0).getStatusPlat(), EnumStatus.ASERVIR.getAffichage())) {
             listService.remove(serveur);
         }
-
-        System.out.println(boissonsVendus.get(serveur));
     }
 
     public void resetVentes() {
-        platsVendus.clear();
-        boissonsVendus.clear();
+//        platsVendus.clear();
+//        boissonsVendus.clear();
+        menusVendus.clear();
     }
 
     public Map<String, ArrayList<Menu>> getMenusVendus() {

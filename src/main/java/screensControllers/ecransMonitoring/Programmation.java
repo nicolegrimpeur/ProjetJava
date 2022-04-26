@@ -2,10 +2,7 @@ package screensControllers.ecransMonitoring;
 
 import employee.*;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import journee.JourneeManager;
@@ -18,11 +15,13 @@ public class Programmation {
     @FXML
     Button lancerJournee;
     @FXML
-    Button finJournee;
+    Button btnFinJournee;
     @FXML
     Button btnAjouter;
     @FXML
     Button btnSupprimer;
+    @FXML
+    Label textAffichage;
 
     @FXML
     void initialize() {
@@ -39,14 +38,16 @@ public class Programmation {
             btnAjouter.setDisable(false);
             btnSupprimer.setDisable(false);
             lancerJournee.setDisable(false);
-            finJournee.setDisable(true);
+            btnFinJournee.setDisable(true);
         } else {
             listEmployee.setDisable(true);
             listJournee.setDisable(true);
             btnAjouter.setDisable(true);
             btnSupprimer.setDisable(true);
             lancerJournee.setDisable(true);
-            finJournee.setDisable(false);
+            btnFinJournee.setDisable(JourneeManager.getInstance().getListService().size() != 0);
+            if (JourneeManager.getInstance().getListService().size() != 0)
+                textAffichage.setText("Il y a encore des commandes en cours");
         }
     }
 
@@ -114,6 +115,10 @@ public class Programmation {
         // on affiche les lignes
         listJournee.setRoot(rootItem);
         listJournee.setShowRoot(false); // permet de ne pas afficher le premier parent vide
+
+
+        // on affiche le texte permettant de dire le nombre d'employés nécessaires pour lancer la journée
+        textAffichage.setText("Il faut au moins 4 cuisiniers, 2 serveurs, 1 manager et 1 barman pour commencer la journée");
     }
 
     public void clickAjouter() {

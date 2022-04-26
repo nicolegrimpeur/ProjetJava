@@ -58,8 +58,8 @@ public class Barmans {
         statusCol.setPrefWidth(150);
 
         // on empêche le tri
-        boissonsCol.setSortable(false);
-        statusCol.setSortable(false);
+//        boissonsCol.setSortable(false);
+//        statusCol.setSortable(false);
 
         // on ajoute les colonnes
         boissonsTreeTable.getColumns().addAll(boissonsCol, statusCol);
@@ -71,38 +71,12 @@ public class Barmans {
 
         TreeItem<Menu> itemAffichageServeur, item;
         Menu affichageServeur;
-        boolean auMoinsUnEnPreparation, everyStatusAServir, commandeTermine, enAttente;
 
         // parcours tous les employés
         for (String serveur : JourneeManager.getInstance().getListService().keySet()) {
             affichageServeur = new Menu(serveur, serveur);
 
-            auMoinsUnEnPreparation = false;
-            everyStatusAServir = true;
-            commandeTermine = false;
-            enAttente = false;
-            for (Menu commande : JourneeManager.getInstance().getListService().get(serveur)) {
-                if (Objects.equals(commande.getStatusBoisson(), EnumStatus.ENCOURS.getAffichage()))
-                    auMoinsUnEnPreparation = true;
-                if (!Objects.equals(commande.getStatusBoisson(), EnumStatus.ASERVIR.getAffichage()))
-                    everyStatusAServir = false;
-                if (Objects.equals(commande.getStatusBoisson(), EnumStatus.TERMINE.getAffichage()))
-                    commandeTermine = true;
-            }
-
-            if (everyStatusAServir)
-                for (Menu menu : JourneeManager.getInstance().getListService().get(serveur)) {
-                    if (!Objects.equals(menu.getStatusPlat(), EnumStatus.ASERVIR.getAffichage())) {
-                        everyStatusAServir = false;
-                        enAttente = true;
-                        break;
-                    }
-                }
-
-            if (auMoinsUnEnPreparation) affichageServeur.setStatusBoisson(EnumStatus.ENCOURS.getAffichage());
-            if (everyStatusAServir) affichageServeur.setStatusBoisson(EnumStatus.ASERVIR.getAffichage());
-            if (enAttente) affichageServeur.setStatusBoisson(EnumStatus.ENATTENTE.getAffichage());
-            if (commandeTermine) affichageServeur.setStatusBoisson(EnumStatus.TERMINE.getAffichage());
+            affichageServeur.setStatusBoisson(recupStatusServeur(serveur));
 
             itemAffichageServeur = new TreeItem<>(affichageServeur);
             itemAffichageServeur.setExpanded(true);
@@ -119,6 +93,38 @@ public class Barmans {
         // on affiche les lignes
         boissonsTreeTable.setRoot(rootItem);
         boissonsTreeTable.setShowRoot(false); // permet de ne pas afficher le premier parent vide
+    }
+
+    private String recupStatusServeur(String serveur) {
+        boolean auMoinsUnEnPreparation, everyStatusAServir, commandeTermine, enAttente;
+
+        auMoinsUnEnPreparation = false;
+        everyStatusAServir = true;
+        commandeTermine = false;
+        enAttente = false;
+        for (Menu commande : JourneeManager.getInstance().getListService().get(serveur)) {
+            if (Objects.equals(commande.getStatusBoisson(), EnumStatus.ENCOURS.getAffichage()))
+                auMoinsUnEnPreparation = true;
+            if (!Objects.equals(commande.getStatusBoisson(), EnumStatus.ASERVIR.getAffichage()))
+                everyStatusAServir = false;
+            if (Objects.equals(commande.getStatusBoisson(), EnumStatus.TERMINE.getAffichage()))
+                commandeTermine = true;
+        }
+
+        if (everyStatusAServir)
+            for (Menu menu : JourneeManager.getInstance().getListService().get(serveur)) {
+                if (!Objects.equals(menu.getStatusPlat(), EnumStatus.ASERVIR.getAffichage())) {
+                    everyStatusAServir = false;
+                    enAttente = true;
+                    break;
+                }
+            }
+
+        if (auMoinsUnEnPreparation) return EnumStatus.ENCOURS.getAffichage();
+        if (everyStatusAServir) return EnumStatus.ASERVIR.getAffichage();
+        if (enAttente) return EnumStatus.ENATTENTE.getAffichage();
+        if (commandeTermine) return EnumStatus.TERMINE.getAffichage();
+        return EnumStatus.APREPARER.getAffichage();
     }
 
     /**
@@ -158,14 +164,19 @@ public class Barmans {
     public void clickBtnEtatSuivant() {
         // on récupère l'élément sélectionné ainsi que son parent
         TreeItem<Menu> itemSelect = boissonsTreeTable.getSelectionModel().getSelectedItem();
-        TreeItem<Menu> parent = itemSelect.getParent();
 
-        int index = boissonsTreeTable.getSelectionModel().getSelectedIndex() - (parent.getParent().getChildren().indexOf(parent) + 1);
+        if (itemSelect != null) {
+            TreeItem<Menu> parent = itemSelect.getParent();
 
-        JourneeManager.getInstance().nextStatusBoisson(parent.getValue().getBoisson(), index, currentBarman);
+            JourneeManager.getInstance().nextStatusBoisson(parent.getValue().getBoisson(), itemSelect.getValue(), currentBarman);
 
-        afficheBoissons();
-        btnEtatSuivant.setDisable(true);
+            parent.getValue().setStatusBoisson(recupStatusServeur(parent.getValue().getBoisson()));
+
+            boissonsTreeTable.refresh();
+
+//            afficheBoissons();
+            btnEtatSuivant.setDisable(true);
+        }
     }
 
     public void clickBtnServi() {

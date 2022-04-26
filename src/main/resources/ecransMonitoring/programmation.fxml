@@ -35,7 +35,7 @@
         </Label>
         <Label layoutX="301.0" layoutY="304.0" prefWidth="198.0"
                text="Il faut au moins 4 cuisiniers, 2 serveurs, 1 manager et 1 barman pour commencer la journée"
-               textAlignment="CENTER" wrapText="true"/>
+               textAlignment="CENTER" wrapText="true" fx:id="textAffichage"/>
         <Button disable="true" layoutX="301.0" layoutY="446.0" mnemonicParsing="false"
                 text="Lancer le début de la journée" onAction="#clickLancerJournee" fx:id="lancerJournee">
             <font>
@@ -44,7 +44,7 @@
         </Button>
         <Separator layoutY="490.0" prefWidth="800.0"/>
         <Button disable="true" layoutX="331.0" layoutY="505.0" mnemonicParsing="false" text="Terminer la journée"
-                onMouseClicked="#clickFinJournee" fx:id="finJournee">
+                onMouseClicked="#clickFinJournee" fx:id="btnFinJournee">
             <font>
                 <Font size="14.0"/>
             </font>

@@ -159,14 +159,15 @@ public class Cuisiniers {
     public void clickBtnEtatSuivant() {
         // on récupère l'élément sélectionné ainsi que son parent
         TreeItem<Menu> itemSelect = platsTreeTable.getSelectionModel().getSelectedItem();
-        TreeItem<Menu> parent = itemSelect.getParent();
 
-        int index = platsTreeTable.getSelectionModel().getSelectedIndex() - (parent.getParent().getChildren().indexOf(parent) + 1);
+        if (itemSelect != null) {
+            TreeItem<Menu> parent = itemSelect.getParent();
 
-        JourneeManager.getInstance().nextStatusPlat(parent.getValue().getPlat(), index, currentCuisinier);
+            JourneeManager.getInstance().nextStatusPlat(parent.getValue().getBoisson(), itemSelect.getValue(), currentCuisinier);
 
-        affichePlats();
-        btnEtatSuivant.setDisable(true);
+            affichePlats();
+            btnEtatSuivant.setDisable(true);
+        }
     }
 
     public void clickBtnServi() {

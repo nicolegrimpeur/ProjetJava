@@ -7,6 +7,7 @@ public abstract class Employee {
     public int salaire;
     private String job = "";
     public int nbJoursConsecutifs = 0;
+    private int nbItemsVendus = 0;
 
     public Employee(String nom_, String prenom_, int salaire_, String job_) {
         nom = nom_;
@@ -15,8 +16,6 @@ public abstract class Employee {
         salaire = salaire_;
         job = job_;
     }
-
-//    public abstract void preparerCommande();
 
     public String getNom() {
         return nom;
@@ -36,5 +35,13 @@ public abstract class Employee {
 
     public String getAffichage() {
         return affichage;
+    }
+
+    public void addNbItemsVendus(int nbItemsVendus_) {
+        nbItemsVendus += nbItemsVendus_;
+    }
+
+    public int getNbItemsVendus() {
+        return nbItemsVendus;
     }
 }

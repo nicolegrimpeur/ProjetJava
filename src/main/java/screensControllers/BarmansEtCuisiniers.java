@@ -174,12 +174,10 @@ public class BarmansEtCuisiniers {
      * Récupère le barman sélectionné
      */
     public void changeChoiceBox() {
-        if (employeeChoiceBox.getValue() != null) {
-            for (Employee employee : ManagEmployees.getInstance().getListEmployes()) {
+        if (employeeChoiceBox.getValue() != null)
+            for (Employee employee : ManagEmployees.getInstance().getListEmployes())
                 if (employee.getAffichage().equals(employeeChoiceBox.getValue()))
                     currentEmployee = employee;
-            }
-        }
 
         afficheBtnEtatSuivant();
     }

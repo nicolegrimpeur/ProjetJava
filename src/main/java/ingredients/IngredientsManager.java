@@ -1,7 +1,6 @@
 package ingredients;
 
 import java.util.EnumMap;
-import java.util.Scanner;
 
 public class IngredientsManager {
     private static IngredientsManager instance = null;
@@ -21,13 +20,12 @@ public class IngredientsManager {
         return instance;
     }
 
-    public static void initStocksInitial() {
-        Scanner scanner;
-        for (EnumIngredients ingredient: EnumIngredients.values()) {
-            System.out.println(ingredient.getName() + " : ");
-            scanner = new Scanner(System.in);
-            ingredient.setStockInitial(scanner.nextInt());
-        }
+    /**
+     * Permet au lancement de la journée de remettre à 0 le stock initial avec le stock présent en début de journée
+     */
+    public void initStocksInitial() {
+        for (EnumIngredients ingredients: stocks.keySet())
+            ingredients.setStockInitial(stocks.get(ingredients));
     }
 
     /**

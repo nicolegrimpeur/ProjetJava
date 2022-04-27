@@ -1,18 +1,14 @@
 package journee;
 
-import employee.Barman;
-import employee.Cuisinier;
 import employee.Employee;
 import employee.ManagEmployees;
+import ingredients.IngredientsManager;
 import menu.Menu;
-import menuBoissons.EnumBoissons;
-import menuPlats.EnumPlats;
 import status.EnumStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class JourneeManager {
     private static JourneeManager instance = null;
@@ -42,6 +38,8 @@ public class JourneeManager {
 
         // on supprime toutes les ventes précédentes
         JourneeManager.getInstance().resetVentes();
+
+        IngredientsManager.getInstance().initStocksInitial();
     }
 
     public void addEmployee(Employee employee) {
@@ -87,11 +85,10 @@ public class JourneeManager {
         int index = listService.get(employe).indexOf(menu);
         listService.get(employe).get(index).nextStatusPlat();
 
-        Cuisinier cuisinier = (Cuisinier) employee;
         // si le plat est affiché comme à servir, alors on l'ajoute aux plats réalisés du cuisinier
         if (listService.get(employe).get(index).getStatusPlat().equals(EnumStatus.ASERVIR.getAffichage()))
-            if (cuisinier != null)
-                cuisinier.addPlatRealise(EnumPlats.rechercheParNom(menu.getPlat()));
+            if (employee != null)
+                listEmployes.get(listEmployes.indexOf(employee)).addNbItemsVendus(1);
     }
 
     /**
@@ -105,11 +102,10 @@ public class JourneeManager {
         int index = listService.get(employe).indexOf(menu);
         listService.get(employe).get(index).nextStatusBoisson();
 
-        Barman barman = (Barman) employee;
         // si le plat est affiché comme à servir, alors on l'ajoute aux plats réalisés du barman
         if (listService.get(employe).get(index).getStatusBoisson().equals(EnumStatus.ASERVIR.getAffichage()))
-            if (barman != null)
-                barman.addCocktailRealise(EnumBoissons.rechercheParNom(menu.getBoisson()));
+            if (employee != null)
+                listEmployes.get(listEmployes.indexOf(employee)).addNbItemsVendus(1);
     }
 
     /**
@@ -125,8 +121,7 @@ public class JourneeManager {
             menusVendus.get(serveur).add(menu);
         }
 
-        // on supprime les menus de ce serveur en cours
-        listService.remove(serveur);
+        ajoutMenusServeur(serveur);
     }
 
     /**
@@ -141,6 +136,14 @@ public class JourneeManager {
             menu.nextStatusBoisson();
             menusVendus.get(serveur).add(menu);
         }
+
+        ajoutMenusServeur(serveur);
+    }
+
+    private void ajoutMenusServeur(String serveur) {
+        for (Employee employee: listEmployes)
+            if (employee.getAffichage().equals(serveur))
+                employee.addNbItemsVendus(listService.get(serveur).size());
 
         // on supprime les menus de ce serveur en cours
         listService.remove(serveur);

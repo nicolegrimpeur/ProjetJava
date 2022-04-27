@@ -38,7 +38,7 @@ public class Main {
         FXMLLoader loader;
         Parent pane = null;
         try {
-            loader = new FXMLLoader(getClass().getResource("/barmans.fxml"));
+            loader = new FXMLLoader(getClass().getResource("/barmansEtCuisiniers.fxml"));
             pane = loader.load();
             loader.<BarmansEtCuisiniers>getController().setTypeItem("boisson");
             loader.<BarmansEtCuisiniers>getController().initScreen();
@@ -53,7 +53,7 @@ public class Main {
         FXMLLoader loader;
         Parent pane = null;
         try {
-            loader = new FXMLLoader(getClass().getResource("/cuisiniers.fxml"));
+            loader = new FXMLLoader(getClass().getResource("/barmansEtCuisiniers.fxml"));
             pane = loader.load();
             loader.<BarmansEtCuisiniers>getController().setTypeItem("plat");
             loader.<BarmansEtCuisiniers>getController().initScreen();

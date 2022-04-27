@@ -16,27 +16,37 @@ import status.EnumStatus;
 import java.util.Objects;
 
 public class BarmansEtCuisiniers {
-    private String typeItem = null;
+    private String typeItem = null;                 // type de la page (boisson ou plat)
     @FXML
-    public ChoiceBox<String> employeeChoiceBox;
+    public ChoiceBox<String> employeeChoiceBox;     // choice box permettant de saisir l'employé
     @FXML
-    public TreeTableView<Menu> itemsTreeTable;
+    public TreeTableView<Menu> itemsTreeTable;      // tableau affichant les plats / boissons à préparer
     @FXML
-    public Button btnEtatSuivant;
+    public Button btnEtatSuivant;                   // bouton pour passer un item à l'état suivant
     @FXML
-    public Button btnServi;
-    public Employee currentEmployee = null;
+    public Button btnServi;                         // bouton pour marquer un plat comme servi
+    public Employee currentEmployee = null;         // stocke l'employé sélectionné
 
+    /**
+     * Initialise l'écran
+     */
     public void initScreen() {
         initEmployes();
         initColonnes();
         afficheItems();
     }
 
+    /**
+     * Permet de modifier typeItem
+     * @param typeItem boisson ou plat, selon si l'on est sur l'écran Cuisinier ou Barmans
+     */
     public void setTypeItem(String typeItem) {
         this.typeItem = typeItem;
     }
 
+    /**
+     * Remplit la choice box d'employé
+     */
     private void initEmployes() {
         ObservableList<String> list = FXCollections.observableArrayList();
 
@@ -51,6 +61,9 @@ public class BarmansEtCuisiniers {
         employeeChoiceBox.setItems(list);
     }
 
+    /**
+     * Initialise les colonnes du tableau
+     */
     private void initColonnes() {
         // on crée les colonnes
         TreeTableColumn<Menu, String> itemsCol = new TreeTableColumn<>(typeItem.equals("boisson") ? "Boissons" : "Plats");
@@ -64,11 +77,14 @@ public class BarmansEtCuisiniers {
         itemsCol.setPrefWidth(450);
         statusCol.setPrefWidth(150);
 
-        // on ajoute les colonnes
+        // on ajoute les colonnes à la table
         itemsTreeTable.getColumns().addAll(itemsCol, statusCol);
     }
 
-    private void afficheItems() {
+    /**
+     * Ajoute chaque item dans le tableau
+     */
+    public void afficheItems() {
         TreeItem<Menu> rootItem = new TreeItem<>(new Menu());
         rootItem.setExpanded(true);
 
@@ -101,13 +117,20 @@ public class BarmansEtCuisiniers {
         itemsTreeTable.setShowRoot(false); // permet de ne pas afficher le premier parent vide
     }
 
+    /**
+     * Permet de récupérer l'état global d'un serveur en fonction des items qu'il doit gérer
+     * @param serveur le nom d'affichage du serveur
+     * @return le status de celui ci
+     */
     private String recupStatusServeur(String serveur) {
         boolean auMoinsUnEnPreparation, everyStatusAServir, commandeTermine, enAttente;
 
-        auMoinsUnEnPreparation = false;
-        everyStatusAServir = true;
-        commandeTermine = false;
-        enAttente = false;
+        auMoinsUnEnPreparation = false;     // stocke si au moins un item est en préparation
+        everyStatusAServir = true;          // stocke si tous les items sont affichés comme à servir
+        commandeTermine = false;            // stocke si toutes les commandes sont terminés ou non
+        enAttente = false;                  // stocke s'il faut passer la commande comme en attente
+
+        // on parcourt les commandes de ce serveur
         for (Menu commande : JourneeManager.getInstance().getListService().get(serveur)) {
             if (typeItem.equals("boisson")) {
                 if (Objects.equals(commande.getStatusBoisson(), EnumStatus.ENCOURS.getAffichage()))
@@ -126,8 +149,11 @@ public class BarmansEtCuisiniers {
             }
         }
 
+        // si tous les items sont marqués comme à servir
         if (everyStatusAServir)
+            // on parcourt les menus affiliés à ce serveur
             for (Menu menu : JourneeManager.getInstance().getListService().get(serveur)) {
+                // si un seul élément opposé n'est pas à servir, la commande n'est pas prète à être servi
                 if ((typeItem.equals("boisson") && !menu.getStatusPlat().equals(EnumStatus.ASERVIR.getAffichage())) ||
                         (typeItem.equals("plat") && !menu.getStatusBoisson().equals(EnumStatus.ASERVIR.getAffichage()))) {
                     everyStatusAServir = false;
@@ -136,6 +162,7 @@ public class BarmansEtCuisiniers {
                 }
             }
 
+        // on return le status correspondant
         if (auMoinsUnEnPreparation) return EnumStatus.ENCOURS.getAffichage();
         if (everyStatusAServir) return EnumStatus.ASERVIR.getAffichage();
         if (enAttente) return EnumStatus.ENATTENTE.getAffichage();
@@ -157,17 +184,26 @@ public class BarmansEtCuisiniers {
         afficheBtnEtatSuivant();
     }
 
+    /**
+     * Affiche le bouton état suivant
+     */
     private void afficheBtnEtatSuivant() {
         btnEtatSuivant.setVisible(true);
         btnEtatSuivant.setDisable(true);
     }
 
+    /**
+     * Gère le click sur la table
+     */
     public void clickTable() {
+        // si un item est sélectionné
         if (itemsTreeTable.getSelectionModel().getSelectedItem() != null) {
             TreeItem<Menu> item = itemsTreeTable.getSelectionModel().getSelectedItem();
             TreeItem<Menu> parent = item.getParent();
             if (typeItem.equals("boisson")) {
-                // disable si tous les plats liés à un serveur peuvent être servi
+                // disable si
+                // - tous les plats sont prêts à être servis
+                // - si l'on clique sur le nom du serveur
                 btnEtatSuivant.setDisable(
                         Objects.equals(parent.getValue().getStatusBoisson(), EnumStatus.ENATTENTE.getAffichage()) ||
                                 Objects.equals(item.getValue().getStatusBoisson(), EnumStatus.ASERVIR.getAffichage()) ||
@@ -178,7 +214,9 @@ public class BarmansEtCuisiniers {
                         Objects.equals(item.getValue().getStatusBoisson(), EnumStatus.ASERVIR.getAffichage()) &&
                                 parent == itemsTreeTable.getRoot());
             } else {
-                // disable si tous les plats liés à un serveur peuvent être servi
+                // disable si
+                // - tous les plats sont prêts à être servis
+                // - si l'on clique sur le nom du serveur
                 btnEtatSuivant.setDisable(
                         Objects.equals(parent.getValue().getStatusPlat(), EnumStatus.ENATTENTE.getAffichage()) ||
                                 Objects.equals(item.getValue().getStatusPlat(), EnumStatus.ASERVIR.getAffichage()) ||
@@ -192,38 +230,53 @@ public class BarmansEtCuisiniers {
         }
     }
 
+    /**
+     * Gère le click sur le bouton suivant
+     */
     public void clickBtnEtatSuivant() {
         // on récupère l'élément sélectionné ainsi que son parent
         TreeItem<Menu> itemSelect = itemsTreeTable.getSelectionModel().getSelectedItem();
 
         if (itemSelect != null) {
+            // on récupère le parent correspondant
             TreeItem<Menu> parent = itemSelect.getParent();
 
-            if (typeItem.equals("boisson"))
+            // on passe l'élément à l'état suivant
+            // puis on modifie le parent si besoin
+            if (typeItem.equals("boisson")) {
                 JourneeManager.getInstance().nextStatusBoisson(parent.getValue().getBoisson(), itemSelect.getValue(), currentEmployee);
-            else
+                parent.getValue().setStatusBoisson(recupStatusServeur(parent.getValue().getBoisson()));
+            } else {
                 JourneeManager.getInstance().nextStatusPlat(parent.getValue().getPlat(), itemSelect.getValue(), currentEmployee);
+                parent.getValue().setStatusPlat(recupStatusServeur(parent.getValue().getPlat()));
+            }
 
-            parent.getValue().setStatusBoisson(recupStatusServeur(parent.getValue().getBoisson()));
-
+            // on rafraichit la table et on désactive le bouton état suivant
             itemsTreeTable.refresh();
-
-//            afficheBoissons();
             btnEtatSuivant.setDisable(true);
+
+            // si un nouvel élément a été rajouté en arrière-plan, on rajoute ces éléments au tableau
+            if (parent.getParent().getChildren().size() != JourneeManager.getInstance().getListService().size())
+                afficheItems();
         }
     }
 
+    /**
+     * Gère le click sur le bouton servi
+     */
     public void clickBtnServi() {
         // on récupère l'élément sélectionné
         TreeItem<Menu> itemSelect = itemsTreeTable.getSelectionModel().getSelectedItem();
 
         if (itemSelect != null) {
+            // on précise qu'on a terminé la commande de ce serveur
             if (typeItem.equals("boisson"))
                 JourneeManager.getInstance().boissonTermine(itemSelect.getValue().getBoisson());
             else
                 JourneeManager.getInstance().platTermine(itemSelect.getValue().getPlat());
         }
 
+        // on rafraichit le tableau
         afficheItems();
         btnServi.setVisible(false);
     }

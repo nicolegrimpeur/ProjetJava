@@ -22,11 +22,6 @@ public class JourneeManager {
     private final Map<String, ArrayList<Menu>> listService = new HashMap<>();
     private final Map<String, ArrayList<Menu>> menusVendus = new HashMap<>();
 
-    private final Map<String, ArrayList<EnumPlats>> platsVendus = new HashMap<>();
-    private final Map<String, ArrayList<EnumBoissons>> boissonsVendus = new HashMap<>();
-
-
-
     private JourneeManager() {
     }
 
@@ -36,10 +31,16 @@ public class JourneeManager {
         return instance;
     }
 
+    /**
+     * Fonction lancé au début de la journée
+     */
     public void debutJournee() {
+        // on rajoute un jour consécutif pour chaque employé présent dans la journée
         ManagEmployees.getInstance().addJourConsecutif(listEmployes);
+        // on lance la journée
         isJourneeEnCours = true;
 
+        // on supprime toutes les ventes précédentes
         JourneeManager.getInstance().resetVentes();
     }
 
@@ -51,6 +52,9 @@ public class JourneeManager {
         listEmployes.remove(employee);
     }
 
+    /**
+     * Termine la journée
+     */
     public void finJournee() {
         isJourneeEnCours = false;
         listEmployes.clear();
@@ -61,63 +65,88 @@ public class JourneeManager {
         return listService;
     }
 
+    /**
+     * Ajoute un item à la liste des menus à préparer
+     *
+     * @param employe le nom d'affichage du serveur
+     * @param menu    le menu qui lui correspond
+     */
     public void addMenuService(String employe, Menu menu) {
         listService.computeIfAbsent(employe, k -> new ArrayList<>());
         listService.get(employe).add(menu);
     }
 
+    /**
+     * Passe le plat à l'état suivant
+     *
+     * @param employe  le nom d'affichage du cuisinier
+     * @param menu     le menu à modifier
+     * @param employee le cuisinier en question
+     */
     public void nextStatusPlat(String employe, Menu menu, Employee employee) {
         int index = listService.get(employe).indexOf(menu);
         listService.get(employe).get(index).nextStatusPlat();
 
         Cuisinier cuisinier = (Cuisinier) employee;
+        // si le plat est affiché comme à servir, alors on l'ajoute aux plats réalisés du cuisinier
         if (listService.get(employe).get(index).getStatusPlat().equals(EnumStatus.ASERVIR.getAffichage()))
             if (cuisinier != null)
                 cuisinier.addPlatRealise(EnumPlats.rechercheParNom(menu.getPlat()));
     }
 
+    /**
+     * Passe le plat à l'état suivant
+     *
+     * @param employe  le nom d'affichage du cuisinier
+     * @param menu     le menu à modifier
+     * @param employee le cuisinier en question
+     */
     public void nextStatusBoisson(String employe, Menu menu, Employee employee) {
         int index = listService.get(employe).indexOf(menu);
         listService.get(employe).get(index).nextStatusBoisson();
 
         Barman barman = (Barman) employee;
+        // si le plat est affiché comme à servir, alors on l'ajoute aux plats réalisés du barman
         if (listService.get(employe).get(index).getStatusBoisson().equals(EnumStatus.ASERVIR.getAffichage()))
-                if (barman != null)
-                    barman.addCocktailRealise(EnumBoissons.rechercheParNom(menu.getBoisson()));
+            if (barman != null)
+                barman.addCocktailRealise(EnumBoissons.rechercheParNom(menu.getBoisson()));
     }
 
+    /**
+     * on précise que les plats de ce serveur sont terminés
+     *
+     * @param serveur le nom d'affichage du serveur
+     */
     public void platTermine(String serveur) {
-//        platsVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
         menusVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
 
         for (Menu menu : listService.get(serveur)) {
             menu.nextStatusPlat();
             menusVendus.get(serveur).add(menu);
-//            platsVendus.get(serveur).add(EnumPlats.rechercheParNom(menu.getPlat()));
         }
 
-        if (Objects.equals(listService.get(serveur).get(0).getStatusBoisson(), EnumStatus.ASERVIR.getAffichage()))
-            listService.remove(serveur);
+        // on supprime les menus de ce serveur en cours
+        listService.remove(serveur);
     }
 
+    /**
+     * on précise que les boissons de ce serveur sont terminés
+     *
+     * @param serveur le nom d'affichage du serveur
+     */
     public void boissonTermine(String serveur) {
-//        boissonsVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
         menusVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
 
         for (Menu menu : listService.get(serveur)) {
             menu.nextStatusBoisson();
             menusVendus.get(serveur).add(menu);
-//            boissonsVendus.get(serveur).add(EnumBoissons.rechercheParNom(menu.getBoisson()));
         }
 
-        if (Objects.equals(listService.get(serveur).get(0).getStatusPlat(), EnumStatus.ASERVIR.getAffichage())) {
-            listService.remove(serveur);
-        }
+        // on supprime les menus de ce serveur en cours
+        listService.remove(serveur);
     }
 
     public void resetVentes() {
-//        platsVendus.clear();
-//        boissonsVendus.clear();
         menusVendus.clear();
     }
 

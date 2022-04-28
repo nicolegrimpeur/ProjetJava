@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
 <AnchorPane prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screensControllers.ecransMonitoring.Performances">
    <children>
       <Label fx:id="labelNbPlats" layoutX="14.0" layoutY="14.0" text="Nombre de plats vendus : ">
@@ -20,15 +21,35 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <TableView fx:id="tableBarmans" layoutX="14.0" layoutY="90.0" prefHeight="225.0" prefWidth="250.0" />
-      <TableView fx:id="tableCuisiniers" layoutX="14.0" layoutY="315.0" prefHeight="225.0" prefWidth="250.0" />
-      <TableView fx:id="tableServeurs" layoutX="275.0" layoutY="90.0" prefHeight="225.0" prefWidth="250.0" />
-      <TableView fx:id="tablePlats" layoutX="536.0" layoutY="90.0" prefHeight="275.0" prefWidth="250.0" />
+      <TableView fx:id="tableBarmans" layoutX="14.0" layoutY="90.0" prefHeight="225.0" prefWidth="250.0">
+         <columns>
+            <TableColumn prefWidth="160.0" text="Barmans" />
+            <TableColumn prefWidth="90.0" text="Nb Boisssons" />
+         </columns></TableView>
+      <TableView fx:id="tableCuisiniers" layoutX="14.0" layoutY="315.0" prefHeight="225.0" prefWidth="250.0">
+         <columns>
+            <TableColumn prefWidth="160.0" text="Cuisiniers" />
+            <TableColumn prefWidth="90.0" text="Nb Plats" />
+         </columns></TableView>
+      <TableView fx:id="tableServeurs" layoutX="275.0" layoutY="90.0" prefHeight="225.0" prefWidth="250.0">
+         <columns>
+            <TableColumn prefWidth="160.0" text="Serveurs" />
+            <TableColumn prefWidth="90.0" text="Nb Servis" />
+         </columns></TableView>
+      <TableView fx:id="tablePlats" layoutX="536.0" layoutY="90.0" prefHeight="275.0" prefWidth="250.0">
+         <columns>
+            <TableColumn prefWidth="150.0" text="Plats" />
+            <TableColumn prefWidth="100.0" text="Ventes" />
+         </columns></TableView>
       <TableView fx:id="tableIngredients" layoutX="275.0" layoutY="315.0" prefHeight="225.0" prefWidth="250.0">
          <columns>
             <TableColumn prefWidth="150.0" text="Ingrédients" />
             <TableColumn prefWidth="100.0" text="Utilisés" />
          </columns></TableView>
-      <TableView fx:id="tableBoissons" layoutX="536.0" layoutY="365.0" prefHeight="175.0" prefWidth="250.0" />
+      <TableView fx:id="tableBoissons" layoutX="536.0" layoutY="365.0" prefHeight="175.0" prefWidth="250.0">
+         <columns>
+            <TableColumn prefWidth="150.0" text="Boissons" />
+            <TableColumn prefWidth="100.0" text="Ventes" />
+         </columns></TableView>
    </children>
 </AnchorPane>

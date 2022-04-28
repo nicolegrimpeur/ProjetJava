@@ -4,6 +4,8 @@ import employee.Barman;
 import employee.Cuisinier;
 import employee.Employee;
 import employee.Serveur;
+import ingredients.EnumIngredients;
+import ingredients.IngredientsManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,7 +15,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import journee.JourneeManager;
 import menu.Menu;
+import menuBoissons.EnumBoissons;
+import menuPlats.EnumPlats;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Performances {
@@ -30,11 +35,11 @@ public class Performances {
     @FXML
     TableView<Employee> tableServeurs;
     @FXML
-    TableView tableIngredients;
+    TableView<AffichagePerformance> tableIngredients;
     @FXML
-    TableView tablePlats;
+    TableView<AffichagePerformance> tablePlats;
     @FXML
-    TableView tableBoissons;
+    TableView<AffichagePerformance> tableBoissons;
 
     @FXML
     void initialize() {
@@ -43,14 +48,14 @@ public class Performances {
         donneesColonnes();
     }
 
+    /**
+     * Calcul le nombre de plats vendus et le bénéfice total
+     */
     private void calculs() {
         int nbPlatsVendus = 0;
         int nbBoissonsVendus = 0;
         int nbMenusVendus = 0;
         int beneficeTotal = 0;
-        Cuisinier cuisinier;
-        Barman barman;
-        Serveur serveur;
         ArrayList<Menu> menusServeur;
         int nbMenus100Ans = 0;
 
@@ -81,66 +86,44 @@ public class Performances {
         else
             beneficeTotal += 100 * (nbMenus100Ans / 7);
 
-        System.out.println("Nombre plats réalisés : " + nbPlatsVendus);
-        System.out.println("Nombre boissons réalisés : " + nbBoissonsVendus);
-        System.out.println("Nombre menus réalisés : " + nbMenusVendus);
-        System.out.println("Bénéfice total : " + beneficeTotal);
+//        System.out.println("Nombre plats réalisés : " + nbPlatsVendus);
+//        System.out.println("Nombre boissons réalisés : " + nbBoissonsVendus);
+//        System.out.println("Nombre menus réalisés : " + nbMenusVendus);
+//        System.out.println("Bénéfice total : " + beneficeTotal);
 
         labelNbPlats.setText("Nombre de plats vendus : " + nbPlatsVendus);
         labelNbBoissons.setText("Nombre de boissons vendus : " + nbBoissonsVendus);
         labelBenefices.setText("Bénéfice total : " + beneficeTotal);
     }
 
+    /**
+     * Initialise les colonnes des TableView
+     */
     private void initColonnes() {
-        // on crée les colonnes
-        TableColumn<Employee, String> itemsCol = new TableColumn<>("Barman");
-        TableColumn<Employee, String> statusCol = new TableColumn<>("Préparations");
+        tableBarmans.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("affichage"));
+        tableBarmans.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("nbItemsVendus"));
 
-        // on leur assigne la valeur à laquelle chaque colonne correspond
-        itemsCol.setCellValueFactory(new PropertyValueFactory<>("affichage"));
-        statusCol.setCellValueFactory(new PropertyValueFactory<>("nbItemsVendus"));
+        tableCuisiniers.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("affichage"));
+        tableCuisiniers.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("nbItemsVendus"));
 
-        // on set la taille de chaque colonne
-        itemsCol.setPrefWidth(150);
-        statusCol.setPrefWidth(100);
+        tableServeurs.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("affichage"));
+        tableServeurs.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("nbItemsVendus"));
 
-        // on ajoute les colonnes à la table
-        tableBarmans.getColumns().setAll(itemsCol, statusCol);
+        tableIngredients.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("nom"));
+        tableIngredients.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("nombre"));
 
+        tablePlats.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("nom"));
+        tablePlats.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("nombre"));
 
-        // on crée les colonnes
-        itemsCol = new TableColumn<>("Cuisinier");
-        statusCol = new TableColumn<>("Nombre préparé");
-
-        // on leur assigne la valeur à laquelle chaque colonne correspond
-        itemsCol.setCellValueFactory(new PropertyValueFactory<>("affichage"));
-        statusCol.setCellValueFactory(new PropertyValueFactory<>("Préparations"));
-
-        // on set la taille de chaque colonne
-        itemsCol.setPrefWidth(150);
-        statusCol.setPrefWidth(100);
-
-        // on ajoute les colonnes à la table
-        tableCuisiniers.getColumns().setAll(itemsCol, statusCol);
-
-
-        // on crée les colonnes
-        itemsCol = new TableColumn<>("Serveur");
-        statusCol = new TableColumn<>("Servis");
-
-        // on leur assigne la valeur à laquelle chaque colonne correspond
-        itemsCol.setCellValueFactory(new PropertyValueFactory<>("affichage"));
-        statusCol.setCellValueFactory(new PropertyValueFactory<>("nbItemsVendus"));
-
-        // on set la taille de chaque colonne
-        itemsCol.setPrefWidth(150);
-        statusCol.setPrefWidth(100);
-
-        // on ajoute les colonnes à la table
-        tableServeurs.getColumns().setAll(itemsCol, statusCol);
+        tableBoissons.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("nom"));
+        tableBoissons.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("nombre"));
     }
 
+    /**
+     * Ajoute les données aux colonnes
+     */
     private void donneesColonnes() {
+        // affichage des données sur les employés
         ObservableList<Employee> tabBarmans = FXCollections.observableArrayList();
         ObservableList<Employee> tabCuisiniers = FXCollections.observableArrayList();
         ObservableList<Employee> tabServeurs = FXCollections.observableArrayList();
@@ -157,5 +140,38 @@ public class Performances {
         tableBarmans.setItems(tabBarmans);
         tableCuisiniers.setItems(tabCuisiniers);
         tableServeurs.setItems(tabServeurs);
+
+
+        // affichage des données sur les ingrédients
+        ObservableList<AffichagePerformance> tabIngredients = FXCollections.observableArrayList();
+
+        for (EnumIngredients ingredient: EnumIngredients.values())
+            tabIngredients.add(new AffichagePerformance(ingredient.getName(), IngredientsManager.getInstance().ingredientsManquants(ingredient)));
+
+        tableIngredients.setItems(tabIngredients);
+
+
+        // affichage des données sur les plats et les boissons
+        ObservableList<AffichagePerformance> tabPlats = FXCollections.observableArrayList();
+        ObservableList<AffichagePerformance> tabBoissons = FXCollections.observableArrayList();
+
+        for (EnumPlats plat: EnumPlats.values())
+            tabPlats.add(new AffichagePerformance(plat.getName(), 0));
+        for (EnumBoissons boisson: EnumBoissons.values())
+            tabBoissons.add(new AffichagePerformance(boisson.getName(), 0));
+
+        for (ArrayList<Menu> menuArrayList: JourneeManager.getInstance().getMenusVendus().values()) {
+            for (Menu menu: menuArrayList) {
+                for (AffichagePerformance affichagePerformance: tabPlats)
+                    if (menu.getPlat().equals(affichagePerformance.getNom()))
+                        affichagePerformance.nombre++;
+                for (AffichagePerformance affichagePerformance: tabBoissons)
+                    if (menu.getBoisson().equals(affichagePerformance.getNom()))
+                        affichagePerformance.nombre++;
+            }
+        }
+
+        tablePlats.setItems(tabPlats);
+        tableBoissons.setItems(tabBoissons);
     }
 }

@@ -32,7 +32,7 @@ public class IngredientsManager {
      * @return nombre d'ingrédients manquants
      */
     public int ingredientsManquants(EnumIngredients ingredient) {
-        return Math.max(stocks.get(ingredient) - ingredient.getStockInitial(), 0);
+        return Math.max(ingredient.getStockInitial() - stocks.get(ingredient), 0);
     }
 
     /**

@@ -15,7 +15,7 @@ public class Monitoring {
     public void launchGestionEmployes() {
         Parent pane = null;
         try {
-            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("ecransMonitoring/gestionEmployes.fxml")));
+            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/ecransMonitoring/gestionEmployes.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -25,7 +25,7 @@ public class Monitoring {
     public void launchPerformances() {
         Parent pane = null;
         try {
-            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("ecransMonitoring/performances.fxml")));
+            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/ecransMonitoring/performances.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,7 +35,7 @@ public class Monitoring {
     public void launchProgrammation() {
         Parent pane = null;
         try {
-            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("ecransMonitoring/programmation.fxml")));
+            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/ecransMonitoring/programmation.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -45,7 +45,7 @@ public class Monitoring {
     public void launchReserves() {
         Parent pane = null;
         try {
-            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("ecransMonitoring/reserves.fxml")));
+            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/ecransMonitoring/reserves.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }

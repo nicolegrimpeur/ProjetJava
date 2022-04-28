@@ -148,7 +148,6 @@ public class Programmation {
     }
 
     public void clickTableJournee(MouseEvent mouseEvent) {
-        System.out.println(mouseEvent.getClickCount());
         if (mouseEvent.getClickCount() >= 2) {
             TreeItem<Employee> itemSelect = listJournee.getSelectionModel().getSelectedItem();
 

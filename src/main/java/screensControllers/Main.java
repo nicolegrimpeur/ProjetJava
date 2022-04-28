@@ -26,7 +26,7 @@ public class Main {
     public void launchPriseDeCommande() {
         Parent pane = null;
         try {
-            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("serveurs.fxml")));
+            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/serveurs.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -38,7 +38,7 @@ public class Main {
         FXMLLoader loader;
         Parent pane = null;
         try {
-            loader = new FXMLLoader(getClass().getResource("/barmansEtCuisiniers.fxml"));
+            loader = new FXMLLoader(getClass().getResource("/fxml/barmansEtCuisiniers.fxml"));
             pane = loader.load();
             loader.<BarmansEtCuisiniers>getController().setTypeItem("boisson");
             loader.<BarmansEtCuisiniers>getController().initScreen();
@@ -53,7 +53,7 @@ public class Main {
         FXMLLoader loader;
         Parent pane = null;
         try {
-            loader = new FXMLLoader(getClass().getResource("/barmansEtCuisiniers.fxml"));
+            loader = new FXMLLoader(getClass().getResource("/fxml/barmansEtCuisiniers.fxml"));
             pane = loader.load();
             loader.<BarmansEtCuisiniers>getController().setTypeItem("plat");
             loader.<BarmansEtCuisiniers>getController().initScreen();
@@ -67,7 +67,7 @@ public class Main {
     public void launchMonitoring() {
         Parent pane = null;
         try {
-            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("monitoring.fxml")));
+            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/monitoring.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }

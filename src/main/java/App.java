@@ -1,5 +1,4 @@
 import employee.*;
-import html.HtmlManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,16 +10,7 @@ import java.util.Scanner;
 
 public class App extends Application {
     public static void main(String[] args) {
-        testPdf();
         launch(args);
-    }
-
-    public static void testPdf() {
-        try {
-            HtmlManager htmlToPdf = new HtmlManager();
-            htmlToPdf.generateHtmlToPdf();
-        } catch (Exception ignored) {
-        }
     }
 
     public static void accueil() {
@@ -54,11 +44,12 @@ public class App extends Application {
         ManagEmployees.getInstance().addEmploye(new Manager("The", "Manager", 2000));
 
         try {
-            Parent root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/main.fxml")));
-            stage.setTitle("Page principale");;
-            stage.setScene(new Scene(root,800,700));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/main.fxml")));
+            stage.setTitle("Page principale");
+            ;
+            stage.setScene(new Scene(root, 800, 700));
             stage.show();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

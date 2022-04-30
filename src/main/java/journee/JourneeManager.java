@@ -2,6 +2,7 @@ package journee;
 
 import employee.Employee;
 import employee.ManagEmployees;
+import html.HtmlManager;
 import ingredients.IngredientsManager;
 import menu.Menu;
 import status.EnumStatus;
@@ -144,6 +145,9 @@ public class JourneeManager {
         for (Employee employee: listEmployes)
             if (employee.getAffichage().equals(serveur))
                 employee.addNbItemsVendus(listService.get(serveur).size());
+
+        HtmlManager.getInstance().generateFacture(serveur);
+        HtmlManager.getInstance().generateAddition(serveur);
 
         // on supprime les menus de ce serveur en cours
         listService.remove(serveur);

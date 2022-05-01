@@ -7,9 +7,12 @@ import ingredients.IngredientsManager;
 import menu.Menu;
 import status.EnumStatus;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class JourneeManager {
     private static JourneeManager instance = null;
@@ -41,6 +44,31 @@ public class JourneeManager {
         JourneeManager.getInstance().resetVentes();
 
         IngredientsManager.getInstance().initStocksInitial();
+
+        try {
+            delete("Additions/");
+        } catch (Exception ignored) {
+        }
+    }
+
+    /**
+     * Permet de supprimer le contenu d'un dossier
+     *
+     * @param path le path vers le dossier
+     */
+    public static void delete(String path) {
+        File f = new File(path);
+        if (f.isDirectory()) {
+            // on liste le contenu du répertoire
+            String[] files = f.list();
+
+            if (files != null)
+                for (String tmp : files) {
+                    File file = new File(f, tmp);
+                    // suppression du fichier
+                    file.delete();
+                }
+        }
     }
 
     public void addEmployee(Employee employee) {
@@ -142,7 +170,7 @@ public class JourneeManager {
     }
 
     private void ajoutMenusServeur(String serveur) {
-        for (Employee employee: listEmployes)
+        for (Employee employee : listEmployes)
             if (employee.getAffichage().equals(serveur))
                 employee.addNbItemsVendus(listService.get(serveur).size());
 

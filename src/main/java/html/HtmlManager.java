@@ -17,6 +17,7 @@ import java.nio.file.FileSystems;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -39,13 +40,32 @@ public class HtmlManager {
      * @param serveur le nom d'affichage du serveur qui a servi la table
      */
     public void generateFacture(String serveur) {
+        getLastNumberFacture();
         try {
             File inputHTML = new File(FACTURE_INPUT);
             Document doc = createWellFormedHtml(inputHTML, true, serveur);
             xhtmlToPdf(doc, FACTURE_OUTPUT + "Facture " + nbFactures++ + ".pdf");
-        } catch (Exception exception) {
-            System.out.println(exception);
+        } catch (Exception ignored) {
         }
+    }
+
+    /**
+     * Permet de récupérer le dernier numéro dans le dossier des factures
+     */
+    private void getLastNumberFacture() {
+        File dossierFacture = new File("Factures/");
+        String[] files = dossierFacture.list();
+
+        int max = -1;
+        String tmp;
+        if (files != null)
+            for (String file : files) {
+                tmp = file.replace("Facture ", "").replace(".pdf", "");
+                if (Integer.parseInt(tmp) > max)
+                    max = Integer.parseInt(tmp);
+            }
+
+        nbFactures = ++max;
     }
 
     /**
@@ -56,13 +76,12 @@ public class HtmlManager {
         try {
             Date aujourdhui = new Date();
 
-            SimpleDateFormat formater = new SimpleDateFormat("yy MM dd  HH'h'mm'm'ss's' SSSSS");
+            SimpleDateFormat formater = new SimpleDateFormat(" HH'h'mm'm'ss's'");
 
             File inputHTML = new File(ADDITION_INPUT);
             Document doc = createWellFormedHtml(inputHTML, false, serveur);
-            xhtmlToPdf(doc, ADDITION_OUTPUT + formater.format(aujourdhui) + ".pdf");
+            xhtmlToPdf(doc, ADDITION_OUTPUT + serveur + formater.format(aujourdhui) + ".pdf");
         } catch (Exception ignored) {
-            System.out.println(ignored);
         }
     }
 

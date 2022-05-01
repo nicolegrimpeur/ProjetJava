@@ -38,12 +38,27 @@ public class HtmlManager {
         return instance;
     }
 
+    public String getAdditionOutput() {
+        return ADDITION_OUTPUT;
+    }
+
+    /**
+     * Permet de créer dans lesquels seront les additions et les factures
+     */
+    public void createDirectories() {
+        File dir = new File(ADDITION_OUTPUT);
+        dir.mkdir();
+        dir = new File(FACTURE_OUTPUT);
+        dir.mkdir();
+    }
+
     /**
      * Permet de générer une facture dans le dossier défini par FACTURE_OUTPUT
      * @param serveur le nom d'affichage du serveur qui a servi la table
      */
     public void generateFacture(String serveur) {
         getLastNumberFacture();
+        createDirectories();
         try {
             File inputHTML = new File(FACTURE_INPUT);
             Document doc = createWellFormedHtmlFactureAddition(inputHTML, true, serveur);
@@ -56,6 +71,8 @@ public class HtmlManager {
      * Permet de récupérer le dernier numéro dans le dossier des factures
      */
     private void getLastNumberFacture() {
+        createDirectories();
+
         File dossierFacture = new File("Factures/");
         String[] files = dossierFacture.list();
 

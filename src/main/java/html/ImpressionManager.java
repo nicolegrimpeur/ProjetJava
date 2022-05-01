@@ -9,6 +9,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class ImpressionManager {
+    /**
+     * Permet d'imprimer un fichier pdf
+     * @param path le chemin vers le fichier pdf
+     */
     public static void imprimerFichier(String path) {
         try {
             PDDocument document = PDDocument.load(new File(path));

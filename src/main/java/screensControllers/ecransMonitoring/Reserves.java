@@ -42,7 +42,6 @@ public class Reserves {
                     spinnerNbIngredient.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0));
                 tableIngredients.getSelectionModel().getSelectedItem().setStockInitial(spinnerNbIngredient.getValue());
                 tableIngredients.refresh();
-                System.out.println(EnumIngredients.CHAMPIGNON.getStockInitial());
             }
         });
     }

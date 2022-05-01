@@ -64,6 +64,17 @@ public class Main {
         clearAnchorBtn.setVisible(true);
     }
 
+    public void launchAdditions() {
+        Parent pane = null;
+        try {
+            pane = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("fxml/additions.fxml")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        rootPane.getChildren().setAll(pane);
+        clearAnchorBtn.setVisible(true);
+    }
+
     public void launchMonitoring() {
         Parent pane = null;
         try {

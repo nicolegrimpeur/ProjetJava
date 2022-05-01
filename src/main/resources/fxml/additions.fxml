@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screensControllers.Additions">
+   <children>
+      <Button fx:id="btnImprimer" layoutX="400.0" layoutY="285.0" mnemonicParsing="false" onAction="#clickImpression" text="Imprimer">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <ListView fx:id="tableAdditions" layoutX="25.0" layoutY="75.0" prefHeight="500.0" prefWidth="300.0" />
+      <Label layoutX="118.0" layoutY="55.0" text="Liste des additions">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

@@ -27,18 +27,18 @@
                 <Font size="14.0"/>
             </font>
         </Button>
-        <Button layoutX="201.0" layoutY="35.0" mnemonicParsing="false" text="Barman" onAction="#launchEcranBarmans">
+        <Button layoutX="201.0" layoutY="35.0" mnemonicParsing="false" onAction="#launchEcranBarmans" text="Barman">
             <font>
                 <Font size="14.0"/>
             </font>
         </Button>
-        <Button layoutX="273.0" layoutY="35.0" mnemonicParsing="false" text="Cuisiniers"
-                onAction="#launchEcranCuisiniers">
+        <Button layoutX="273.0" layoutY="35.0" mnemonicParsing="false" onAction="#launchEcranCuisiniers"
+                text="Cuisiniers">
             <font>
                 <Font size="14.0"/>
             </font>
         </Button>
-        <Button layoutX="358.0" layoutY="35.0" mnemonicParsing="false" text="Monitoring" onAction="#launchMonitoring">
+        <Button layoutX="440.0" layoutY="35.0" mnemonicParsing="false" onAction="#launchMonitoring" text="Monitoring">
             <font>
                 <Font size="14.0"/>
             </font>
@@ -51,5 +51,10 @@
         </Button>
         <Separator layoutX="-1.0" layoutY="86.0" prefHeight="16.0" prefWidth="800.0"/>
         <AnchorPane fx:id="rootPane" layoutY="100.0" prefHeight="600.0" prefWidth="800.0"/>
+        <Button layoutX="356.0" layoutY="35.0" mnemonicParsing="false" text="Additions" onAction="#launchAdditions">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Button>
     </children>
 </AnchorPane>

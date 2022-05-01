@@ -8,11 +8,9 @@ import menu.Menu;
 import status.EnumStatus;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class JourneeManager {
     private static JourneeManager instance = null;

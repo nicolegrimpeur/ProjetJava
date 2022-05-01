@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="screensControllers.ecransMonitoring.Reserves"
-            prefHeight="550.0" prefWidth="800.0">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
+<AnchorPane prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screensControllers.ecransMonitoring.Reserves">
+   <children>
+      <TableView fx:id="tableIngredients" disable="true" layoutX="25.0" layoutY="25.0" onMouseClicked="#clickTable" prefHeight="500.0" prefWidth="300.0">
+        <columns>
+          <TableColumn prefWidth="150.0" text="Ingrédients" />
+            <TableColumn prefWidth="150.0" text="Stocks" />
+        </columns>
+      </TableView>
+      <Button layoutX="458.0" layoutY="486.0" mnemonicParsing="false" onAction="#impressionListeCourse" text="Imprimer liste de course">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Spinner fx:id="spinnerNbIngredient" disable="true" editable="true" layoutX="492.0" layoutY="153.0" />
+      <Label layoutX="435.0" layoutY="156.0" text="Stocks :">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </children>
 </AnchorPane>

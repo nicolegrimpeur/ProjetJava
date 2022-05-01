@@ -1,6 +1,8 @@
 package html;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+import ingredients.EnumIngredients;
+import ingredients.IngredientsManager;
 import journee.JourneeManager;
 import menu.Menu;
 import org.jsoup.Jsoup;
@@ -17,7 +19,6 @@ import java.nio.file.FileSystems;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -25,8 +26,10 @@ public class HtmlManager {
     private static HtmlManager instance = null;
     private static final String FACTURE_INPUT = "resources/htmlTemplate/factureTemplate.html";
     private static final String ADDITION_INPUT = "resources/htmlTemplate/additionTemplate.html";
+    private static final String COURSES_INPUT = "resources/htmlTemplate/coursesTemplate.html";
     private static final String FACTURE_OUTPUT = "Factures/";
     private static final String ADDITION_OUTPUT = "Additions/";
+    private static final String COURSES_OUTPUT = "resources/";
     private static int nbFactures = 0;
 
     public static HtmlManager getInstance() {
@@ -43,7 +46,7 @@ public class HtmlManager {
         getLastNumberFacture();
         try {
             File inputHTML = new File(FACTURE_INPUT);
-            Document doc = createWellFormedHtml(inputHTML, true, serveur);
+            Document doc = createWellFormedHtmlFactureAddition(inputHTML, true, serveur);
             xhtmlToPdf(doc, FACTURE_OUTPUT + "Facture " + nbFactures++ + ".pdf");
         } catch (Exception ignored) {
         }
@@ -79,7 +82,7 @@ public class HtmlManager {
             SimpleDateFormat formater = new SimpleDateFormat(" HH'h'mm'm'ss's'");
 
             File inputHTML = new File(ADDITION_INPUT);
-            Document doc = createWellFormedHtml(inputHTML, false, serveur);
+            Document doc = createWellFormedHtmlFactureAddition(inputHTML, false, serveur);
             xhtmlToPdf(doc, ADDITION_OUTPUT + serveur + formater.format(aujourdhui) + ".pdf");
         } catch (Exception ignored) {
         }
@@ -92,7 +95,7 @@ public class HtmlManager {
      * @param serveur nom d'affichage du serveur qui a servi
      * @return le document modifié
      */
-    private Document createWellFormedHtml(File inputHTML, Boolean isFacture, String serveur) throws IOException {
+    private Document createWellFormedHtmlFactureAddition(File inputHTML, Boolean isFacture, String serveur) throws IOException {
         Document document = Jsoup.parse(inputHTML, "UTF-8");
         document.outputSettings()
                 .syntax(Document.OutputSettings.Syntax.xml);
@@ -184,6 +187,52 @@ public class HtmlManager {
         ligne = new Element("tr");
         ligne.appendChildren(tabLigne);
         table.appendChild(ligne);
+
+        return document;
+    }
+
+    /**
+     * Permet de générer la liste de course dans le dossier défini par COURSES_OUTPUT
+     */
+    public void generateListeDeCourse() {
+        try {
+            File inputHTML = new File(COURSES_INPUT);
+            Document doc = createWellFormedHtmlCourses(inputHTML);
+            xhtmlToPdf(doc, COURSES_OUTPUT + "courses.pdf");
+            ImpressionManager.imprimerFichier(COURSES_OUTPUT + "courses.pdf");
+        } catch (Exception ignored) {
+        }
+    }
+
+    /**
+     * Permet de modifier le fichier HTML de la liste de courses
+     * @param inputHTML le fichier HTML récupéré
+     * @return le document modifié
+     */
+    private Document createWellFormedHtmlCourses(File inputHTML) throws IOException {
+        Document document = Jsoup.parse(inputHTML, "UTF-8");
+        document.outputSettings()
+                .syntax(Document.OutputSettings.Syntax.xml);
+
+        ArrayList<Node> tabLigne;
+        Element table, ligne, colonneIngredients, colonneNombre;
+        table = document.getElementById("tableau");
+
+        for (EnumIngredients ingredient : EnumIngredients.values()) {
+            // on affiche le nom de l'ingrédient ainsi que le nombre à acheter
+            ligne = new Element("tr");
+            colonneIngredients = new Element("td");
+            colonneIngredients.appendText(ingredient.getName());
+            colonneNombre = new Element("td");
+            colonneNombre.appendText(Integer.toString(IngredientsManager.getInstance().ingredientsManquants(ingredient)));
+
+            tabLigne = new ArrayList<>();
+            tabLigne.add(colonneIngredients);
+            tabLigne.add(colonneNombre);
+
+            ligne.appendChildren(tabLigne);
+            table.appendChild(ligne);
+        }
 
         return document;
     }

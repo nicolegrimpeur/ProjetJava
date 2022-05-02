@@ -2,16 +2,16 @@
 
 ## Sommaire
 
-- [Introduction](#introduction-a-idintroductiona)
-- [Monitoring](#monitoring-a-idmonitoringa)
-    - [Gestion des employés](#gestion-des-employs-a-idgestiona)
-    - [Réserves](#rserves-a-idreservesa)
-    - [Programmer employés](#programmer-employs-a-idprogrammationa)
-    - [Performances](#performances-a-idperformancesa)
-- [Prendre une commande](#prendre-une-commande-a-idcommandea)
-- [Barmans](#barmans-a-idbarmansa)
-- [Cuisiniers](#cuisiniers-a-idcuisiniersa)
-- [Additions](#additions-a-idadditionsa)
+- [Introduction](#introduction)
+- [Monitoring](#monitoring)
+    - [Gestion des employés](#gestion)
+    - [Réserves](#reserves)
+    - [Programmer employés](#programmation)
+    - [Performances](#performances)
+- [Prendre une commande](#commande)
+- [Barmans](#barmans)
+- [Cuisiniers](#cuisiniers)
+- [Additions](#additions)
 
 ## Introduction <a id="introduction"></a>
 

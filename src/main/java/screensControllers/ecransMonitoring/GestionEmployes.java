@@ -53,12 +53,26 @@ public class GestionEmployes {
     public void ajoutEmploye() {
         textErreur.setVisible(false);
 
+        String nom = textNom.getText();
+        String prenom = textPrenom.getText();
+
         try {
-            String nom = textNom.getText();
-            String prenom = textPrenom.getText();
             int salaire = Integer.parseInt(textSalaire.getText());
 
             if (!Objects.equals(nom, "") && !Objects.equals(prenom, "") && salaire != 0 && choiceEmploi.getValue() != null) {
+
+                boolean employeeExisteDeja = false;
+                Employee employeeExistant = null;
+                for (Employee employee : ManagEmployees.getInstance().getListEmployes())
+                    if (employee.getNom().equals(nom) && employee.getPrenom().equals(prenom)) {
+                        employeeExisteDeja = true;
+                        employeeExistant = employee;
+                        break;
+                    }
+
+                if (employeeExisteDeja)
+                    ManagEmployees.getInstance().supprimerEmploye(employeeExistant);
+
                 switch (choiceEmploi.getValue()) {
                     case "Barman" -> ManagEmployees.getInstance().addEmploye(new Barman(nom, prenom, salaire));
                     case "Cuisinier" -> ManagEmployees.getInstance().addEmploye(new Cuisinier(nom, prenom, salaire));
@@ -80,7 +94,10 @@ public class GestionEmployes {
                 afficheErreur(erreur);
             }
         } catch (NumberFormatException e) {
-            afficheErreur("Merci de rentrer un nombre entier pour le salaire");
+            if (Objects.equals(nom, "") && Objects.equals(prenom, "") && choiceEmploi.getValue() == null)
+                afficheErreur("Merci de rentrer des informations pour l'employé à ajouter");
+            else
+                afficheErreur("Merci de rentrer un nombre entier pour le salaire");
         }
 
         afficheListEmploye();
@@ -133,6 +150,17 @@ public class GestionEmployes {
         // on ajoute les éléments à la table
         listEmploye.setRoot(rootElement);
         listEmploye.setShowRoot(false);
+    }
+
+    public void clickTableSupprimer() {
+        TreeItem<Employee> itemSelect = listEmploye.getSelectionModel().getSelectedItem();
+        if (itemSelect != null) {
+            Employee employee = itemSelect.getValue();
+            textNom.setText(employee.getNom());
+            textPrenom.setText(employee.getPrenom());
+            textSalaire.setText(Integer.toString(employee.getSalaire()));
+            choiceEmploi.setValue(employee.getJob());
+        }
     }
 
     /**

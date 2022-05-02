@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import journee.JourneeManager;
 import menu.Menu;
 import status.EnumStatus;
@@ -38,6 +39,7 @@ public class BarmansEtCuisiniers {
 
     /**
      * Permet de modifier typeItem
+     *
      * @param typeItem boisson ou plat, selon si l'on est sur l'écran Cuisinier ou Barmans
      */
     public void setTypeItem(String typeItem) {
@@ -119,6 +121,7 @@ public class BarmansEtCuisiniers {
 
     /**
      * Permet de récupérer l'état global d'un serveur en fonction des items qu'il doit gérer
+     *
      * @param serveur le nom d'affichage du serveur
      * @return le status de celui ci
      */
@@ -180,6 +183,10 @@ public class BarmansEtCuisiniers {
                     currentEmployee = employee;
 
         afficheBtnEtatSuivant();
+        clickTable();
+
+        // on met le focus sur la table (permet de switch d'employé en gardant le focus sur l'item sélectionné)
+        itemsTreeTable.requestFocus();
     }
 
     /**
@@ -191,7 +198,7 @@ public class BarmansEtCuisiniers {
     }
 
     /**
-     * Gère le click sur la table
+     * Gère le click sur la table pour afficher / désactiver ou non les boutons
      */
     public void clickTable() {
         // si un item est sélectionné
@@ -226,6 +233,22 @@ public class BarmansEtCuisiniers {
                                 parent == itemsTreeTable.getRoot());
             }
         }
+    }
+
+    /**
+     * Permet de lancer les fonctions nécessaires au click sur une touche du clavier
+     *
+     * @param event l'événement renvoyé
+     */
+    public void keyReleasedOnTable(KeyEvent event) {
+        if (event.getCode().getName().equals("Enter"))
+            // si le bouton état suivant est visible et actif
+            if (!btnEtatSuivant.isDisable() && btnEtatSuivant.isVisible())
+                clickBtnEtatSuivant();
+            else if (btnServi.isVisible()) // si le bouton servi est visible
+                clickBtnServi();
+
+        clickTable();
     }
 
     /**

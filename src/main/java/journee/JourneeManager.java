@@ -3,7 +3,7 @@ package journee;
 import employee.Employee;
 import employee.ManagEmployees;
 import html.HtmlManager;
-import ingredients.IngredientsManager;
+import ingredients.EnumIngredients;
 import menu.Menu;
 import status.EnumStatus;
 
@@ -41,7 +41,9 @@ public class JourneeManager {
         // on supprime toutes les ventes précédentes
         JourneeManager.getInstance().resetVentes();
 
-        IngredientsManager.getInstance().initStocksInitial();
+        // permet au lancement de la journée de remettre à 0 le stock initial avec le stock présent en début de journée
+        for (EnumIngredients ingredient: EnumIngredients.values())
+            ingredient.setStocksInitial(ingredient.getStocks());
 
         try {
             delete("Additions/");

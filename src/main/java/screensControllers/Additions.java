@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 
 import java.io.File;
+import java.util.Arrays;
 
 
 public class Additions {
@@ -29,11 +30,10 @@ public class Additions {
         File dir = new File("Additions/");
         File[] liste = dir.listFiles();
 
-
         ObservableList<String> tabAddition = FXCollections.observableArrayList();
         if (liste != null) {
             if (liste.length != 0)
-                for (int i = tabAddition.size(); i >= 0; i--)
+                for (int i = liste.length - 1; i >= 0; i--)
                     tabAddition.add(liste[i].getName().replace(".pdf", ""));
         } else
             HtmlManager.getInstance().createDirectories();

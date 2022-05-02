@@ -210,7 +210,7 @@ public class Serveurs {
                     menu.setPrix("");
                     clickMenuCentAns(); // permet de rajouter un tableau si besoin
                     // on rajoute le menu au dernier menu 100 ans non complet
-                    for (ArrayList<Menu> tabCommandes: currentServeur.listCommandes100Ans)
+                    for (ArrayList<Menu> tabCommandes : currentServeur.listCommandes100Ans)
                         if (tabCommandes.size() < 7) {
                             tabCommandes.add(menu);
                             break;
@@ -272,6 +272,7 @@ public class Serveurs {
 
     /**
      * Supprime un élément du panier au double click
+     *
      * @param mouseEvent événement d'entré envoyé par FXML
      */
     public void clickPanier(MouseEvent mouseEvent) {
@@ -301,6 +302,8 @@ public class Serveurs {
 
                     // on accède au tableau index obtenu - 1, car Menus classiques occupe le premier élément
                     currentServeur.listCommandes100Ans.get(i - 1).remove(itemSelect.getValue());
+                    if (currentServeur.listCommandes100Ans.get(i - 1).size() == 0)
+                        currentServeur.listCommandes100Ans.remove(i - 1);
                 }
             } catch (Exception ignored) { // si l'on clique sur "Menus classiques" ou "Menu 100 ans"
             } finally {
@@ -312,12 +315,12 @@ public class Serveurs {
     }
 
     public void submit() {
-        if (currentServeur != null) {
+        if (currentServeur != null && (currentServeur.listCommandes.size() != 0 || currentServeur.listCommandes100Ans.size() != 0)) {
             String serveur = currentServeur.getAffichage();
-            for (Menu menu: currentServeur.listCommandes)
+            for (Menu menu : currentServeur.listCommandes)
                 JourneeManager.getInstance().addMenuService(serveur, menu);
 
-            for (ArrayList<Menu> tabMenu100Ans: currentServeur.listCommandes100Ans)
+            for (ArrayList<Menu> tabMenu100Ans : currentServeur.listCommandes100Ans)
                 for (Menu menu : tabMenu100Ans)
                     JourneeManager.getInstance().addMenuService(serveur, menu);
 

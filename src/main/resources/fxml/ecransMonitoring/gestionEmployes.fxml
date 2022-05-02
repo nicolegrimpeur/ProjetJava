@@ -3,38 +3,35 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="screensControllers.ecransMonitoring.GestionEmployes">
+<AnchorPane prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screensControllers.ecransMonitoring.GestionEmployes">
     <children>
-        <Separator layoutX="400.0" orientation="VERTICAL" prefHeight="550.0"/>
+        <Separator layoutX="400.0" orientation="VERTICAL" prefHeight="550.0" />
         <Label layoutX="14.0" layoutY="14.0" text="Ajouter un employé" underline="true">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </Label>
         <Label layoutX="414.0" layoutY="14.0" text="Supprimer un employé" underline="true">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </Label>
-        <Label layoutX="43.0" layoutY="70.0" text="Nom :"/>
-        <TextField fx:id="textNom" layoutX="137.0" layoutY="66.0"/>
-        <Label layoutX="43.0" layoutY="124.0" text="Prénom :"/>
-        <TextField fx:id="textPrenom" layoutX="137.0" layoutY="120.0"/>
-        <Label layoutX="43.0" layoutY="179.0" text="Emploi :"/>
-        <ChoiceBox fx:id="choiceEmploi" layoutX="137.0" layoutY="175.0" prefWidth="150.0"/>
-        <Label layoutX="43.0" layoutY="238.0" text="Salaire :"/>
-        <TextField fx:id="textSalaire" layoutX="137.0" layoutY="234.0"/>
-        <Button layoutX="160.0" layoutY="286.0" mnemonicParsing="false" onAction="#ajoutEmploye"
-                text="Ajouter employé" fx:id="btnAjouterEmploye"/>
-        <Button layoutX="544.0" layoutY="480.0" mnemonicParsing="false" text="Supprimer employé" onAction="#supprimerEmploye" fx:id="btnSupprimerEmploye"/>
-        <Label fx:id="textErreur" layoutX="20.0" layoutY="351.0" maxWidth="255.0" text="Une erreur a eu lieu : "
-               visible="false" wrapText="true">
+        <Label layoutX="43.0" layoutY="70.0" text="Nom :" />
+        <TextField fx:id="textNom" layoutX="137.0" layoutY="66.0" />
+        <Label layoutX="43.0" layoutY="124.0" text="Prénom :" />
+        <TextField fx:id="textPrenom" layoutX="137.0" layoutY="120.0" />
+        <Label layoutX="43.0" layoutY="179.0" text="Emploi :" />
+        <ChoiceBox fx:id="choiceEmploi" layoutX="137.0" layoutY="175.0" prefWidth="150.0" />
+        <Label layoutX="43.0" layoutY="238.0" text="Salaire :" />
+        <TextField fx:id="textSalaire" layoutX="137.0" layoutY="234.0" />
+        <Button fx:id="btnAjouterEmploye" layoutX="160.0" layoutY="286.0" mnemonicParsing="false" onAction="#ajoutEmploye" text="Ajouter employé" />
+        <Button fx:id="btnSupprimerEmploye" layoutX="544.0" layoutY="480.0" mnemonicParsing="false" onAction="#supprimerEmploye" text="Supprimer employé" />
+        <Label fx:id="textErreur" layoutX="85.0" layoutY="344.0" maxWidth="255.0" prefWidth="255.0" text="Une erreur a eu lieu : " textAlignment="CENTER" visible="false" wrapText="true">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </Label>
-        <TreeTableView fx:id="listEmploye" layoutX="454.0" layoutY="66.0" prefHeight="400.0" prefWidth="300.0">
+        <TreeTableView fx:id="listEmploye" layoutX="454.0" layoutY="66.0" onMouseClicked="#clickTableSupprimer" prefHeight="400.0" prefWidth="300.0">
         </TreeTableView>
     </children>
 </AnchorPane>

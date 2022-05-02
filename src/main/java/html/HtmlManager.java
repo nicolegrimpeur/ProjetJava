@@ -2,7 +2,6 @@ package html;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import ingredients.EnumIngredients;
-import ingredients.IngredientsManager;
 import journee.JourneeManager;
 import menu.Menu;
 import org.jsoup.Jsoup;
@@ -96,11 +95,11 @@ public class HtmlManager {
         try {
             Date aujourdhui = new Date();
 
-            SimpleDateFormat formater = new SimpleDateFormat(" HH'h'mm'm'ss's'");
+            SimpleDateFormat formater = new SimpleDateFormat("HH'h'mm'm'ss's' ");
 
             File inputHTML = new File(ADDITION_INPUT);
             Document doc = createWellFormedHtmlFactureAddition(inputHTML, false, serveur);
-            xhtmlToPdf(doc, ADDITION_OUTPUT + serveur + formater.format(aujourdhui) + ".pdf");
+            xhtmlToPdf(doc, ADDITION_OUTPUT + formater.format(aujourdhui) + serveur + ".pdf");
         } catch (Exception ignored) {
         }
     }
@@ -241,7 +240,7 @@ public class HtmlManager {
             colonneIngredients = new Element("td");
             colonneIngredients.appendText(ingredient.getName());
             colonneNombre = new Element("td");
-            colonneNombre.appendText(Integer.toString(IngredientsManager.getInstance().ingredientsManquants(ingredient)));
+            colonneNombre.appendText(Integer.toString(ingredient.ingredientsManquants()));
 
             tabLigne = new ArrayList<>();
             tabLigne.add(colonneIngredients);

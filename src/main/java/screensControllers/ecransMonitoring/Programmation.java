@@ -37,7 +37,7 @@ public class Programmation {
             listJournee.setDisable(false);
             btnAjouter.setDisable(false);
             btnSupprimer.setDisable(false);
-            lancerJournee.setDisable(false);
+            gestionBoutonLancerJournee();
             btnFinJournee.setDisable(true);
         } else {
             listEmployee.setDisable(true);

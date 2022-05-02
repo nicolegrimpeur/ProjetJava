@@ -5,7 +5,6 @@ import employee.Cuisinier;
 import employee.Employee;
 import employee.Serveur;
 import ingredients.EnumIngredients;
-import ingredients.IngredientsManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -144,7 +143,7 @@ public class Performances {
         ObservableList<AffichagePerformance> tabIngredients = FXCollections.observableArrayList();
 
         for (EnumIngredients ingredient: EnumIngredients.values())
-            tabIngredients.add(new AffichagePerformance(ingredient.getName(), IngredientsManager.getInstance().ingredientsManquants(ingredient)));
+            tabIngredients.add(new AffichagePerformance(ingredient.getName(), ingredient.ingredientsManquants()));
 
         tableIngredients.setItems(tabIngredients);
 

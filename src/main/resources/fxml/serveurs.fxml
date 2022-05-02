@@ -3,37 +3,29 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="screensControllers.Serveurs">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screensControllers.Serveurs">
     <children>
         <Label layoutX="322.0" layoutY="14.0" text="Prise de commande">
             <font>
-                <Font size="18.0"/>
+                <Font size="18.0" />
             </font>
         </Label>
-        <Button fx:id="btnMenuClassique" disable="true" layoutX="258.0" layoutY="63.0" mnemonicParsing="false"
-                onAction="#clickMenuClassique" text="Commande classique"/>
-        <Button fx:id="btnMenuCentAns" layoutX="418.0" layoutY="63.0" mnemonicParsing="false"
-                onAction="#clickMenuCentAns" text="Commande 100 ans"/>
-        <Button layoutX="377.0" layoutY="561.0" mnemonicParsing="false" onAction="#submit" text="Submit"/>
-        <TreeTableView fx:id="treeTableAffichageMenu" layoutX="450.0" layoutY="100.0" onMouseClicked="#clickPanier"
-                       prefHeight="450.0" prefWidth="350.0">
+        <Button fx:id="btnMenuClassique" disable="true" layoutX="258.0" layoutY="63.0" mnemonicParsing="false" onAction="#clickMenuClassique" text="Commande classique" />
+        <Button fx:id="btnMenuCentAns" layoutX="418.0" layoutY="63.0" mnemonicParsing="false" onAction="#clickMenuCentAns" text="Commande 100 ans" />
+        <Button layoutX="350.0" layoutY="561.0" mnemonicParsing="false" onAction="#submit" text="Enregistrer" />
+        <TreeTableView fx:id="treeTableAffichageMenu" layoutX="450.0" layoutY="100.0" onMouseClicked="#clickPanier" prefHeight="450.0" prefWidth="350.0">
         </TreeTableView>
-        <ListView fx:id="listPlats" layoutY="100.0" onMouseClicked="#clickPlatBoisson" prefHeight="450.0"
-                  prefWidth="300.0"/>
-        <ListView fx:id="listBoissons" layoutX="300.0" layoutY="100.0" onMouseClicked="#clickPlatBoisson"
-                  prefHeight="450.0" prefWidth="150.0"/>
+        <ListView fx:id="listPlats" layoutY="100.0" onMouseClicked="#clickPlatBoisson" prefHeight="450.0" prefWidth="300.0" />
+        <ListView fx:id="listBoissons" layoutX="300.0" layoutY="100.0" onMouseClicked="#clickPlatBoisson" prefHeight="450.0" prefWidth="150.0" />
         <Label layoutX="14.0" layoutY="19.0" text="Serveur :">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </Label>
-        <ChoiceBox fx:id="serveurChoiceBox" layoutX="75.0" layoutY="17.0" onAction="#changeServeurChoiceBox"
-                   prefWidth="150.0"/>
-        <Label fx:id="textErreur" layoutX="550.0" layoutY="20.0" maxWidth="200.0" text="Label" textAlignment="RIGHT"
-               visible="false" wrapText="true">
+        <ChoiceBox fx:id="serveurChoiceBox" layoutX="75.0" layoutY="17.0" onAction="#changeServeurChoiceBox" prefWidth="150.0" />
+        <Label fx:id="textErreur" layoutX="550.0" layoutY="20.0" maxWidth="200.0" text="Label" textAlignment="RIGHT" visible="false" wrapText="true">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </Label>
     </children>

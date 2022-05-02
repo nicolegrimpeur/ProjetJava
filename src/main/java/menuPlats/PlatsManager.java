@@ -1,7 +1,6 @@
 package menuPlats;
 
 import ingredients.EnumIngredients;
-import ingredients.IngredientsManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,19 +24,21 @@ public class PlatsManager {
 
     public void preparation(EnumPlats plat) {
         for (EnumIngredients ingredient : plat.getListeIngredients().keySet()) {
-            IngredientsManager.getInstance().addIngredient(ingredient, plat.getListeIngredients().get(ingredient));
+            ingredient.enleverIngredient(plat.getListeIngredients().get(ingredient));
+//            IngredientsManager.getInstance().addIngredient(ingredient, plat.getListeIngredients().get(ingredient));
         }
     }
 
     public void suppressionPlat(EnumPlats plat) {
         for (EnumIngredients ingredient : plat.getListeIngredients().keySet()) {
-            IngredientsManager.getInstance().rajouterIngredient(ingredient, plat.getListeIngredients().get(ingredient));
+//            IngredientsManager.getInstance().rajouterIngredient(ingredient, plat.getListeIngredients().get(ingredient));
+            ingredient.rajouterIngredient(plat.getListeIngredients().get(ingredient));
         }
     }
 
     public boolean hasEnoughIngredients(EnumPlats plat) {
         for (EnumIngredients ingredient : plat.getListeIngredients().keySet())
-            if (IngredientsManager.getInstance().stocks.get(ingredient) - plat.getListeIngredients().get(ingredient) < 0)
+            if (ingredient.getStocks() - plat.getListeIngredients().get(ingredient) < 0)
                 return false;
 
         return true;

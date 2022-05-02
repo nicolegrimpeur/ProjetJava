@@ -27,7 +27,7 @@
                 <Font size="14.0"/>
             </font>
         </Button>
-        <Button layoutX="201.0" layoutY="35.0" mnemonicParsing="false" onAction="#launchEcranBarmans" text="Barman">
+        <Button layoutX="201.0" layoutY="35.0" mnemonicParsing="false" onAction="#launchEcranBarmans" text="Barmans">
             <font>
                 <Font size="14.0"/>
             </font>

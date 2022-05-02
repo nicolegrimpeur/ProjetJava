@@ -1,17 +1,21 @@
 package screensControllers.ecransMonitoring;
 
 import employee.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.TreeItemPropertyValueFactory;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import journee.JourneeManager;
 
 public class Programmation {
     @FXML
-    TreeTableView<Employee> listEmployee;
+    TableView<Employee> listEmployee;
     @FXML
-    TreeTableView<Employee> listJournee;
+    TableView<Employee> listJournee;
     @FXML
     Button lancerJournee;
     @FXML
@@ -52,69 +56,26 @@ public class Programmation {
     }
 
     private void initColonnes() {
-        // on crée les colonnes
-        TreeTableColumn<Employee, String> employeeCol = new TreeTableColumn<>("Employés");
-        TreeTableColumn<Employee, String> jobCol = new TreeTableColumn<>("Jobs");
+        listEmployee.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("affichage"));
+        listEmployee.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("job"));
 
-        // on leur assigne la valeur à laquelle chaque colonne correspond
-        employeeCol.setCellValueFactory(new TreeItemPropertyValueFactory<>("affichage"));
-        jobCol.setCellValueFactory(new TreeItemPropertyValueFactory<>("job"));
-
-        // on set la taille de chaque colonne
-        employeeCol.setPrefWidth(200);
-        jobCol.setPrefWidth(100);
-
-        // on empêche l'utilisateur de trier
-        employeeCol.setSortable(false);
-        jobCol.setSortable(false);
-
-        // on ajoute les colonnes
-        listEmployee.getColumns().setAll(employeeCol, jobCol);
-
-        // on duplique pour éviter un bug lié à la duplication des colonnes entre les deux tableaux
-        // on crée les colonnes
-        employeeCol = new TreeTableColumn<>("Employés");
-        jobCol = new TreeTableColumn<>("Jobs");
-
-        // on leur assigne la valeur à laquelle chaque colonne correspond
-        employeeCol.setCellValueFactory(new TreeItemPropertyValueFactory<>("affichage"));
-        jobCol.setCellValueFactory(new TreeItemPropertyValueFactory<>("job"));
-
-        // on set la taille de chaque colonne
-        employeeCol.setPrefWidth(200);
-        jobCol.setPrefWidth(100);
-
-        // on empêche l'utilisateur de trier
-        employeeCol.setSortable(false);
-        jobCol.setSortable(false);
-
-        listJournee.getColumns().setAll(employeeCol, jobCol);
+        listJournee.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("affichage"));
+        listJournee.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("job"));
     }
 
     private void afficheEmployees() {
-        TreeItem<Employee> rootItem = new TreeItem<>(new Manager());
-        rootItem.setExpanded(true);
+        ObservableList<Employee> list = FXCollections.observableArrayList();
 
         for (Employee employee : ManagEmployees.getInstance().getListEmployes())
+            // si l'employé n'est pas déjà dans le tableau de journée, et qu'il n'a pas fais plus de 3 jours consécutifs
             if (!JourneeManager.getInstance().listEmployes.contains(employee) &&
                     (employee.nbJoursConsecutifs < 2 || employee instanceof Manager))
-                rootItem.getChildren().add(new TreeItem<>(employee));
+                list.add(employee);
 
-        // on affiche les lignes
-        listEmployee.setRoot(rootItem);
-        listEmployee.setShowRoot(false); // permet de ne pas afficher le premier parent vide
+        listEmployee.setItems(list);
 
 
-        rootItem = new TreeItem<>(new Manager());
-        rootItem.setExpanded(true);
-
-        for (Employee employee : JourneeManager.getInstance().listEmployes) {
-            rootItem.getChildren().add(new TreeItem<>(employee));
-        }
-
-        // on affiche les lignes
-        listJournee.setRoot(rootItem);
-        listJournee.setShowRoot(false); // permet de ne pas afficher le premier parent vide
+        listJournee.setItems(FXCollections.observableArrayList(JourneeManager.getInstance().listEmployes));
 
 
         // on affiche le texte permettant de dire le nombre d'employés nécessaires pour lancer la journée
@@ -122,14 +83,16 @@ public class Programmation {
     }
 
     public void clickAjouter() {
-        JourneeManager.getInstance().addEmployee(listEmployee.getSelectionModel().getSelectedItem().getValue());
+        if (listEmployee.getSelectionModel().getSelectedItem() != null)
+            JourneeManager.getInstance().addEmployee(listEmployee.getSelectionModel().getSelectedItem());
 
         afficheEmployees();
         gestionBoutonLancerJournee();
     }
 
     public void clickSupprimer() {
-        JourneeManager.getInstance().removeEmployee(listJournee.getSelectionModel().getSelectedItem().getValue());
+        if (listEmployee.getSelectionModel().getSelectedItem() != null)
+            JourneeManager.getInstance().removeEmployee(listJournee.getSelectionModel().getSelectedItem());
 
         afficheEmployees();
         gestionBoutonLancerJournee();
@@ -137,10 +100,10 @@ public class Programmation {
 
     public void clickTableEmployees(MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() >= 2) {
-            TreeItem<Employee> itemSelect = listEmployee.getSelectionModel().getSelectedItem();
+            Employee itemSelect = listEmployee.getSelectionModel().getSelectedItem();
 
             if (itemSelect != null)
-                JourneeManager.getInstance().addEmployee(itemSelect.getValue());
+                JourneeManager.getInstance().addEmployee(itemSelect);
 
             afficheEmployees();
             gestionBoutonLancerJournee();
@@ -149,10 +112,10 @@ public class Programmation {
 
     public void clickTableJournee(MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() >= 2) {
-            TreeItem<Employee> itemSelect = listJournee.getSelectionModel().getSelectedItem();
+            Employee itemSelect = listJournee.getSelectionModel().getSelectedItem();
 
             if (itemSelect != null)
-                JourneeManager.getInstance().removeEmployee(itemSelect.getValue());
+                JourneeManager.getInstance().removeEmployee(itemSelect);
 
             afficheEmployees();
             gestionBoutonLancerJournee();

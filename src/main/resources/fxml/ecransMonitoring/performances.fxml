@@ -15,7 +15,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="labelBenefices" layoutX="400.0" layoutY="14.0" text="Bénéfice total :">
+      <Label fx:id="labelBenefices" layoutX="400.0" layoutY="14.0" text="Chiffre d'affaires :">
          <font>
             <Font size="14.0" />
          </font>

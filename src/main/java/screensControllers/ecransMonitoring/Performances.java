@@ -46,7 +46,7 @@ public class Performances {
     }
 
     /**
-     * Calcul le nombre de plats vendus et le bénéfice total
+     * Calcul le nombre de plats vendus et le chiffre d'affaires
      */
     private void calculs() {
         int nbPlatsVendus = 0;
@@ -86,11 +86,11 @@ public class Performances {
 //        System.out.println("Nombre plats réalisés : " + nbPlatsVendus);
 //        System.out.println("Nombre boissons réalisés : " + nbBoissonsVendus);
 //        System.out.println("Nombre menus réalisés : " + nbMenusVendus);
-//        System.out.println("Bénéfice total : " + beneficeTotal);
+//        System.out.println("Chiffre d'affaires : " + beneficeTotal);
 
         labelNbPlats.setText("Nombre de plats vendus : " + nbPlatsVendus);
         labelNbBoissons.setText("Nombre de boissons vendus : " + nbBoissonsVendus);
-        labelBenefices.setText("Bénéfice total : " + beneficeTotal);
+        labelBenefices.setText("Chiffre d'affaires : " + beneficeTotal);
     }
 
     /**

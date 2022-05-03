@@ -2,8 +2,6 @@ package html;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import ingredients.EnumIngredients;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 import journee.JourneeManager;
 import menu.Menu;
 import org.jsoup.Jsoup;
@@ -18,7 +16,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.FileSystems;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;

@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import journee.JourneeManager;
 
 import java.util.Objects;
 import java.util.Scanner;
@@ -43,6 +44,8 @@ public class App extends Application {
         ManagEmployees.getInstance().addEmploye(new Cuisinier("L'autre", "Cuisinier", 2000));
         ManagEmployees.getInstance().addEmploye(new Cuisinier("Dernier", "Cuisinier", 2000));
         ManagEmployees.getInstance().addEmploye(new Manager("The", "Manager", 2000));
+
+        JourneeManager.getInstance().delete("Additions/");
 
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/main.fxml")));

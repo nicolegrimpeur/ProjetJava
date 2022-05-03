@@ -246,7 +246,8 @@ public class Serveurs {
                 menuItem.getChildren().add(item);
             }
         }
-        rootItem.getChildren().addAll(menuItem);
+        if (menuItem.getChildren().size() != 0)
+            rootItem.getChildren().addAll(menuItem);
 
         if (currentServeur != null) {
             TreeItem<Menu> menuCentAnsItem;
@@ -314,22 +315,31 @@ public class Serveurs {
         }
     }
 
-    public void submit() {
+    /**
+     * Enregistre la commande au click sur le bouton enregistrer
+     */
+    public void clickBtnEnregistrer() {
         if (currentServeur != null && (currentServeur.listCommandes.size() != 0 || currentServeur.listCommandes100Ans.size() != 0)) {
-            String serveur = currentServeur.getAffichage();
-            for (Menu menu : currentServeur.listCommandes)
-                JourneeManager.getInstance().addMenuService(serveur, menu);
-
-            for (ArrayList<Menu> tabMenu100Ans : currentServeur.listCommandes100Ans)
-                for (Menu menu : tabMenu100Ans)
+            // si un des menus cents ans ne comporte pas 7 menus
+            if (currentServeur.listCommandes100Ans.size() == 0 || currentServeur.listCommandes100Ans.get(currentServeur.listCommandes100Ans.size() - 1).size() == 7) {
+                String serveur = currentServeur.getAffichage();
+                for (Menu menu : currentServeur.listCommandes)
                     JourneeManager.getInstance().addMenuService(serveur, menu);
 
-            currentServeur.listCommandes.clear();
-            currentServeur.listCommandes100Ans.clear();
+                for (ArrayList<Menu> tabMenu100Ans : currentServeur.listCommandes100Ans)
+                    for (Menu menu : tabMenu100Ans)
+                        JourneeManager.getInstance().addMenuService(serveur, menu);
 
-            supprimerMenuEtPannier();
-            textErreur.setVisible(true);
-            textErreur.setText("Commande enregistré");
+                currentServeur.listCommandes.clear();
+                currentServeur.listCommandes100Ans.clear();
+
+                supprimerMenuEtPannier();
+                textErreur.setVisible(true);
+                textErreur.setText("Commande enregistré");
+            } else {
+                textErreur.setVisible(true);
+                textErreur.setText("Un menu cent ans doit contenir 7 menus");
+            }
         }
     }
 }

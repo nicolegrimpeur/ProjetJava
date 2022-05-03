@@ -48,10 +48,7 @@ public class JourneeManager {
         for (EnumIngredients ingredient: EnumIngredients.values())
             ingredient.setStocksInitial(ingredient.getStocks());
 
-        try {
-            delete("Additions/");
-        } catch (Exception ignored) {
-        }
+        delete("Additions/");
     }
 
     /**
@@ -59,7 +56,7 @@ public class JourneeManager {
      *
      * @param path le path vers le dossier
      */
-    public static void delete(String path) {
+    public void delete(String path) {
         File f = new File(path);
         if (f.isDirectory()) {
             // on liste le contenu du répertoire
@@ -114,13 +111,15 @@ public class JourneeManager {
      * @param employee le cuisinier en question
      */
     public void nextStatusPlat(String employe, Menu menu, Employee employee) {
-        int index = listService.get(employe).indexOf(menu);
-        listService.get(employe).get(index).nextStatusPlat();
+        if (listService.get(employe) != null) {
+            int index = listService.get(employe).indexOf(menu);
+            listService.get(employe).get(index).nextStatusPlat();
 
-        // si le plat est affiché comme à servir, alors on l'ajoute aux plats réalisés du cuisinier
-        if (listService.get(employe).get(index).getStatusPlat().equals(EnumStatus.ASERVIR.getAffichage()))
-            if (employee != null)
-                listEmployes.get(listEmployes.indexOf(employee)).addNbItemsVendus(1);
+            // si le plat est affiché comme à servir, alors on l'ajoute aux plats réalisés du cuisinier
+            if (listService.get(employe).get(index).getStatusPlat().equals(EnumStatus.ASERVIR.getAffichage()))
+                if (employee != null)
+                    listEmployes.get(listEmployes.indexOf(employee)).addNbItemsVendus(1);
+        }
     }
 
     /**
@@ -131,13 +130,15 @@ public class JourneeManager {
      * @param employee le cuisinier en question
      */
     public void nextStatusBoisson(String employe, Menu menu, Employee employee) {
-        int index = listService.get(employe).indexOf(menu);
-        listService.get(employe).get(index).nextStatusBoisson();
+        if (listService.get(employe) != null) {
+            int index = listService.get(employe).indexOf(menu);
+            listService.get(employe).get(index).nextStatusBoisson();
 
-        // si le plat est affiché comme à servir, alors on l'ajoute aux plats réalisés du barman
-        if (listService.get(employe).get(index).getStatusBoisson().equals(EnumStatus.ASERVIR.getAffichage()))
-            if (employee != null)
-                listEmployes.get(listEmployes.indexOf(employee)).addNbItemsVendus(1);
+            // si le plat est affiché comme à servir, alors on l'ajoute aux plats réalisés du barman
+            if (listService.get(employe).get(index).getStatusBoisson().equals(EnumStatus.ASERVIR.getAffichage()))
+                if (employee != null)
+                    listEmployes.get(listEmployes.indexOf(employee)).addNbItemsVendus(1);
+        }
     }
 
     /**

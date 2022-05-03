@@ -26,6 +26,8 @@ public class Performances {
     @FXML
     Label labelBenefices;
     @FXML
+    Label labelBeneficesSansTva;
+    @FXML
     TableView<Employee> tableBarmans;
     @FXML
     TableView<Employee> tableCuisiniers;
@@ -53,6 +55,7 @@ public class Performances {
         int nbBoissonsVendus = 0;
         int nbMenusVendus = 0;
         int beneficeTotal = 0;
+        double beneficeTotalSansTva = 0;
         ArrayList<Menu> menusServeur;
         int nbMenus100Ans = 0;
 
@@ -69,28 +72,25 @@ public class Performances {
                 nbMenusVendus += menusServeur.size();
 
                 for (Menu menu : menusServeur) {
-                    if (!menu.getPrix().equals(""))
-                        beneficeTotal += Integer.parseInt(menu.getPrix());
-                    else
+                    if (menu.getPrix().equals(""))
                         nbMenus100Ans++;
                 }
 
+                beneficeTotal += JourneeManager.getInstance().calculPrixTotal(menusServeur);
+                beneficeTotalSansTva += JourneeManager.getInstance().calculTva(menusServeur);
             }
         }
-
-        if ((nbMenus100Ans * 10) / 7 != (nbMenus100Ans / 7) * 10)
-            beneficeTotal += 100 * ((nbMenus100Ans / 7) + 1);
-        else
-            beneficeTotal += 100 * (nbMenus100Ans / 7);
 
 //        System.out.println("Nombre plats réalisés : " + nbPlatsVendus);
 //        System.out.println("Nombre boissons réalisés : " + nbBoissonsVendus);
 //        System.out.println("Nombre menus réalisés : " + nbMenusVendus);
 //        System.out.println("Chiffre d'affaires : " + beneficeTotal);
+//        System.out.println("Chiffre d'affaires sans TVA : " + beneficeTotalSansTva);
 
         labelNbPlats.setText("Nombre de plats vendus : " + nbPlatsVendus);
         labelNbBoissons.setText("Nombre de boissons vendus : " + nbBoissonsVendus);
-        labelBenefices.setText("Chiffre d'affaires : " + beneficeTotal);
+        labelBenefices.setText("Chiffre d'affaires : " + beneficeTotal + "€");
+        labelBeneficesSansTva.setText("Chiffre d'affaires sans TVA : " + beneficeTotalSansTva + "€");
     }
 
     /**

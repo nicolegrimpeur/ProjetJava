@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import journee.JourneeManager;
 
 import java.util.Objects;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class App extends Application {
@@ -48,8 +49,13 @@ public class App extends Application {
         JourneeManager.getInstance().delete("Additions/");
 
         try {
+            // on récupère le fichier de propriétés du projet (src/main/resources)
+            final Properties properties = new Properties();
+            properties.load(getClass().getClassLoader().getResourceAsStream("project.properties"));
+
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/main.fxml")));
-            stage.setTitle("Page principale");
+            stage.setTitle(properties.getProperty("nomApplication"));
+            stage.setResizable(false);
 
             stage.setScene(new Scene(root, 800, 700));
             stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("logo.png"))));

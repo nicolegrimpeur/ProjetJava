@@ -279,6 +279,10 @@ public class BarmansEtCuisiniers {
             // si un nouvel élément a été rajouté en arrière-plan, on rajoute ces éléments au tableau
             if (parent.getParent().getChildren().size() != JourneeManager.getInstance().getListService().size())
                 afficheItems();
+
+            // on met le focus sur la table
+            itemsTreeTable.requestFocus();
+            clickTable();
         }
     }
 

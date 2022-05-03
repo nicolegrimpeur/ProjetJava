@@ -91,7 +91,7 @@ public class Programmation {
     }
 
     public void clickSupprimer() {
-        if (listEmployee.getSelectionModel().getSelectedItem() != null)
+        if (listJournee.getSelectionModel().getSelectedItem() != null)
             JourneeManager.getInstance().removeEmployee(listJournee.getSelectionModel().getSelectedItem());
 
         afficheEmployees();

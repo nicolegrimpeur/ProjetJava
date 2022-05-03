@@ -14,11 +14,14 @@ import journee.JourneeManager;
 import menu.Menu;
 
 import java.io.File;
+import java.util.ArrayList;
 
 
 public class Additions {
     @FXML
     Button btnImprimer;
+    @FXML
+    Button btnPayer;
     @FXML
     ListView<String> tableAdditions;
     @FXML
@@ -63,29 +66,24 @@ public class Additions {
     public void clickTable() {
         String itemSelect = tableAdditions.getSelectionModel().getSelectedItem();
         if (itemSelect != null) {
-            btnImprimer.setVisible(true);
-
             TreeItem<Menu> rootItem = new TreeItem<>(new Menu());
             rootItem.setExpanded(true);
-
-            int prixTotal = 0;
 
             // table des menus classiques
             TreeItem<Menu> menuItem = new TreeItem<>(new Menu("Menus classiques"));
             menuItem.setExpanded(true);
             for (Menu menu : JourneeManager.getInstance().getMapAdditions().get(itemSelect))
                 // si le menu possède un prix
-                if (!menu.getPrix().equals("")) {
+                if (!menu.getPrix().equals(""))
                     menuItem.getChildren().add(new TreeItem<>(menu));
-                    prixTotal += Integer.parseInt(menu.getPrix());
-                }
 
             if (menuItem.getChildren().size() != 0)
                 rootItem.getChildren().addAll(menuItem);
 
             // table des menus cent ans
             TreeItem<Menu> menuCentAnsItem = null;
-            for (Menu menu : JourneeManager.getInstance().getMapAdditions().get(itemSelect))
+            ArrayList<Menu> tabMenusServeurs = JourneeManager.getInstance().getMapAdditions().get(itemSelect);
+            for (Menu menu : tabMenusServeurs)
                 // si le menu ne possède pas de prix
                 if (menu.getPrix().equals("")) {
                     // ajoute l'item s'il a ses septs éléments
@@ -96,7 +94,6 @@ public class Additions {
                     if (menuCentAnsItem == null || menuCentAnsItem.getChildren().size() % 7 == 0) {
                         menuCentAnsItem = new TreeItem<>(new Menu("Menu 100 ans", "", "100"));
                         menuCentAnsItem.setExpanded(true);
-                        prixTotal += 100;
                     }
 
                     menuCentAnsItem.getChildren().add(new TreeItem<>(menu));
@@ -109,12 +106,20 @@ public class Additions {
             // on affiche le prix total
             TreeItem<Menu> itemPrixTotal = new TreeItem<>();
             rootItem.getChildren().add(itemPrixTotal);
-            itemPrixTotal = new TreeItem<>(new Menu("", "Total", prixTotal + "€"));
+            itemPrixTotal = new TreeItem<>(new Menu("", "Total Hors Taxe", JourneeManager.getInstance().calculTva(tabMenusServeurs) + "€"));
+            rootItem.getChildren().add(itemPrixTotal);
+            itemPrixTotal = new TreeItem<>(new Menu("", "Total", JourneeManager.getInstance().calculPrixTotal(tabMenusServeurs) + "€"));
+            rootItem.getChildren().add(itemPrixTotal);
+            itemPrixTotal = new TreeItem<>(new Menu("", "", (JourneeManager.getInstance().getIsPaye(itemSelect) ? "Déjà payé" : "Pas encore payé")));
             rootItem.getChildren().add(itemPrixTotal);
 
             // on affiche les lignes
             treeTableViewAddition.setRoot(rootItem);
             treeTableViewAddition.setShowRoot(false); // permet de ne pas afficher le premier parent vide
+
+            btnImprimer.setVisible(true);
+            btnPayer.setVisible(true);
+            btnPayer.setDisable(JourneeManager.getInstance().getIsPaye(itemSelect));
         }
     }
 
@@ -125,5 +130,18 @@ public class Additions {
         String itemSelect = tableAdditions.getSelectionModel().getSelectedItem();
         if (itemSelect != null)
             ImpressionManager.imprimerFichier(HtmlManager.getInstance().getAdditionOutput() + tableAdditions.getSelectionModel().getSelectedItem() + ".pdf");
+    }
+
+    /**
+     * Gère le click sur le bouton "Marquer comme payé"
+     * Permet de marquer une addition comme payé
+     */
+    public void clickBtnPayer() {
+        String itemSelect = tableAdditions.getSelectionModel().getSelectedItem();
+        if (itemSelect != null) {
+            JourneeManager.getInstance().setIsPaye(itemSelect);
+
+            clickTable();
+        }
     }
 }

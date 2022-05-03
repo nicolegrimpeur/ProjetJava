@@ -5,14 +5,14 @@ import employee.ManagEmployees;
 import html.HtmlManager;
 import ingredients.EnumIngredients;
 import menu.Menu;
+import menuBoissons.EnumBoissons;
+import menuPlats.EnumPlats;
 import status.EnumStatus;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class JourneeManager {
     private static JourneeManager instance = null;
@@ -22,6 +22,7 @@ public class JourneeManager {
     private final Map<String, ArrayList<Menu>> listService = new HashMap<>();
     private final Map<String, ArrayList<Menu>> menusVendus = new HashMap<>();
     private final Map<String, ArrayList<Menu>> mapAdditions = new HashMap<>();
+    private final Map<String, Boolean> isPaye = new HashMap<>(); // permet de dire si une addition a déjà été payé ou pas
 
     private JourneeManager() {
     }
@@ -45,7 +46,7 @@ public class JourneeManager {
         JourneeManager.getInstance().resetVentes();
 
         // permet au lancement de la journée de remettre à 0 le stock initial avec le stock présent en début de journée
-        for (EnumIngredients ingredient: EnumIngredients.values())
+        for (EnumIngredients ingredient : EnumIngredients.values())
             ingredient.setStocksInitial(ingredient.getStocks());
 
         delete("Additions/");
@@ -184,13 +185,92 @@ public class JourneeManager {
 
         // on enregistre l'addition
         mapAdditions.put(date + serveur, new ArrayList<>());
-        for (Menu menu: listService.get(serveur)) {
+        for (Menu menu : listService.get(serveur)) {
             menusVendus.get(serveur).add(menu);
             mapAdditions.get(date + serveur).add(menu);
         }
 
         // on supprime les menus de ce serveur en cours
         listService.remove(serveur);
+    }
+
+    /**
+     * Calcul le prix total d'une liste de menu
+     * @param listMenu liste de menu
+     * @return la prix total de la liste de menu
+     */
+    public double calculPrixTotal(ArrayList<Menu> listMenu) {
+        double prixTotal = 0, nbMenus100Ans = 0;
+        for (Menu menu: listMenu) {
+            if (!menu.getPrix().equals(""))
+                prixTotal += Double.parseDouble(menu.getPrix());
+            else
+                nbMenus100Ans++;
+        }
+
+        // calcul du prix total en fonction du nombre de menus 100 ans
+        if ((nbMenus100Ans * 10) / 7 != (nbMenus100Ans / 7) * 10)
+            prixTotal += 100 * ((nbMenus100Ans / 7) + 1);
+        else
+            prixTotal += 100 * (nbMenus100Ans / 7);
+
+        return prixTotal;
+    }
+
+    /**
+     * Calcul le prix sans la TVA d'une liste de menus
+     * @param listMenu liste de menu
+     * @return le prix total de la liste de menu sans la TVA
+     */
+    public double calculTva(ArrayList<Menu> listMenu) {
+        double tvaHorsBoissonsAlcoolisees, tvaBoissonsAlcoolisees;
+        try {
+            // on récupère le fichier de propriétés du projet (src/main/resources)
+            final Properties properties = new Properties();
+            properties.load(getClass().getClassLoader().getResourceAsStream("project.properties"));
+
+            tvaHorsBoissonsAlcoolisees = Integer.parseInt(properties.getProperty("tvaHorsBoissonsAlcoolisees"));
+            tvaBoissonsAlcoolisees = Integer.parseInt(properties.getProperty("tvaBoissonsAlcoolisees"));
+        } catch (IOException e) {
+            tvaHorsBoissonsAlcoolisees = 10;
+            tvaBoissonsAlcoolisees = 20;
+        }
+
+        double prixSansTva = 0, nbMenus100Ans = 0, totalPrixBoissonsAlcoolisesMenus100Ans = 0;
+        EnumBoissons boisson;
+        EnumPlats plat;
+        double prixBoisson, prixPlat, prixBoissonSansTva, prixPlatSansTva;
+
+        for (Menu menu : listMenu) {
+            if (!menu.getPrix().equals("")) {
+                boisson = EnumBoissons.rechercheParNom(menu.getBoisson());
+                plat = EnumPlats.rechercheParNom(menu.getPlat());
+                prixBoisson = boisson.getPrix();
+                prixPlat = plat.getPrix();
+                // on enlève la TVA
+                prixBoissonSansTva = prixBoisson * (100 - ((boisson.isAlcoolise()) ? tvaBoissonsAlcoolisees : tvaHorsBoissonsAlcoolisees)) / 100;
+                prixPlatSansTva = prixPlat * (100 - tvaHorsBoissonsAlcoolisees) / 100;
+
+                prixSansTva += prixBoissonSansTva + prixPlatSansTva;
+            } else {
+                nbMenus100Ans++;
+
+                boisson = EnumBoissons.rechercheParNom(menu.getBoisson());
+                if (boisson.isAlcoolise())
+                    totalPrixBoissonsAlcoolisesMenus100Ans += boisson.getPrix();
+            }
+        }
+
+        double prixMenusCentsAns;
+        if ((nbMenus100Ans * 10) / 7 != (nbMenus100Ans / 7) * 10)
+            prixMenusCentsAns = 100 * ((nbMenus100Ans / 7) + 1);
+        else
+            prixMenusCentsAns = 100 * (nbMenus100Ans / 7);
+
+        prixSansTva += (prixMenusCentsAns - totalPrixBoissonsAlcoolisesMenus100Ans) * (100 - tvaHorsBoissonsAlcoolisees) / 100
+                + totalPrixBoissonsAlcoolisesMenus100Ans * (100 - tvaBoissonsAlcoolisees) / 100;
+
+        return prixSansTva;
     }
 
     public void resetVentes() {
@@ -203,5 +283,14 @@ public class JourneeManager {
 
     public Map<String, ArrayList<Menu>> getMapAdditions() {
         return mapAdditions;
+    }
+
+    public Boolean getIsPaye(String nomAddition) {
+        isPaye.putIfAbsent(nomAddition, false);
+        return isPaye.get(nomAddition);
+    }
+
+    public void setIsPaye(String nomAddition) {
+        isPaye.put(nomAddition, true);
     }
 }

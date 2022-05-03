@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Properties;
 
 public class HtmlManager {
     private static HtmlManager instance = null;
@@ -52,6 +53,7 @@ public class HtmlManager {
 
     /**
      * Permet de générer une facture dans le dossier défini par FACTURE_OUTPUT
+     *
      * @param serveur le nom d'affichage du serveur qui a servi la table
      */
     public void generateFacture(String serveur) {
@@ -88,6 +90,7 @@ public class HtmlManager {
 
     /**
      * Permet de générer l'addition d'une table dans le dossier défini par ADDITION_OUTPUT
+     *
      * @param serveur le nom d'affichage du serveur qui a servi la table
      */
     public void generateAddition(String serveur, String date) {
@@ -101,9 +104,10 @@ public class HtmlManager {
 
     /**
      * Permet de modifier le fichier HTML
+     *
      * @param inputHTML le fichier HTML récupéré
      * @param isFacture true si c'est une facture, false si c'est une addition
-     * @param serveur nom d'affichage du serveur qui a servi
+     * @param serveur   nom d'affichage du serveur qui a servi
      * @return le document modifié
      */
     private Document createWellFormedHtmlFactureAddition(File inputHTML, Boolean isFacture, String serveur) throws IOException {
@@ -128,67 +132,59 @@ public class HtmlManager {
         Element service = document.getElementById("service");
         service.appendText(serveur);
 
+        // on ajoute la version de l'application
+        // on récupère le fichier de propriétés du projet (src/main/resources)
+        final Properties properties = new Properties();
+        properties.load(getClass().getClassLoader().getResourceAsStream("project.properties"));
+        Element version = document.getElementById("version");
+        version.appendText(properties.getProperty("version") + " (" + properties.getProperty("nomApplication") + ")");
+
         // on parcourt les menus gérés par
-        int nbMenus100Ans = 0, prixTotal = 0;
-        ArrayList<Node> tabLigne;
-        Element table, ligne, colonnePlat, colonneBoisson, colonnePrix;
+        int nbMenus100Ans = 0;
+        Element table;
         table = document.getElementById("tableau");
-        for (Menu menu : JourneeManager.getInstance().getListService().get(serveur)) {
+
+        ArrayList<Menu> tabMenusServeurs = JourneeManager.getInstance().getListService().get(serveur);
+        for (Menu menu : tabMenusServeurs) {
             // si l'on n'est pas un menu 100 ans
-            if (!menu.getPrix().equals("")) {
-                prixTotal += Integer.parseInt(menu.getPrix());
-            } else {
+            if (menu.getPrix().equals("")) {
                 // si c'est un multiple de 7, on rajoute une ligne pour préciser que c'est un menu 100 ans
-                if (nbMenus100Ans % 7 == 0) {
-                    ligne = new Element("tr");
-                    colonnePlat = new Element("td");
-                    colonnePlat.appendChild((new Element("strong")).appendText("Menu 100 Ans"));
-                    colonneBoisson = new Element("td");
-                    colonneBoisson.appendText("");
-                    colonnePrix = new Element("td");
-                    colonnePrix.appendChild((new Element("strong")).appendText("100 €"));
-
-                    tabLigne = new ArrayList<>();
-                    tabLigne.add(colonnePlat);
-                    tabLigne.add(colonneBoisson);
-                    tabLigne.add(colonnePrix);
-
-                    ligne.appendChildren(tabLigne);
-                    table.appendChild(ligne);
-                }
+                if (nbMenus100Ans % 7 == 0)
+                    table.appendChild(generateLigne("Menu 100 Ans", "", "100", true));
 
                 nbMenus100Ans++;
             }
 
-            // on affiche les plats / boissons et prix
-            ligne = new Element("tr");
-            colonnePlat = new Element("td");
-            colonnePlat.appendText(menu.getPlat());
-            colonneBoisson = new Element("td");
-            colonneBoisson.appendText(menu.getBoisson());
-            colonnePrix = new Element("td");
-            colonnePrix.appendText(menu.getPrix());
-
-            tabLigne = new ArrayList<>();
-            tabLigne.add(colonnePlat);
-            tabLigne.add(colonneBoisson);
-            tabLigne.add(colonnePrix);
-
-            ligne.appendChildren(tabLigne);
-            table.appendChild(ligne);
+            table.appendChild(generateLigne(menu.getPlat(), menu.getBoisson(), menu.getPrix(), false));
         }
 
-        // calcul du prix total en fonction du nombre de menus 100 ans
-        if ((nbMenus100Ans * 10) / 7 != (nbMenus100Ans / 7) * 10)
-            prixTotal += 100 * ((nbMenus100Ans / 7) + 1);
-        else
-            prixTotal += 100 * (nbMenus100Ans / 7);
+        // on rajoute le prix total
+        double prixTotal = JourneeManager.getInstance().calculPrixTotal(tabMenusServeurs);
+        double prixTotalSansTva = JourneeManager.getInstance().calculTva(tabMenusServeurs);
+        table.appendChild(generateLigne("", "", "", false));
+        table.appendChild(generateLigne("", "Prix", Double.toString(prixTotal), true));
+        table.appendChild(generateLigne("", "Prix hors taxe", Double.toString(prixTotalSansTva), true));
+
+        return document;
+    }
+
+    private Element generateLigne(String plat, String boisson, String prix, boolean isStrong) {
+        ArrayList<Node> tabLigne;
+        Element ligne, colonnePlat, colonneBoisson, colonnePrix;
 
         // on rajoute le prix total
         colonnePlat = new Element("td");
+        if (isStrong)
+            colonnePlat.appendChild((new Element("strong")).appendText(plat));
+        else
+            colonnePlat.appendText(plat);
         colonneBoisson = new Element("td");
+        colonneBoisson.appendText(boisson);
         colonnePrix = new Element("td");
-        colonnePrix.appendChild((new Element("strong")).appendText(prixTotal + " €"));
+        if (isStrong)
+            colonnePrix.appendChild((new Element("strong")).appendText(prix + " €"));
+        else
+            colonnePrix.appendText(prix);
 
         tabLigne = new ArrayList<>();
         tabLigne.add(colonnePlat);
@@ -197,9 +193,8 @@ public class HtmlManager {
 
         ligne = new Element("tr");
         ligne.appendChildren(tabLigne);
-        table.appendChild(ligne);
 
-        return document;
+        return ligne;
     }
 
     /**
@@ -217,6 +212,7 @@ public class HtmlManager {
 
     /**
      * Permet de modifier le fichier HTML de la liste de courses
+     *
      * @param inputHTML le fichier HTML récupéré
      * @return le document modifié
      */
@@ -250,7 +246,8 @@ public class HtmlManager {
 
     /**
      * Enregistre le fichier HTML obtenu en fichier PDF
-     * @param doc document modifié
+     *
+     * @param doc       document modifié
      * @param outputPdf sortie du fichier
      */
     private void xhtmlToPdf(Document doc, String outputPdf) throws IOException {

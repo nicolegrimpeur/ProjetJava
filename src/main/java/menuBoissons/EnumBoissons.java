@@ -3,18 +3,20 @@ package menuBoissons;
 import java.util.Objects;
 
 public enum EnumBoissons {
-    BIERRESANSALCOOL("Bière sans alcool", 5),
-    CIDREDOUX("Cidre doux", 5),
-    JUSDEFRUIT("Jus de fruit", 1),
-    LIMONADE("Limonade", 4),
-    VERREDEAU("Verre d'eau", 0);
+    BIERRESANSALCOOL("Bière sans alcool", 5, false),
+    CIDREDOUX("Cidre doux", 5, true),
+    JUSDEFRUIT("Jus de fruit", 1, false),
+    LIMONADE("Limonade", 4, false),
+    VERREDEAU("Verre d'eau", 0, false);
 
     private final String name;
     private final int prix;
+    private final boolean isAlcoolise;
 
-    EnumBoissons(String name_, int prix_) {
+    EnumBoissons(String name_, int prix_, boolean isAlcoolise_) {
         name = name_;
         prix = prix_;
+        isAlcoolise = isAlcoolise_;
     }
 
     public int getPrix() {
@@ -23,6 +25,10 @@ public enum EnumBoissons {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isAlcoolise() {
+        return isAlcoolise;
     }
 
     public static EnumBoissons rechercheParNom(String nom) {

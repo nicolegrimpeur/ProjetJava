@@ -1,5 +1,7 @@
 package menu;
 
+import menuBoissons.EnumBoissons;
+import menuPlats.EnumPlats;
 import status.EnumStatus;
 
 import java.util.Objects;
@@ -11,11 +13,13 @@ public class Menu {
     private String statusPlat = EnumStatus.APREPARER.getAffichage();
     private String statusBoisson = EnumStatus.APREPARER.getAffichage();
 
-    public Menu() {}
+    public Menu() {
+    }
 
     public Menu(String plat_) {
         plat = plat_;
     }
+
     public Menu(String plat_, String boisson_) {
         plat = plat_;
         boisson = boisson_;
@@ -60,14 +64,20 @@ public class Menu {
     }
 
     public void nextStatusPlat() {
-        if (Objects.equals(statusPlat, EnumStatus.APREPARER.getAffichage())) statusPlat = EnumStatus.ENCOURS.getAffichage();
-        else if (Objects.equals(statusPlat, EnumStatus.ENCOURS.getAffichage())) statusPlat = EnumStatus.ASERVIR.getAffichage();
-        else if (Objects.equals(statusPlat, EnumStatus.ASERVIR.getAffichage())) statusPlat = EnumStatus.TERMINE.getAffichage();
+        if (Objects.equals(statusPlat, EnumStatus.APREPARER.getAffichage()))
+            statusPlat = EnumStatus.ENCOURS.getAffichage();
+        else if (Objects.equals(statusPlat, EnumStatus.ENCOURS.getAffichage()))
+            statusPlat = EnumStatus.ASERVIR.getAffichage();
+        else if (Objects.equals(statusPlat, EnumStatus.ASERVIR.getAffichage()))
+            statusPlat = EnumStatus.TERMINE.getAffichage();
     }
 
     public void nextStatusBoisson() {
-        if (Objects.equals(statusBoisson, EnumStatus.APREPARER.getAffichage())) statusBoisson = EnumStatus.ENCOURS.getAffichage();
-        else if (Objects.equals(statusBoisson, EnumStatus.ENCOURS.getAffichage())) statusBoisson = EnumStatus.ASERVIR.getAffichage();
-        else if (Objects.equals(statusBoisson, EnumStatus.ASERVIR.getAffichage())) statusBoisson = EnumStatus.TERMINE.getAffichage();
+        if (Objects.equals(statusBoisson, EnumStatus.APREPARER.getAffichage()))
+            statusBoisson = EnumStatus.ENCOURS.getAffichage();
+        else if (Objects.equals(statusBoisson, EnumStatus.ENCOURS.getAffichage()))
+            statusBoisson = EnumStatus.ASERVIR.getAffichage();
+        else if (Objects.equals(statusBoisson, EnumStatus.ASERVIR.getAffichage()))
+            statusBoisson = EnumStatus.TERMINE.getAffichage();
     }
 }

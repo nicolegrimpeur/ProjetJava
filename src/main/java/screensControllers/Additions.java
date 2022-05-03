@@ -7,6 +7,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.Pane;
+import javafx.scene.web.WebView;
 
 import java.io.File;
 
@@ -16,6 +18,10 @@ public class Additions {
     Button btnImprimer;
     @FXML
     ListView<String> tableAdditions;
+    @FXML
+    WebView webViewAddition;
+    @FXML
+    Pane pane;
 
     @FXML
     void initialize() {
@@ -38,6 +44,17 @@ public class Additions {
             HtmlManager.getInstance().createDirectories();
 
         tableAdditions.setItems(tabAddition);
+    }
+
+    public void clickTable() {
+        if (tableAdditions.getSelectionModel().getSelectedItem() != null) {
+            webViewAddition.setVisible(true);
+            btnImprimer.setVisible(true);
+
+            String pathToPdf = "file:///" + System.getProperty("user.dir") + "/Additions/" + tableAdditions.getSelectionModel().getSelectedItem() + ".pdf";
+
+            HtmlManager.getInstance().afficherPdf(webViewAddition, pathToPdf);
+        }
     }
 
     /**

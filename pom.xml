@@ -19,7 +19,6 @@
         <itext7.version>7.2.2</itext7.version>
     </properties>
 
-
     <dependencies>
         <dependency>
             <groupId>org.jetbrains</groupId>
@@ -35,6 +34,11 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
             <version>${javafx.version}</version>
         </dependency>
 

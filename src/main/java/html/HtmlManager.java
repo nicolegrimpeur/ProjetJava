@@ -2,6 +2,8 @@ package html;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import ingredients.EnumIngredients;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import journee.JourneeManager;
 import menu.Menu;
 import org.jsoup.Jsoup;
@@ -270,5 +272,55 @@ public class HtmlManager {
             builder.withW3cDocument(new W3CDom().fromJsoup(doc), baseUri);
             builder.run();
         }
+    }
+
+
+    public void afficherPdf(WebView webView, String pathToPdf) {
+        WebEngine webEngine = webView.getEngine();
+
+        String pdfjsViewerPath = "file:///" + System.getProperty("user.dir") + "/lib/pdfjs-2.13.216-dist/web/viewer.html";
+
+        /* Concaténation des chemins absolus avec l'argument ?file= */
+        String pdfjsAndFileConcat = pdfjsViewerPath + "?file=" + pathToPdf;
+
+        /* Charge le contenu HTML */
+        webEngine.loadContent("<!DOCTYPE html>\n"
+                + "<html lang=\"fr\">\n"
+                + "\n"
+                + "<head>\n"
+                + "    <meta charset=\"UTF-8\">\n"
+                + "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+                + "    <title>Document PDF</title>\n"
+                + "\n"
+                + "    <style>\n"
+                + "        html,\n"
+                + "        body {\n"
+                + "            /* reset */\n"
+                + "            margin: 0;\n"
+                + "            height: 100%;\n"
+                + "            /* important pour enlever la barre de défilement verticale */\n"
+                + "            overflow: hidden;\n"
+                + "        }\n"
+                + "\n"
+                + "        #pdf-viewer {\n"
+                + "            /* Plein écran */\n"
+                + "            width: 100%;\n"
+                + "            height: 100%;\n"
+                + "            /* important pour enlever la barre de défilement verticale */\n"
+                + "            border: none;\n"
+                + "        }\n"
+                + "    </style>\n"
+                + "</head>\n"
+                + "\n"
+                + "<body>\n"
+                + "\n"
+                + "    <!--\n"
+                + "    vous pouvez télécharger pdfjs et le viewer sur https://mozilla.github.io/pdf.js/getting_started/\n"
+                + "    -->\n"
+                + "    <iframe id=\"pdf-viewer\" src=\""+ pdfjsAndFileConcat  +"\"></iframe>\n"
+                + "\n"
+                + "</body>\n"
+                + "\n"
+                + "</html>");
     }
 }

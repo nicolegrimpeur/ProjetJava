@@ -59,7 +59,7 @@ public class GestionEmployes {
         try {
             int salaire = Integer.parseInt(textSalaire.getText());
 
-            if (!Objects.equals(nom, "") && !Objects.equals(prenom, "") && salaire != 0 && choiceEmploi.getValue() != null) {
+            if (!Objects.equals(nom, "") && !Objects.equals(prenom, "") && salaire > 0 && choiceEmploi.getValue() != null) {
 
                 boolean employeeExisteDeja = false;
                 Employee employeeExistant = null;
@@ -90,6 +90,7 @@ public class GestionEmployes {
                 if (Objects.equals(prenom, "")) erreur += "prenom ";
                 if (choiceEmploi.getValue() == null) erreur += "métier ";
                 if (salaire == 0) erreur += "salaire ";
+                if (salaire < 0) erreur += "salaire positif";
 
                 afficheErreur(erreur);
             }

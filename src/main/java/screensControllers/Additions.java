@@ -7,10 +7,16 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.Pane;
-import javafx.scene.web.WebView;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TreeItemPropertyValueFactory;
+import journee.JourneeManager;
+import menu.Menu;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class Additions {
@@ -19,13 +25,12 @@ public class Additions {
     @FXML
     ListView<String> tableAdditions;
     @FXML
-    WebView webViewAddition;
-    @FXML
-    Pane pane;
+    TreeTableView<Menu> treeTableViewAddition;
 
     @FXML
     void initialize() {
         initTableAddition();
+        initColonnes();
     }
 
     /**
@@ -46,14 +51,51 @@ public class Additions {
         tableAdditions.setItems(tabAddition);
     }
 
+    private void initColonnes() {
+        treeTableViewAddition.getColumns().get(0).setCellValueFactory(new TreeItemPropertyValueFactory<>("plat"));
+        treeTableViewAddition.getColumns().get(1).setCellValueFactory(new TreeItemPropertyValueFactory<>("boisson"));
+        treeTableViewAddition.getColumns().get(2).setCellValueFactory(new TreeItemPropertyValueFactory<>("prix"));
+    }
+
     public void clickTable() {
-        if (tableAdditions.getSelectionModel().getSelectedItem() != null) {
-            webViewAddition.setVisible(true);
+        String itemSelect = tableAdditions.getSelectionModel().getSelectedItem();
+        if (itemSelect != null) {
             btnImprimer.setVisible(true);
 
-            String pathToPdf = "file:///" + System.getProperty("user.dir") + "/Additions/" + tableAdditions.getSelectionModel().getSelectedItem() + ".pdf";
+            TreeItem<Menu> rootItem = new TreeItem<>(new Menu());
+            rootItem.setExpanded(true);
 
-            HtmlManager.getInstance().afficherPdf(webViewAddition, pathToPdf);
+            // table des menus classiques
+            TreeItem<Menu> menuItem = new TreeItem<>(new Menu("Menus classiques"));
+            TreeItem<Menu> menuCentAnsItem = null;
+            menuItem.setExpanded(true);
+
+            for (Menu menu : JourneeManager.getInstance().getMapAdditions().get(itemSelect))
+                if (!menu.getPrix().equals(""))
+                    menuItem.getChildren().add(new TreeItem<>(menu));
+            rootItem.getChildren().addAll(menuItem);
+
+            for (Menu menu : JourneeManager.getInstance().getMapAdditions().get(itemSelect))
+                if (menu.getPrix().equals("")) {
+                    if (menuCentAnsItem != null && menuCentAnsItem.getChildren().size() / 7 == 0)
+                        rootItem.getChildren().add(menuCentAnsItem);
+
+                    if (menuCentAnsItem == null || menuCentAnsItem.getChildren().size() / 7 == 0) {
+                        menuCentAnsItem = new TreeItem<>(new Menu("Menu 100 ans", "", "100"));
+                        menuItem.setExpanded(true);
+                    }
+
+                    menuCentAnsItem.getChildren().add(new TreeItem<>(menu));
+
+                }
+
+            if (menuCentAnsItem != null && menuCentAnsItem.getChildren().size() != 0)
+                rootItem.getChildren().add(menuCentAnsItem);
+
+            // on affiche les lignes
+            treeTableViewAddition.setRoot(rootItem);
+            treeTableViewAddition.setShowRoot(false); // permet de ne pas afficher le premier parent vide
+
         }
     }
 

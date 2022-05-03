@@ -8,7 +8,9 @@ import menu.Menu;
 import status.EnumStatus;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +21,7 @@ public class JourneeManager {
 
     private final Map<String, ArrayList<Menu>> listService = new HashMap<>();
     private final Map<String, ArrayList<Menu>> menusVendus = new HashMap<>();
+    private final Map<String, ArrayList<Menu>> mapAdditions = new HashMap<>();
 
     private JourneeManager() {
     }
@@ -145,10 +148,8 @@ public class JourneeManager {
     public void platTermine(String serveur) {
         menusVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
 
-        for (Menu menu : listService.get(serveur)) {
+        for (Menu menu : listService.get(serveur))
             menu.nextStatusPlat();
-            menusVendus.get(serveur).add(menu);
-        }
 
         ajoutMenusServeur(serveur);
     }
@@ -161,10 +162,8 @@ public class JourneeManager {
     public void boissonTermine(String serveur) {
         menusVendus.computeIfAbsent(serveur, k -> new ArrayList<>());
 
-        for (Menu menu : listService.get(serveur)) {
+        for (Menu menu : listService.get(serveur))
             menu.nextStatusBoisson();
-            menusVendus.get(serveur).add(menu);
-        }
 
         ajoutMenusServeur(serveur);
     }
@@ -174,8 +173,20 @@ public class JourneeManager {
             if (employee.getAffichage().equals(serveur))
                 employee.addNbItemsVendus(listService.get(serveur).size());
 
+        // génère la facture et l'addition
         HtmlManager.getInstance().generateFacture(serveur);
-        HtmlManager.getInstance().generateAddition(serveur);
+
+        Date aujourdhui = new Date();
+        SimpleDateFormat formater = new SimpleDateFormat("HH'h'mm'm'ss's' ");
+        String date = formater.format(aujourdhui);
+        HtmlManager.getInstance().generateAddition(serveur, date);
+
+        // on enregistre l'addition
+        mapAdditions.put(date + serveur, new ArrayList<>());
+        for (Menu menu: listService.get(serveur)) {
+            menusVendus.get(serveur).add(menu);
+            mapAdditions.get(date + serveur).add(menu);
+        }
 
         // on supprime les menus de ce serveur en cours
         listService.remove(serveur);
@@ -187,5 +198,9 @@ public class JourneeManager {
 
     public Map<String, ArrayList<Menu>> getMenusVendus() {
         return menusVendus;
+    }
+
+    public Map<String, ArrayList<Menu>> getMapAdditions() {
+        return mapAdditions;
     }
 }

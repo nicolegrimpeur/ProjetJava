@@ -3,21 +3,29 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import javafx.scene.web.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="screensControllers.Additions">
-   <children>
-      <Button fx:id="btnImprimer" layoutX="88.0" layoutY="556.0" mnemonicParsing="false" onAction="#clickImpression" text="Imprimer" visible="false">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <ListView fx:id="tableAdditions" layoutX="25.0" layoutY="45.0" onMouseClicked="#clickTable" prefHeight="500.0" prefWidth="200.0" />
-      <Label layoutX="68.0" layoutY="25.0" text="Liste des additions">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <WebView fx:id="webViewAddition" layoutX="250.0" layoutY="25.0" prefHeight="550.0" prefWidth="525.0" />
-   </children>
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="screensControllers.Additions">
+    <children>
+        <Button fx:id="btnImprimer" layoutX="500.0" layoutY="555.0" mnemonicParsing="false" onAction="#clickImpression"
+                text="Imprimer" visible="false">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Button>
+        <ListView fx:id="tableAdditions" layoutX="25.0" layoutY="45.0" onMouseClicked="#clickTable" prefHeight="525.0"
+                  prefWidth="250.0"/>
+        <Label layoutX="93.0" layoutY="25.0" text="Liste des additions">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+        <TreeTableView fx:id="treeTableViewAddition" layoutX="300.0" layoutY="45.0" prefHeight="500.0" prefWidth="475.0">
+            <columns>
+                <TreeTableColumn prefWidth="200.0" text="Plats"/>
+                <TreeTableColumn prefWidth="175.0" text="Boissons"/>
+                <TreeTableColumn prefWidth="100.0" text="Prix"/>
+            </columns>
+        </TreeTableView>
+    </children>
 </AnchorPane>

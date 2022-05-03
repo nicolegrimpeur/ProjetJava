@@ -1,7 +1,5 @@
 package menu;
 
-import menuBoissons.EnumBoissons;
-import menuPlats.EnumPlats;
 import status.EnumStatus;
 
 import java.util.Objects;

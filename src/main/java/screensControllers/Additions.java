@@ -1,7 +1,7 @@
 package screensControllers;
 
-import html.HtmlManager;
-import html.ImpressionManager;
+import files.HtmlManager;
+import files.ImpressionManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -46,7 +46,7 @@ public class Additions {
                 for (int i = liste.length - 1; i >= 0; i--)
                     tabAddition.add(liste[i].getName().replace(".pdf", ""));
         } else
-            HtmlManager.getInstance().createDirectories();
+            HtmlManager.createDirectories();
 
         tableAdditions.setItems(tabAddition);
     }
@@ -129,7 +129,7 @@ public class Additions {
     public void clickImpression() {
         String itemSelect = tableAdditions.getSelectionModel().getSelectedItem();
         if (itemSelect != null)
-            ImpressionManager.imprimerFichier(HtmlManager.getInstance().getAdditionOutput() + tableAdditions.getSelectionModel().getSelectedItem() + ".pdf");
+            ImpressionManager.imprimerFichier(HtmlManager.getAdditionOutput() + tableAdditions.getSelectionModel().getSelectedItem() + ".pdf");
     }
 
     /**

@@ -28,9 +28,8 @@ public enum EnumPlats {
         name = name_;
         prix = prix_;
 
-        for (EnumIngredients ingredient : args) {
+        for (EnumIngredients ingredient : args)
             listeIngredients.put(ingredient, listeIngredients.containsKey(ingredient) ? listeIngredients.get(ingredient) + 1 : 1);
-        }
     }
 
     public String getName() {

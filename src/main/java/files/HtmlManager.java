@@ -1,4 +1,4 @@
-package html;
+package files;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import ingredients.EnumIngredients;
@@ -21,8 +21,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Properties;
 
-public class HtmlManager {
-    private static HtmlManager instance = null;
+public abstract class HtmlManager {
     private static final String FACTURE_INPUT = "resources/htmlTemplate/factureTemplate.html";
     private static final String ADDITION_INPUT = "resources/htmlTemplate/additionTemplate.html";
     private static final String COURSES_INPUT = "resources/htmlTemplate/coursesTemplate.html";
@@ -31,20 +30,14 @@ public class HtmlManager {
     private static final String COURSES_OUTPUT = "resources/";
     private static int nbFactures = 0;
 
-    public static HtmlManager getInstance() {
-        if (instance == null)
-            instance = new HtmlManager();
-        return instance;
-    }
-
-    public String getAdditionOutput() {
+    public static String getAdditionOutput() {
         return ADDITION_OUTPUT;
     }
 
     /**
      * Permet de créer dans lesquels seront les additions et les factures
      */
-    public void createDirectories() {
+    public static void createDirectories() {
         File dir = new File(ADDITION_OUTPUT);
         dir.mkdir();
         dir = new File(FACTURE_OUTPUT);
@@ -56,7 +49,7 @@ public class HtmlManager {
      *
      * @param serveur le nom d'affichage du serveur qui a servi la table
      */
-    public void generateFacture(String serveur) {
+    public static void generateFacture(String serveur) {
         getLastNumberFacture();
         createDirectories();
         try {
@@ -70,7 +63,7 @@ public class HtmlManager {
     /**
      * Permet de récupérer le dernier numéro dans le dossier des factures
      */
-    private void getLastNumberFacture() {
+    private static void getLastNumberFacture() {
         createDirectories();
 
         File dossierFacture = new File("Factures/");
@@ -93,7 +86,7 @@ public class HtmlManager {
      *
      * @param serveur le nom d'affichage du serveur qui a servi la table
      */
-    public void generateAddition(String serveur, String date) {
+    public static void generateAddition(String serveur, String date) {
         try {
             File inputHTML = new File(ADDITION_INPUT);
             Document doc = createWellFormedHtmlFactureAddition(inputHTML, false, serveur);
@@ -110,7 +103,7 @@ public class HtmlManager {
      * @param serveur   nom d'affichage du serveur qui a servi
      * @return le document modifié
      */
-    private Document createWellFormedHtmlFactureAddition(File inputHTML, Boolean isFacture, String serveur) throws IOException {
+    private static Document createWellFormedHtmlFactureAddition(File inputHTML, Boolean isFacture, String serveur) throws IOException {
         Document document = Jsoup.parse(inputHTML, "UTF-8");
         document.outputSettings()
                 .syntax(Document.OutputSettings.Syntax.xml);
@@ -135,7 +128,7 @@ public class HtmlManager {
         // on ajoute la version de l'application
         // on récupère le fichier de propriétés du projet (src/main/resources)
         final Properties properties = new Properties();
-        properties.load(getClass().getClassLoader().getResourceAsStream("project.properties"));
+        properties.load(HtmlManager.class.getClassLoader().getResourceAsStream("project.properties"));
         Element version = document.getElementById("version");
         version.appendText(properties.getProperty("version") + " (" + properties.getProperty("nomApplication") + ")");
 
@@ -168,7 +161,7 @@ public class HtmlManager {
         return document;
     }
 
-    private Element generateLigne(String plat, String boisson, String prix, boolean isStrong) {
+    private static Element generateLigne(String plat, String boisson, String prix, boolean isStrong) {
         ArrayList<Node> tabLigne;
         Element ligne, colonnePlat, colonneBoisson, colonnePrix;
 
@@ -200,7 +193,7 @@ public class HtmlManager {
     /**
      * Permet de générer la liste de course dans le dossier défini par COURSES_OUTPUT
      */
-    public void generateListeDeCourse() {
+    public static void generateListeDeCourse() {
         try {
             File inputHTML = new File(COURSES_INPUT);
             Document doc = createWellFormedHtmlCourses(inputHTML);
@@ -216,7 +209,7 @@ public class HtmlManager {
      * @param inputHTML le fichier HTML récupéré
      * @return le document modifié
      */
-    private Document createWellFormedHtmlCourses(File inputHTML) throws IOException {
+    private static Document createWellFormedHtmlCourses(File inputHTML) throws IOException {
         Document document = Jsoup.parse(inputHTML, "UTF-8");
         document.outputSettings()
                 .syntax(Document.OutputSettings.Syntax.xml);
@@ -250,7 +243,7 @@ public class HtmlManager {
      * @param doc       document modifié
      * @param outputPdf sortie du fichier
      */
-    private void xhtmlToPdf(Document doc, String outputPdf) throws IOException {
+    private static void xhtmlToPdf(Document doc, String outputPdf) throws IOException {
         try (OutputStream os = new FileOutputStream(outputPdf)) {
             String baseUri = FileSystems.getDefault()
                     .getPath("src/main/resources/")

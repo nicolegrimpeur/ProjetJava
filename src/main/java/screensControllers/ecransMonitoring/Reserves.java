@@ -1,6 +1,6 @@
 package screensControllers.ecransMonitoring;
 
-import html.HtmlManager;
+import files.HtmlManager;
 import ingredients.EnumIngredients;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -54,6 +54,6 @@ public class Reserves {
     }
 
     public void impressionListeCourse() {
-        HtmlManager.getInstance().generateListeDeCourse();
+        HtmlManager.generateListeDeCourse();
     }
 }

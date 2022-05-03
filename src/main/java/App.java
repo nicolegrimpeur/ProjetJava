@@ -9,31 +9,10 @@ import journee.JourneeManager;
 
 import java.util.Objects;
 import java.util.Properties;
-import java.util.Scanner;
 
 public class App extends Application {
     public static void main(String[] args) {
         launch(args);
-    }
-
-    public static void accueil() {
-        System.out.println("Quel écran souhaitez vous afficher?");
-        System.out.println("1- Ecran prise de commande");
-        System.out.println("2- Ecran cuisine");
-        System.out.println("3- Ecran bar");
-        System.out.println("4- Ecran screensControllers.Monitoring");
-
-        Scanner scanner = new Scanner(System.in);
-        int choixEcran = scanner.nextInt();
-        System.out.println("Vous avez choisi l'écran: " + choixEcran);
-
-        switch (choixEcran) {
-            case 1 -> screens.ScreenOne.ScreenOne();
-            case 2 -> screens.ScreenTwo.screenTwo();
-            case 3 -> screens.ScreenThree.screenThree();
-            case 4 -> screens.ScreenFour.screenFour();
-            default -> System.err.println("Commande inconnue");
-        }
     }
 
     public void start(Stage stage) {

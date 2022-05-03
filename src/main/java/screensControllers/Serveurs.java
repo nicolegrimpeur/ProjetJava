@@ -157,7 +157,7 @@ public class Serveurs {
         ObservableList<String> listStrPlats = FXCollections.observableArrayList();
 
         for (EnumPlats plat : EnumPlats.values())
-            if (PlatsManager.getInstance().hasEnoughIngredients(plat))
+            if (PlatsManager.hasEnoughIngredients(plat))
                 listStrPlats.add(plat.getName());
 
         listPlats.setItems(FXCollections.observableArrayList(listStrPlats));
@@ -201,7 +201,7 @@ public class Serveurs {
                 Menu menu = new Menu(platCorrespondant.getName(), boissonCorrespondant.getName(), Integer.toString(platCorrespondant.getPrix() + boissonCorrespondant.getPrix()));
 
                 // on prépare le plat pour enlever les ingrédients
-                PlatsManager.getInstance().preparation(platCorrespondant);
+                PlatsManager.preparation(platCorrespondant);
 
                 // cas où l'on est dans un menu classique
                 if (btnMenuClassique.isDisable()) currentServeur.listCommandes.add(menu);
@@ -286,7 +286,7 @@ public class Serveurs {
                 TreeItem<Menu> parent = itemSelect.getParent();
 
                 // supprime le plat pour remettre les ingrédients à disposition
-                PlatsManager.getInstance().suppressionPlat(Objects.requireNonNull(EnumPlats.rechercheParNom(itemSelect.getValue().getPlat())));
+                PlatsManager.suppressionPlat(Objects.requireNonNull(EnumPlats.rechercheParNom(itemSelect.getValue().getPlat())));
 
                 // si c'est un menu, on supprime l'élément du tableau à l'indice sélectionné - 1 ("Menus classiques" occupant le premier index)
                 if (parent.getValue().getPlat().equals("Menus classiques"))

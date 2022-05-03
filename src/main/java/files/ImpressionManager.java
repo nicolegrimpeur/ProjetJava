@@ -1,4 +1,4 @@
-package html;
+package files;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
@@ -8,7 +8,7 @@ import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
 
-public class ImpressionManager {
+public abstract class ImpressionManager {
     /**
      * Permet d'imprimer un fichier pdf
      * @param path le chemin vers le fichier pdf

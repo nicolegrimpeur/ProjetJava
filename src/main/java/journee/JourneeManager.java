@@ -2,7 +2,7 @@ package journee;
 
 import employee.Employee;
 import employee.ManagEmployees;
-import html.HtmlManager;
+import files.HtmlManager;
 import ingredients.EnumIngredients;
 import menu.Menu;
 import menuBoissons.EnumBoissons;
@@ -176,12 +176,12 @@ public class JourneeManager {
                 employee.addNbItemsVendus(listService.get(serveur).size());
 
         // génère la facture et l'addition
-        HtmlManager.getInstance().generateFacture(serveur);
+        HtmlManager.generateFacture(serveur);
 
         Date aujourdhui = new Date();
         SimpleDateFormat formater = new SimpleDateFormat("HH'h'mm'm'ss's' ");
         String date = formater.format(aujourdhui);
-        HtmlManager.getInstance().generateAddition(serveur, date);
+        HtmlManager.generateAddition(serveur, date);
 
         // on enregistre l'addition
         mapAdditions.put(date + serveur, new ArrayList<>());

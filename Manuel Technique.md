@@ -21,6 +21,7 @@
     - [Prise d'une commande](#commande)
     - [Barmans et Cuisiniers](#barmansEtCuisiniers)
     - [Performances](#performances)
+- [FAQ](#FAQ)
 
 ## Dépendances <a id="dependances"></a>
 
@@ -241,3 +242,15 @@ Pour les ingrédients, on passe par la classe `AffichagePerformance` pour affich
 d'ingrédients manquants par rapport au début de la journée.
 Enfin, pour les plats et les boissons, on parcourt la liste de menus vendus afin de calculer le nombre de chaque plat /
 boisson vendus, puis on les affiche avec la classe `AffichagePerformance`.
+
+## FAQ <a id="FAQ"></a>
+
+### Je suis développeur, comment exécuter le projet ?
+
+Tout d'abord vérifiez que vous avez Maven d'installé sur votre ordinateur (ou alors présents dans votre IDE).
+
+Pour run le projet, faites `mvn clean javafx:run` dans le projet.
+
+Pour compiler le projet sous jar, faites `mvn clean install`. Le jar de sortie se trouvera ensuite dans le
+dossier `target`. Deux fichiers jar se trouveront dedans, l'un avec les dépendances du projet et l'autre sans. Pensez à
+prendre celle avec les dépendances pour exécuter le projet avec le fichier CMD `launchApplication - with dependencies.cmd`.

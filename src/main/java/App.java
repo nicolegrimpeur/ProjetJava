@@ -17,7 +17,7 @@ public class App extends Application {
 
     public void start(Stage stage) {
         ManagEmployees.getInstance().addEmploye(new Serveur("Barrat", "Nicolas", 2000));
-        ManagEmployees.getInstance().addEmploye(new Serveur("Lecocq", "Judith", 2000));
+        ManagEmployees.getInstance().addEmploye(new Serveur("Lecoq", "Judith", 2000));
         ManagEmployees.getInstance().addEmploye(new Barman("The", "Barman", 2000));
         ManagEmployees.getInstance().addEmploye(new Cuisinier("The", "Cuisinier", 2000));
         ManagEmployees.getInstance().addEmploye(new Cuisinier("Un", "Cuisinier", 2000));

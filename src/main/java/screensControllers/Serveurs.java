@@ -68,14 +68,7 @@ public class Serveurs {
         prixCol.setSortable(false);
 
         // permet un retour à la ligne pour les plats
-        platsCol.setCellFactory(tc -> {
-            TreeTableCell<Menu, String> cell = new TreeTableCell<>();
-            Text text = new Text();
-            cell.setGraphic(text);
-            text.wrappingWidthProperty().bind(platsCol.widthProperty());
-            text.textProperty().bind(cell.itemProperty());
-            return cell;
-        });
+        Additions.setCellFactory(platsCol);
 
         // on ajoute les colonnes
         treeTableAffichageMenu.getColumns().addAll(platsCol, boissonsCol, prixCol);

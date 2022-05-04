@@ -17,6 +17,7 @@ import menuBoissons.EnumBoissons;
 import menuPlats.EnumPlats;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Performances {
     @FXML
@@ -57,6 +58,7 @@ public class Performances {
         int beneficeTotal = 0;
         double beneficeTotalSansTva = 0;
         ArrayList<Menu> menusServeur;
+        Map<String, Double> mapPrix;
         int nbMenus100Ans = 0;
 
         for (Employee employee : JourneeManager.getInstance().listEmployes) {
@@ -76,8 +78,9 @@ public class Performances {
                         nbMenus100Ans++;
                 }
 
-                beneficeTotal += JourneeManager.getInstance().calculPrixTotal(menusServeur);
-                beneficeTotalSansTva += JourneeManager.getInstance().calculTva(menusServeur);
+                mapPrix = JourneeManager.getInstance().calculTva(menusServeur);
+                beneficeTotal += mapPrix.get("Prix total");
+                beneficeTotalSansTva += mapPrix.get("Prix hors taxes");
             }
         }
 

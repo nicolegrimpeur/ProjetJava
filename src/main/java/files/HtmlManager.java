@@ -16,10 +16,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.FileSystems;
 import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Properties;
+import java.util.*;
 
 public abstract class HtmlManager {
     private static final String FACTURE_INPUT = "resources/htmlTemplate/factureTemplate.html";
@@ -151,12 +148,13 @@ public abstract class HtmlManager {
             table.appendChild(generateLigne(menu.getPlat(), menu.getBoisson(), menu.getPrix(), false));
         }
 
-        // on rajoute le prix total
-        double prixTotal = JourneeManager.getInstance().calculPrixTotal(tabMenusServeurs);
-        double prixTotalSansTva = JourneeManager.getInstance().calculTva(tabMenusServeurs);
+        // on rajoute les prix
+        Map<String, Double> mapPrix = JourneeManager.getInstance().calculTva(tabMenusServeurs);
         table.appendChild(generateLigne("", "", "", false));
-        table.appendChild(generateLigne("", "Prix", Double.toString(prixTotal), true));
-        table.appendChild(generateLigne("", "Prix hors taxe", Double.toString(prixTotalSansTva), true));
+        table.appendChild(generateLigne("", "Prix", Double.toString(mapPrix.get("Prix total")), true));
+        table.appendChild(generateLigne("", "Prix hors taxe", Double.toString(mapPrix.get("Prix hors taxes")), true));
+        table.appendChild(generateLigne("", "Prix TVA à " + properties.getProperty("tvaHorsBoissonsAlcoolisees") + "%", Double.toString(mapPrix.get("Total TVA 10%")), false));
+        table.appendChild(generateLigne("", "Prix TVA à " + properties.getProperty("tvaBoissonsAlcoolisees") + "%", Double.toString(mapPrix.get("Total TVA 20%")), false));
 
         return document;
     }

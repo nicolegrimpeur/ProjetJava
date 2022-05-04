@@ -5,16 +5,15 @@ import files.ImpressionManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
+import javafx.scene.text.Text;
 import journee.JourneeManager;
 import menu.Menu;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class Additions {
@@ -55,9 +54,28 @@ public class Additions {
      * Permet d'initialiser les colonnes de la tree table view
      */
     private void initColonnes() {
-        treeTableViewAddition.getColumns().get(0).setCellValueFactory(new TreeItemPropertyValueFactory<>("plat"));
+        TreeTableColumn<Menu, String> platsCol = new TreeTableColumn<>("Plats");
+        platsCol.setCellValueFactory(new TreeItemPropertyValueFactory<>("plat"));
+        platsCol.setPrefWidth(225);
+
+        // permet un retour à la ligne pour les plats
+        setCellFactory(platsCol);
+
+        treeTableViewAddition.getColumns().set(0, platsCol);
+
         treeTableViewAddition.getColumns().get(1).setCellValueFactory(new TreeItemPropertyValueFactory<>("boisson"));
         treeTableViewAddition.getColumns().get(2).setCellValueFactory(new TreeItemPropertyValueFactory<>("prix"));
+    }
+
+    public static void setCellFactory(TreeTableColumn<Menu, String> platsCol) {
+        platsCol.setCellFactory(tc -> {
+            TreeTableCell<Menu, String> cell = new TreeTableCell<>();
+            Text text = new Text();
+            cell.setGraphic(text);
+            text.wrappingWidthProperty().bind(platsCol.widthProperty());
+            text.textProperty().bind(cell.itemProperty());
+            return cell;
+        });
     }
 
     /**
@@ -104,11 +122,12 @@ public class Additions {
                 rootItem.getChildren().add(menuCentAnsItem);
 
             // on affiche le prix total
+            Map<String, Double> mapSorti = JourneeManager.getInstance().calculTva(tabMenusServeurs);
             TreeItem<Menu> itemPrixTotal = new TreeItem<>();
             rootItem.getChildren().add(itemPrixTotal);
-            itemPrixTotal = new TreeItem<>(new Menu("", "Total Hors Taxe", JourneeManager.getInstance().calculTva(tabMenusServeurs) + "€"));
+            itemPrixTotal = new TreeItem<>(new Menu("", "Total Hors Taxe",  mapSorti.get("Prix hors taxes") + "€"));
             rootItem.getChildren().add(itemPrixTotal);
-            itemPrixTotal = new TreeItem<>(new Menu("", "Total", JourneeManager.getInstance().calculPrixTotal(tabMenusServeurs) + "€"));
+            itemPrixTotal = new TreeItem<>(new Menu("", "Total", mapSorti.get("Prix total") + "€"));
             rootItem.getChildren().add(itemPrixTotal);
             itemPrixTotal = new TreeItem<>(new Menu("", "", (JourneeManager.getInstance().getIsPaye(itemSelect) ? "Déjà payé" : "Pas encore payé")));
             rootItem.getChildren().add(itemPrixTotal);

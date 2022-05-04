@@ -195,34 +195,11 @@ public class JourneeManager {
     }
 
     /**
-     * Calcul le prix total d'une liste de menu
+     * Calcul le prix total, le prix total sans la TVA, la TVA payé à 10% et la TVA payé à 20%, d'une liste de menus
      * @param listMenu liste de menu
-     * @return la prix total de la liste de menu
+     * @return une map avec comme clés "Prix total", "Prix hors taxes", "Total TVA 10%", "Total TVA 20%"
      */
-    public double calculPrixTotal(ArrayList<Menu> listMenu) {
-        double prixTotal = 0, nbMenus100Ans = 0;
-        for (Menu menu: listMenu) {
-            if (!menu.getPrix().equals(""))
-                prixTotal += Double.parseDouble(menu.getPrix());
-            else
-                nbMenus100Ans++;
-        }
-
-        // calcul du prix total en fonction du nombre de menus 100 ans
-        if ((nbMenus100Ans * 10) / 7 != (nbMenus100Ans / 7) * 10)
-            prixTotal += 100 * ((nbMenus100Ans / 7) + 1);
-        else
-            prixTotal += 100 * (nbMenus100Ans / 7);
-
-        return prixTotal;
-    }
-
-    /**
-     * Calcul le prix sans la TVA d'une liste de menus
-     * @param listMenu liste de menu
-     * @return le prix total de la liste de menu sans la TVA
-     */
-    public double calculTva(ArrayList<Menu> listMenu) {
+    public Map<String, Double> calculTva(ArrayList<Menu> listMenu) {
         double tvaHorsBoissonsAlcoolisees, tvaBoissonsAlcoolisees;
         try {
             // on récupère le fichier de propriétés du projet (src/main/resources)
@@ -236,7 +213,7 @@ public class JourneeManager {
             tvaBoissonsAlcoolisees = 20;
         }
 
-        double prixSansTva = 0, nbMenus100Ans = 0, totalPrixBoissonsAlcoolisesMenus100Ans = 0;
+        double prixSansTva = 0, nbMenus100Ans = 0, totalPrixBoissonsAlcoolisesMenus100Ans = 0, prixTVA20 = 0, prixTVA10 = 0, prixTotal = 0;
         EnumBoissons boisson;
         EnumPlats plat;
         double prixBoisson, prixPlat, prixBoissonSansTva, prixPlatSansTva;
@@ -251,7 +228,12 @@ public class JourneeManager {
                 prixBoissonSansTva = prixBoisson * (100 - ((boisson.isAlcoolise()) ? tvaBoissonsAlcoolisees : tvaHorsBoissonsAlcoolisees)) / 100;
                 prixPlatSansTva = prixPlat * (100 - tvaHorsBoissonsAlcoolisees) / 100;
 
+                prixTVA20 += prixBoisson * ((boisson.isAlcoolise()) ? tvaBoissonsAlcoolisees : 0) / 100;
+                prixTVA10 += prixBoisson * ((boisson.isAlcoolise()) ? 0 : tvaHorsBoissonsAlcoolisees) / 100;
+                prixTVA10 += prixPlat * tvaHorsBoissonsAlcoolisees / 100;
+
                 prixSansTva += prixBoissonSansTva + prixPlatSansTva;
+                prixTotal += Double.parseDouble(menu.getPrix());
             } else {
                 nbMenus100Ans++;
 
@@ -270,7 +252,16 @@ public class JourneeManager {
         prixSansTva += (prixMenusCentsAns - totalPrixBoissonsAlcoolisesMenus100Ans) * (100 - tvaHorsBoissonsAlcoolisees) / 100
                 + totalPrixBoissonsAlcoolisesMenus100Ans * (100 - tvaBoissonsAlcoolisees) / 100;
 
-        return prixSansTva;
+        prixTVA20 += totalPrixBoissonsAlcoolisesMenus100Ans * tvaBoissonsAlcoolisees / 100;
+        prixTVA10 += (prixMenusCentsAns - totalPrixBoissonsAlcoolisesMenus100Ans) * tvaHorsBoissonsAlcoolisees / 100;
+        prixTotal += prixMenusCentsAns;
+
+        Map<String, Double> mapSorti = new HashMap<>();
+        mapSorti.put("Prix total", (double) Math.round(prixTotal * 100) / 100);
+        mapSorti.put("Prix hors taxes", (double) Math.round(prixSansTva * 100) / 100);
+        mapSorti.put("Total TVA 10%", (double) Math.round(prixTVA10 * 100) / 100);
+        mapSorti.put("Total TVA 20%", (double) Math.round(prixTVA20 * 100) / 100);
+        return mapSorti;
     }
 
     public void resetVentes() {

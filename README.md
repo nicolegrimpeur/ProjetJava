@@ -19,3 +19,7 @@ restaurant à la fin d'une journée.
 
 Réalisé par [Judith Lecoq](https://github.com/JudithLco) et
 [Nicolas Barrat](https://github.com/nicolegrimpeur), étudiants à l'[ISEN Lille](https://www.isen-lille.fr)
+
+## Github
+
+Disponible sur Github [ici](https://github.com/nicolegrimpeur/ProjetJava)

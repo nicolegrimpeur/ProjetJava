@@ -266,6 +266,8 @@ public class JourneeManager {
 
     public void resetVentes() {
         menusVendus.clear();
+        mapAdditions.clear();
+        isPaye.clear();
     }
 
     public Map<String, ArrayList<Menu>> getMenusVendus() {

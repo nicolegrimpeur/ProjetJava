@@ -59,7 +59,6 @@ public class Performances {
         double beneficeTotalSansTva = 0;
         ArrayList<Menu> menusServeur;
         Map<String, Double> mapPrix;
-        int nbMenus100Ans = 0;
 
         for (Employee employee : JourneeManager.getInstance().listEmployes) {
             if (employee instanceof Cuisinier) {
@@ -72,11 +71,6 @@ public class Performances {
 
             if (menusServeur != null) {
                 nbMenusVendus += menusServeur.size();
-
-                for (Menu menu : menusServeur) {
-                    if (menu.getPrix().equals(""))
-                        nbMenus100Ans++;
-                }
 
                 mapPrix = JourneeManager.getInstance().calculTva(menusServeur);
                 beneficeTotal += mapPrix.get("Prix total");

@@ -105,6 +105,9 @@ public abstract class HtmlManager {
         document.outputSettings()
                 .syntax(Document.OutputSettings.Syntax.xml);
 
+        Element logo = document.getElementById("logo");
+        logo.attr("src", "resources/htmlTemplate/logo.png");
+
         // si c'est une facture, on modifie le numéro de facture
         if (isFacture) {
             Element numero = document.getElementById("numeroFacture");
@@ -244,7 +247,7 @@ public abstract class HtmlManager {
     private static void xhtmlToPdf(Document doc, String outputPdf) throws IOException {
         try (OutputStream os = new FileOutputStream(outputPdf)) {
             String baseUri = FileSystems.getDefault()
-                    .getPath("src/main/resources/")
+                    .getPath("")
                     .toUri()
                     .toString();
             PdfRendererBuilder builder = new PdfRendererBuilder();
